@@ -1,0 +1,40 @@
+<%- include('partials/head.ejs') %>
+<div class="container">
+  <h1>Add Product</h1>
+
+  <form action="/" method="POST">
+    <p>
+      <label for="description">Description* </label>
+      <input type="text" name="description" id="description">
+    </p>
+    <p>
+      <label for="wcCode">WC Code* </label>
+      <input type="text" name="wcCode" id="wcCode">
+    </p>
+    <p>
+      <label for="boxCode">Box Code </label>
+      <input type="text" name="boxCode" id="boxCode">
+    </p>
+    <p>
+      <label for="basePrice">Base Price* </label>
+      <input type="text" name="basePrice" id="basePrice">
+    </p>
+    <p>
+      <label for="ti">Ti* </label>
+      <input type="text" name="ti" id="ti">
+    </p>
+    <p>
+      <label for="hi">Hi* </label>
+      <input type="text" name="hi" id="hi">
+    </p>
+    <p>
+      <label for="upc">UPC </label>
+      <input type="text" name="upc" id="upc">
+    </p>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<%- include('partials/foot.ejs') %>
+</body>
+</html>

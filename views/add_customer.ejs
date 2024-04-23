@@ -1,0 +1,23 @@
+<%- include('partials/head.ejs') %>
+<div class="container">
+  <h1>Add Customer</h1>
+</div>
+<div class="container my-3">
+  <form action="/customers" method="POST">
+    <p>
+      <label for="name">Name </label>
+      <input type="text" name="name" id="name">
+    </p>
+    <p>
+      <label for="freightRate">Freight Rate </label>
+      <input type="text" name="freightRate" id="freightRate">
+    </p>
+    <p>
+      <label for="markUp">Mark Up</label>
+      <input type="text" name="markUp" id="markUp">
+    </p>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+</body>
+</html>
