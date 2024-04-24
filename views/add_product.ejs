@@ -1,38 +1,159 @@
 <%- include('partials/head.ejs') %>
-<div class="container">
-  <h1>Add Product</h1>
 
-  <form action="/" method="POST">
-    <p>
-      <label for="description">Description* </label>
-      <input type="text" name="description" id="description">
-    </p>
-    <p>
-      <label for="wcCode">WC Code* </label>
-      <input type="text" name="wcCode" id="wcCode">
-    </p>
-    <p>
-      <label for="boxCode">Box Code </label>
-      <input type="text" name="boxCode" id="boxCode">
-    </p>
-    <p>
-      <label for="basePrice">Base Price* </label>
-      <input type="text" name="basePrice" id="basePrice">
-    </p>
-    <p>
-      <label for="ti">Ti* </label>
-      <input type="text" name="ti" id="ti">
-    </p>
-    <p>
-      <label for="hi">Hi* </label>
-      <input type="text" name="hi" id="hi">
-    </p>
-    <p>
-      <label for="upc">UPC </label>
-      <input type="text" name="upc" id="upc">
-    </p>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+  <div class="border rounded-lg mt-10 bg-white p-10">
+    <div class="flex items-center justify-between gap-5 flex-wrap">
+      <h2 class="font-medium text-lg">Add Product</h2>
+    </div>
+
+    <div class="mt-10">
+      <form class="space-y-6" action="#" method="POST">
+        <div class="grid sm:grid-cols-2 gap-8">
+          <div>
+            <label
+              for="name"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Name</label
+            >
+            <div class="mt-2">
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-none px-4"
+              />
+            </div>
+          </div>
+  
+          <div>
+              <label
+                for="price"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Price</label
+              >
+            <div class="mt-2">
+              <input
+                id="price"
+                name="price"
+                type="number"
+                required
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+              />
+            </div>
+          </div>
+  
+          <div>
+            <label
+              for="wc-code"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >WC Code*</label
+            >
+            <div class="mt-2">
+              <input
+                id="wc-code"
+                name="wc-code"
+                type="text"
+                required
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+              />
+            </div>
+          </div>
+  
+            <div>
+              <label
+                for="box-code"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Box Code</label
+              >
+              <div class="mt-2">
+                <input
+                  id="box-code"
+                  name="box-code"
+                  type="text"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="ti"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Ti*</label
+              >
+              <div class="mt-2">
+                <input
+                  id="ti"
+                  name="ti"
+                  type="text"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="hi"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Hi*</label
+              >
+              <div class="mt-2">
+                <input
+                  id="hi"
+                  name="hi"
+                  type="text"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="upc"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >UPC</label
+              >
+              <div class="mt-2">
+                <input
+                  id="upc"
+                  name="upc"
+                  type="text"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="description"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Description</label
+              >
+              <div class="mt-2">
+                <textarea
+                  id="description"
+                  name="description"
+                  type="text"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+                ></textarea>
+              </div>
+            </div>
+
+          </div>
+
+        <div>
+          <button
+            type="submit"
+            class="flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Create Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
 </div>
 
 <%- include('partials/foot.ejs') %>

@@ -1,40 +1,50 @@
 <%- include('partials/head.ejs') %>
-<div class="container">
-    <div>
-        <h1>Products</h1>
-        <a href="/add_product"><button class="btn btn-primary">Add a Product</button></a>
-    </div>
-    <div class="my-3">
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
+<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="border rounded-lg mt-10 bg-white p-10">
+      <div class="flex items-center justify-between gap-5 flex-wrap">
+        <h2 class="font-medium text-lg">Products</h2>
+        <a href="/add-product" class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add Product</a>
+      </div>
+
+      <div class="mt-10">
+        <table class="w-full">
+          <thead>
+            <th class="font-medium pb-4 border-b text-left">#</th>
+            <th class="font-medium pb-4 border-b text-left">Name</th>
+            <th class="font-medium pb-4 border-b text-left">Description</th>
+            <th class="font-medium pb-4 border-b text-left">Price</th>
+            <th class="font-medium pb-4 border-b text-left">Box Code</th>
+            <th class="font-medium pb-4 border-b text-left">WC Code</th>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td class="py-4 border-b">1</td>
+              <td class="py-4 border-b font-medium">Product 1</td>
+              <td class="py-4 border-b">Product Description</td>
+              <td class="py-4 border-b">$10.00</td>
+              <td class="py-4 border-b">EDDOCE</td>
+              <td class="py-4 border-b">EKO234D</td>
+            </tr>
+            <tr>
+              <td class="py-4 border-b">2</td>
+              <td class="py-4 border-b font-medium">Product 1</td>
+              <td class="py-4 border-b">Product Description</td>
+              <td class="py-4 border-b">$10.00</td>
+              <td class="py-4 border-b">EDDOCE</td>
+              <td class="py-4 border-b">EKO234D</td>
+            </tr>
+            <tr>
+              <td class="py-4 border-b">3</td>
+              <td class="py-4 border-b font-medium">Product 1</td>
+              <td class="py-4 border-b">Product Description</td>
+              <td class="py-4 border-b">$10.00</td>
+              <td class="py-4 border-b">EDDOCE</td>
+              <td class="py-4 border-b">EKO234D</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     
 </div>
