@@ -1,17 +1,34 @@
+import cookieParser from "cookie-parser";
+import { config } from "dotenv";
 import express from "express";
+import flash from "express-flash";
+import session from "express-session";
+import privateRoute from "./middlewares/privateRoute.js";
+import authRoute from "./routes/authRoute.js";
+import customerRoute from "./routes/customerRoute.js";
+import productRoute from "./routes/productRoute.js";
 
 const app = express();
 const port = 8000;
 
-let customers = [];
-let products = [];
-
 // Middleware to set public folder
 app.use(express.static("public"));
+
+config();
 
 // Middleware to parse form submissions
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "s3Cur3",
+    name: "sessionId",
+    saveUninitialized: false,
+    resave: true,
+  })
+);
+app.use(flash());
 
 const saveData = (data, file) => {
   const finished = (error) => {
@@ -24,7 +41,7 @@ const saveData = (data, file) => {
   };
 };
 
-app.get("/", (req, res) => {
+app.get("/", privateRoute, (req, res) => {
   res.render("index.ejs");
 });
 
@@ -32,42 +49,15 @@ app.post("/", (req, res) => {
   res.render("index.ejs");
 });
 
-app.get("/login", async (req, res) => {
-  res.render("login.ejs");
-});
-
-app.get("/signup", async (req, res) => {
-  res.render("signup.ejs");
-});
-
-app.get("/customers", async (req, res) => {
-  res.render("customers.ejs");
-});
-
 app.get("/order", (req, res) => {
   res.render("order.ejs");
 });
 
-app.get("/add-customer", (req, res) => {
-  res.render("add_customer.ejs");
-});
+app.use("/", customerRoute);
 
-app.post("/customers", (req, res) => {
-  customerName = req.body["name"];
-  freightRate = req.body["freightRate"];
-  markUp = req.body["markUp"];
-  res.render("customers.ejs", {
-    data: {
-      name: customerName,
-      freight: freightRate,
-      mark: markUp,
-    },
-  });
-});
+app.use("/", authRoute);
 
-app.get("/add-product", (req, res) => {
-  res.render("add_product.ejs");
-});
+app.use("/", productRoute);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
