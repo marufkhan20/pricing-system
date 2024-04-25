@@ -2,7 +2,9 @@ import { Router } from "express";
 import {
   createNewUserController,
   loginUserController,
+  logoutController,
 } from "../controllers/authController.js";
+import privateRoute from "../middlewares/privateRoute.js";
 import publicRoute from "../middlewares/publicRoute.js";
 
 const router = Router();
@@ -18,5 +20,7 @@ router.get("/login", publicRoute, async (req, res) => {
   res.render("login.ejs");
 });
 router.post("/login", publicRoute, loginUserController);
+
+router.get("/logout", privateRoute, logoutController);
 
 export default router;

@@ -111,13 +111,26 @@ export const loginUserController = async (req, res) => {
           email,
         },
         process.env.SECRET_KEY,
-        { expiresIn: "1m" }
+        { expiresIn: "30d" }
       );
 
       res.cookie("accessToken", accessToken);
 
       res.redirect("/");
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Server error occurred!!",
+    });
+  }
+};
+
+// log out controller
+export const logoutController = async (req, res) => {
+  try {
+    res.cookie("accessToken", "", { expires: new Date(0) });
+    res.redirect("/login");
   } catch (error) {
     console.error(error);
     res.status(500).json({

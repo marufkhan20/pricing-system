@@ -6,7 +6,8 @@
     "express": "^4.19.2",
     "express-flash": "^0.0.2",
     "express-session": "^1.18.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^9.0.1"
   },
   "name": "wc_pricing",
   "version": "1.0.0",

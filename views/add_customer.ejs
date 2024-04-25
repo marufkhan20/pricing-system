@@ -7,7 +7,7 @@
     </div>
 
     <div class="mt-10">
-      <form class="space-y-6" action="#" method="POST">
+      <form action="/add-customer" method="post" class="space-y-6" action="#" method="POST">
         <div class="grid sm:grid-cols-2 gap-8">
           <div>
             <label
@@ -20,10 +20,17 @@
                 id="name"
                 name="name"
                 type="text"
-                required
+                value="<%= messages?.name %>"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-none px-4"
               />
             </div>
+
+            <% if (messages?.errors) { %>
+            <p class="text-red-400 text-sm font-medium mt-4">
+              <%= JSON.parse(messages?.errors)?.name %>
+            </p>
+
+            <% } %>
           </div>
   
           <div>
@@ -35,13 +42,69 @@
             <div class="mt-2">
               <input
                 id="Freight-Rate"
-                name="freight-rate"
+                name="freightRate"
                 type="number"
-                required
+                value="<%= messages?.freightRate %>"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
               />
             </div>
+
+            <% if (messages?.errors) { %>
+            <p class="text-red-400 text-sm font-medium mt-4">
+              <%= JSON.parse(messages?.errors)?.freightRate %>
+            </p>
+
+            <% } %>
           </div>
+
+          <div>
+            <label
+              for="commission-1"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Commission 1</label
+            >
+          <div class="mt-2">
+            <input
+              id="commission-1"
+              name="commission1"
+              type="number"
+              value="<%= messages?.commission1 %>"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+            />
+          </div>
+
+          <% if (messages?.errors) { %>
+          <p class="text-red-400 text-sm font-medium mt-4">
+            <%= JSON.parse(messages?.errors)?.commission1 %>
+          </p>
+
+          <% } %>
+        </div>
+
+        
+        <div>
+          <label
+            for="commission-2"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Commission 2</label
+          >
+        <div class="mt-2">
+          <input
+            id="commission-2"
+            name="commission2"
+            type="number"
+            value="<%= messages?.commission2 %>"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+          />
+        </div>
+
+        <% if (messages?.errors) { %>
+        <p class="text-red-400 text-sm font-medium mt-4">
+          <%= JSON.parse(messages?.errors)?.commission2 %>
+        </p>
+
+        <% } %>
+      </div>
   
           <div>
             <label
@@ -52,12 +115,19 @@
             <div class="mt-2">
               <input
                 id="mark-up"
-                name="mark-up"
-                type="text"
-                required
+                name="markUp"
+                type="number"
+                value="<%= messages?.markUp %>"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
               />
             </div>
+
+            <% if (messages?.errors) { %>
+            <p class="text-red-400 text-sm font-medium mt-4">
+              <%= JSON.parse(messages?.errors)?.markUp %>
+            </p>
+
+            <% } %>
           </div>
 
           </div>

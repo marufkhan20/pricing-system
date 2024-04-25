@@ -1,4 +1,5 @@
 <%- include('partials/head.ejs') %>
+
 <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="border rounded-lg mt-10 bg-white p-10">
       <div class="flex items-center justify-between gap-5 flex-wrap">
@@ -12,30 +13,35 @@
             <th class="font-medium pb-4 border-b text-left">#</th>
             <th class="font-medium pb-4 border-b text-left">Name</th>
             <th class="font-medium pb-4 border-b text-left">Freight Rate</th>
+            <th class="font-medium pb-4 border-b text-left">Commission 1</th>
+            <th class="font-medium pb-4 border-b text-left">Commission 2</th>
             <th class="font-medium pb-4 border-b text-left">Mark Up</th>
+            <th class="font-medium pb-4 border-b text-left">Action</th>
           </thead>
 
           <tbody>
-            <tr>
-              <td class="py-4 border-b">1</td>
-              <td class="py-4 border-b font-medium">John Doe</td>
-              <td class="py-4 border-b">$10.00</td>
-              <td class="py-4 border-b">EDDOCE</td>
-            </tr>
-            <tr>
-              <td class="py-4 border-b">2</td>
-              <td class="py-4 border-b font-medium">Md Maruf</td>
-              <td class="py-4 border-b">$10.00</td>
-              <td class="py-4 border-b">EDDOCE</td>
-            </tr>
-            <tr>
-              <td class="py-4 border-b">3</td>
-              <td class="py-4 border-b font-medium">Md Rayhan</td>
-              <td class="py-4 border-b">$10.00</td>
-              <td class="py-4 border-b">EKO234D</td>
-            </tr>
+            <% if (customers) { %>
+              <% customers?.forEach((customer, idx) => { %>
+
+                <tr>
+                  <td class="py-4 border-b"><%= idx + 1 %></td>
+                  <td class="py-4 border-b font-medium"><%= customer?.name %></td>
+                  <td class="py-4 border-b">$<%= customer?.freightRate %></td>
+                  <td class="py-4 border-b">$<%= customer?.commission1 %></td>
+                  <td class="py-4 border-b">$<%= customer?.commission2 %></td>
+                  <td class="py-4 border-b">$<%= customer?.markUp %></td>
+                  <td class="py-4 border-b">
+                    <button class="bg-red-400 py-2 px-4 rounded-md text-white outline-none transition-all hover:bg-red-500 text-sm" onclick="deleteCustomer(this)" data="<%= customer?.id %>">Delete</button>
+                  </td>
+                </tr>
+
+            <% }) } %>
           </tbody>
         </table>
+
+        <% if (customers?.length === 0) { %>
+          <p class="mt-4 text-center text-lg">No Customer Found! Please add new customer.</p>
+        <% } %>
       </div>
     </div>
     

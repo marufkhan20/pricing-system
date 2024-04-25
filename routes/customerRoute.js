@@ -1,26 +1,21 @@
 import { Router } from "express";
+import {
+  addNewCustomerController,
+  deleteCustomerController,
+  getAllCustomersController,
+} from "../controllers/customerController.js";
+import privateRoute from "../middlewares/privateRoute.js";
 
 const router = Router();
 
-router.get("/customers", async (req, res) => {
-  res.render("customers.ejs");
-});
+router.get("/customers", privateRoute, getAllCustomersController);
 
-router.get("/add-customer", (req, res) => {
+router.get("/add-customer", privateRoute, (req, res) => {
   res.render("add_customer.ejs");
 });
 
-router.post("/customers", (req, res) => {
-  customerName = req.body["name"];
-  freightRate = req.body["freightRate"];
-  markUp = req.body["markUp"];
-  res.render("customers.ejs", {
-    data: {
-      name: customerName,
-      freight: freightRate,
-      mark: markUp,
-    },
-  });
-});
+router.post("/add-customer", privateRoute, addNewCustomerController);
+
+router.delete("/customers/:id", privateRoute, deleteCustomerController);
 
 export default router;
