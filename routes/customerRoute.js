@@ -12,7 +12,9 @@ const router = Router();
 router.get("/customers", privateRoute, getAllCustomersController);
 
 router.get("/add-customer", privateRoute, (req, res) => {
-  res.render("add_customer.ejs");
+  res.render("add_customer.ejs", {
+    path: "customers",
+  });
 });
 
 router.get("/customers/:id", privateRoute, getCustomerController);

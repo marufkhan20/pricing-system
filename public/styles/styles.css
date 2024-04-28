@@ -4,3 +4,16 @@ body {
   /* background-color: #f9fafb; */
   font-family: "Poppins", sans-serif;
 }
+
+@media only screen and (max-width: 510px) {
+  /* CSS rules specific to devices with a maximum width of 768 pixels */
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .login-container {
+    width: 100% !important;
+  }
+
+  /* Add more styles as needed */
+}

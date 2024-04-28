@@ -12,7 +12,10 @@ export const getAllCustomersController = async (req, res) => {
         return;
       }
 
-      res.render("customers.ejs", { customers: JSON.parse(data) });
+      res.render("customers.ejs", {
+        customers: JSON.parse(data),
+        path: "customers",
+      });
     });
   } catch (error) {
     console.error(error);

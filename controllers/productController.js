@@ -12,7 +12,7 @@ export const getAllProductController = async (req, res) => {
         return;
       }
 
-      res.render("index.ejs", { products: JSON.parse(data) });
+      res.render("index.ejs", { products: JSON.parse(data), path: "products" });
     });
   } catch (error) {
     console.error(error);

@@ -16,7 +16,9 @@ router.post("/", (req, res) => {
 });
 
 router.get("/add-product", privateRoute, (req, res) => {
-  res.render("add_product.ejs");
+  res.render("add_product.ejs", {
+    path: "products",
+  });
 });
 
 // add new product
