@@ -3,6 +3,7 @@ import {
   addNewCustomerController,
   deleteCustomerController,
   getAllCustomersController,
+  getCustomerController,
 } from "../controllers/customerController.js";
 import privateRoute from "../middlewares/privateRoute.js";
 
@@ -13,6 +14,8 @@ router.get("/customers", privateRoute, getAllCustomersController);
 router.get("/add-customer", privateRoute, (req, res) => {
   res.render("add_customer.ejs");
 });
+
+router.get("/customers/:id", privateRoute, getCustomerController);
 
 router.post("/add-customer", privateRoute, addNewCustomerController);
 

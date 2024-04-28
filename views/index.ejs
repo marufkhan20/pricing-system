@@ -12,39 +12,41 @@
           <thead>
             <th class="font-medium pb-4 border-b text-left">#</th>
             <th class="font-medium pb-4 border-b text-left">Name</th>
+            <th class="font-medium pb-4 border-b text-left">Image</th>
             <th class="font-medium pb-4 border-b text-left">Description</th>
             <th class="font-medium pb-4 border-b text-left">Price</th>
             <th class="font-medium pb-4 border-b text-left">Box Code</th>
             <th class="font-medium pb-4 border-b text-left">WC Code</th>
+            <th class="font-medium pb-4 border-b text-left">Action</th>
           </thead>
 
           <tbody>
+            <% if (products) { %>
+              <% products?.forEach((product, idx) => { %>
+
             <tr>
-              <td class="py-4 border-b">1</td>
-              <td class="py-4 border-b font-medium">Product 1</td>
-              <td class="py-4 border-b">Product Description</td>
-              <td class="py-4 border-b">$10.00</td>
-              <td class="py-4 border-b">EDDOCE</td>
-              <td class="py-4 border-b">EKO234D</td>
+              <td class="py-4 border-b"><%= idx + 1 %></td>
+              <td class="py-4 border-b font-medium"><%= product?.name %></td>
+              <td class="py-4 border-b font-medium">
+                <img src="<%= product?.image %>" class="w-14 rounded-md" alt="">
+              </td>
+              <td class="py-4 border-b"><%= product?.description %></td>
+              <td class="py-4 border-b">$<%= product?.price %></td>
+              <td class="py-4 border-b"><%= product?.boxCode %></td>
+              <td class="py-4 border-b"><%= product?.wcCode %></td>
+              <td class="py-4 border-b">
+                <button class="bg-red-400 py-2 px-4 rounded-md text-white outline-none transition-all hover:bg-red-500 text-sm" onclick="deleteProduct(this)" data="<%= product?.id %>">Delete</button>
+              </td>
             </tr>
-            <tr>
-              <td class="py-4 border-b">2</td>
-              <td class="py-4 border-b font-medium">Product 1</td>
-              <td class="py-4 border-b">Product Description</td>
-              <td class="py-4 border-b">$10.00</td>
-              <td class="py-4 border-b">EDDOCE</td>
-              <td class="py-4 border-b">EKO234D</td>
-            </tr>
-            <tr>
-              <td class="py-4 border-b">3</td>
-              <td class="py-4 border-b font-medium">Product 1</td>
-              <td class="py-4 border-b">Product Description</td>
-              <td class="py-4 border-b">$10.00</td>
-              <td class="py-4 border-b">EDDOCE</td>
-              <td class="py-4 border-b">EKO234D</td>
-            </tr>
+            
+            <% }) } %>
+
           </tbody>
         </table>
+
+        <% if (products?.length === 0) { %>
+          <p class="mt-4 text-center text-lg">No Product Found! Please add new product.</p>
+        <% } %>
       </div>
     </div>
     

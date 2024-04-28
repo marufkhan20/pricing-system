@@ -3,9 +3,9 @@ import { config } from "dotenv";
 import express from "express";
 import flash from "express-flash";
 import session from "express-session";
-import privateRoute from "./middlewares/privateRoute.js";
 import authRoute from "./routes/authRoute.js";
 import customerRoute from "./routes/customerRoute.js";
+import orderRoute from "./routes/orderRoute.js";
 import productRoute from "./routes/productRoute.js";
 
 const app = express();
@@ -41,17 +41,7 @@ const saveData = (data, file) => {
   };
 };
 
-app.get("/", privateRoute, (req, res) => {
-  res.render("index.ejs");
-});
-
-app.post("/", (req, res) => {
-  res.render("index.ejs");
-});
-
-app.get("/order", (req, res) => {
-  res.render("order.ejs");
-});
+app.use("/", orderRoute);
 
 app.use("/", customerRoute);
 

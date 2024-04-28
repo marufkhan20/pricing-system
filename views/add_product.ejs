@@ -7,7 +7,7 @@
     </div>
 
     <div class="mt-10">
-      <form class="space-y-6" action="#" method="POST">
+      <form enctype="multipart/form-data" action="/add-product" method="post" class="space-y-6">
         <div class="grid sm:grid-cols-2 gap-8">
           <div>
             <label
@@ -20,27 +20,56 @@
                 id="name"
                 name="name"
                 type="text"
-                required
+                value="<%= messages?.name %>"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-none px-4"
               />
             </div>
+          </div>
+
+          <div>
+            <input
+              type="file"
+              name="image"
+              id="image"
+              class="hidden"
+            />
+            <label
+              for="image"
+              class="cursor-pointer border border-dashed transition-all hover:border-primary p-5 rounded-lg bg-[#FAFAFA] flex justify-center items-center flex-col gap-4"
+            >
+              <img class="w-10" src="/images/image-placeholder.png" alt="image placeholder">
+              <h3 class="text-base text-black/80 font-normal">
+                Click or drag file to this area to upload
+              </h3>
+              <span class="text-center text-sm text-black/45">
+                Support for a single upload. Strictly prohibited from uploading
+                company data or other banned files.
+              </span>
+            </label>
           </div>
   
           <div>
               <label
                 for="price"
                 class="block text-sm font-medium leading-6 text-gray-900"
-                >Price</label
+                >Price*</label
               >
             <div class="mt-2">
               <input
                 id="price"
                 name="price"
                 type="number"
-                required
+                value="<%= messages?.price %>"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
               />
             </div>
+
+            <% if (messages?.errors) { %>
+            <p class="text-red-400 text-sm font-medium mt-4">
+              <%= JSON.parse(messages?.errors)?.price %>
+            </p>
+
+            <% } %>
           </div>
   
           <div>
@@ -52,95 +81,120 @@
             <div class="mt-2">
               <input
                 id="wc-code"
-                name="wc-code"
+                name="wcCode"
                 type="text"
-                required
+                value="<%= messages?.wcCode %>"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+              />
+            </div>
+
+            <% if (messages?.errors) { %>
+            <p class="text-red-400 text-sm font-medium mt-4">
+              <%= JSON.parse(messages?.errors)?.wcCode %>
+            </p>
+
+            <% } %>
+          </div>
+  
+          <div>
+            <label
+              for="box-code"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Box Code</label
+            >
+            <div class="mt-2">
+              <input
+                id="box-code"
+                name="boxCode"
+                type="text"
+                value="<%= messages?.boxCode %>"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
               />
             </div>
           </div>
-  
-            <div>
-              <label
-                for="box-code"
-                class="block text-sm font-medium leading-6 text-gray-900"
-                >Box Code</label
-              >
-              <div class="mt-2">
-                <input
-                  id="box-code"
-                  name="box-code"
-                  type="text"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
-                />
-              </div>
+
+          <div>
+            <label
+              for="ti"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Ti*</label
+            >
+            <div class="mt-2">
+              <input
+                id="ti"
+                name="ti"
+                type="text"
+                value="<%= messages?.ti %>"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+              />
             </div>
 
-            <div>
-              <label
-                for="ti"
-                class="block text-sm font-medium leading-6 text-gray-900"
-                >Ti*</label
-              >
-              <div class="mt-2">
-                <input
-                  id="ti"
-                  name="ti"
-                  type="text"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
-                />
-              </div>
-            </div>
+            <% if (messages?.errors) { %>
+            <p class="text-red-400 text-sm font-medium mt-4">
+              <%= JSON.parse(messages?.errors)?.ti %>
+            </p>
 
-            <div>
-              <label
-                for="hi"
-                class="block text-sm font-medium leading-6 text-gray-900"
-                >Hi*</label
-              >
-              <div class="mt-2">
-                <input
-                  id="hi"
-                  name="hi"
-                  type="text"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                for="upc"
-                class="block text-sm font-medium leading-6 text-gray-900"
-                >UPC</label
-              >
-              <div class="mt-2">
-                <input
-                  id="upc"
-                  name="upc"
-                  type="text"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                for="description"
-                class="block text-sm font-medium leading-6 text-gray-900"
-                >Description</label
-              >
-              <div class="mt-2">
-                <textarea
-                  id="description"
-                  name="description"
-                  type="text"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
-                ></textarea>
-              </div>
-            </div>
-
+            <% } %>
           </div>
+
+          <div>
+            <label
+              for="hi"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Hi*</label
+            >
+            <div class="mt-2">
+              <input
+                id="hi"
+                name="hi"
+                type="text"
+                value="<%= messages?.hi %>"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+              />
+            </div>
+
+            <% if (messages?.errors) { %>
+            <p class="text-red-400 text-sm font-medium mt-4">
+              <%= JSON.parse(messages?.errors)?.hi %>
+            </p>
+
+            <% } %>
+          </div>
+
+          <div>
+            <label
+              for="upc"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >UPC</label
+            >
+            <div class="mt-2">
+              <input
+                id="upc"
+                name="upc"
+                type="text"
+                value="<%= messages?.upc %>"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="description"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Description</label
+            >
+            <div class="mt-2">
+              <textarea
+                id="description"
+                name="description"
+                type="text"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+              ><%= messages?.description %></textarea>
+            </div>
+          </div>
+
+        </div>
 
         <div>
           <button

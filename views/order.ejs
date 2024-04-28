@@ -1,5 +1,57 @@
 <%- include('partials/head.ejs') %>
-<div class="container">
-  <h1>Order</h1>
+
+<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="border rounded-lg mt-10 bg-white p-10">
+      <div class="flex items-center justify-between gap-5 flex-wrap">
+        <h2 class="font-medium text-lg">Orders</h2>
+        <a href="/add-order" class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add Order</a>
+      </div>
+
+      <div class="mt-10">
+        <table class="w-full">
+          <thead>
+            <th class="font-medium pb-4 border-b text-left">#</th>
+            <th class="font-medium pb-4 border-b text-left">Name</th>
+            <th class="font-medium pb-4 border-b text-left">Date</th>
+            <th class="font-medium pb-4 border-b text-left">Order File</th>
+            <th class="font-medium pb-4 border-b text-left">Action</th>
+          </thead>
+
+          <tbody>
+            <% if (orders) { %>
+              <% orders?.forEach((order, idx) => { %>
+
+            <tr>
+              <td class="py-4 border-b"><%= idx + 1 %></td>
+              <td class="py-4 border-b font-medium"><%= order?.name %></td>
+              <td class="py-4 border-b">
+                <span><%= new Date(order?.createdDate)?.getDate() %></span>
+                <span>/</span>
+                <span><%= new Date(order?.createdDate)?.getMonth() + 1 %></span>
+                <span>/</span>
+                <span><%= new Date(order?.createdDate)?.getFullYear() %></span>
+              </td>
+              <td class="py-4 border-b"><%= order?.orderFileName %></td>
+              <td class="py-4 border-b flex items-center gap-4">
+                <button class="bg-red-400 py-2 px-4 rounded-md text-white outline-none transition-all hover:bg-red-500 text-sm" onclick="deleteOrder(this)" data="<%= order?.id %>">Delete</button>
+                
+                <a href="/order/<%= order?.id %>" class="bg-green-400 py-2 px-4 rounded-md text-white outline-none transition-all hover:bg-green-500 text-sm">View</a>
+              </td>
+            </tr>
+            
+            <% }) } %>
+
+          </tbody>
+        </table>
+
+        <% if (orders?.length === 0) { %>
+          <p class="mt-4 text-center text-lg">No order Found! Please add new order.</p>
+        <% } %>
+      </div>
+    </div>
+    
 </div>
+   
+</body>
+</html>
 <%- include('partials/foot.ejs') %>

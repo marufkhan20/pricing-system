@@ -22,6 +22,34 @@ export const getAllCustomersController = async (req, res) => {
   }
 };
 
+// get single customer controller
+export const getCustomerController = async (req, res) => {
+  try {
+    const { id } = req.params || {};
+
+    // get the customers data
+    fs.readFile("data/customers.json", "utf8", (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error reading file");
+        return;
+      }
+
+      // Parse JSON data
+      const customers = JSON.parse(data);
+
+      const customer = customers?.find((customer) => customer?.id === id);
+
+      res.status(200).json({ customer });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Server error occurred!!",
+    });
+  }
+};
+
 // add new customer controller
 export const addNewCustomerController = async (req, res) => {
   try {
