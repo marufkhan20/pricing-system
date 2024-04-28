@@ -1,1 +1,29 @@
-[{"image":"/uploads/1714307499523-2121-copy.jpg","id":"4ba052f2-91a5-4098-b3b8-45b89b21018c","name":"Shirt","price":344,"wcCode":"34ewsdfds","boxCode":"dsfdsfsd","ti":444,"hi":444,"upc":"sdfds","description":"sdfsdfsd"}]
+[
+  {
+    "image": "/uploads/1714307499523-2121-copy.jpg",
+    "id": "4ba052f2-91a5-4098-b3b8-45b89b21018c",
+    "name": "Shirt",
+    "price": 344,
+    "wcCode": "34ewsdfds",
+    "boxCode": "dsfdsfsd",
+    "ti": 444,
+    "hi": 444,
+    "upc": "sdfds",
+    "description": "sdfsdfsd"
+  },
+  {
+    "image": "/uploads/1714324371879-2515009_1_600x.webp",
+    "id": "396a8e71-9b90-40ce-a2ab-fe3de5764456",
+    "name": "Product 2",
+    "pack": 54,
+    "case": 44,
+    "tags": "inch-44",
+    "price": 60,
+    "wcCode": "wc code",
+    "boxCode": "box code",
+    "ti": 4,
+    "hi": 4,
+    "upc": "304-94e4-349d",
+    "description": "Description"
+  }
+]

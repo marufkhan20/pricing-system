@@ -27,6 +27,30 @@
           </div>
 
           <div>
+            <label
+              for="pack"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Pack*</label
+            >
+            <div class="mt-2">
+              <input
+                id="pack"
+                name="pack"
+                type="number"
+                value="<%= messages?.pack %>"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-none px-4"
+              />
+            </div>
+
+            <% if (messages?.errors) { %>
+            <p class="text-red-400 text-sm font-medium mt-4">
+              <%= JSON.parse(messages?.errors)?.pack %>
+            </p>
+
+            <% } %>
+          </div>
+
+          <div>
             <input
               type="file"
               name="image"
@@ -41,10 +65,10 @@
               <h3 class="text-base text-black/80 font-normal">
                 Click or drag file to this area to upload
               </h3>
-              <span class="text-center text-sm text-black/45">
+              <!-- <span class="text-center text-sm text-black/45">
                 Support for a single upload. Strictly prohibited from uploading
                 company data or other banned files.
-              </span>
+              </span> -->
             </label>
           </div>
   
@@ -52,7 +76,7 @@
               <label
                 for="price"
                 class="block text-sm font-medium leading-6 text-gray-900"
-                >Price*</label
+                >Base Unit Price*</label
               >
             <div class="mt-2">
               <input
@@ -67,6 +91,30 @@
             <% if (messages?.errors) { %>
             <p class="text-red-400 text-sm font-medium mt-4">
               <%= JSON.parse(messages?.errors)?.price %>
+            </p>
+
+            <% } %>
+          </div>
+
+          <div>
+            <label
+              for="case"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Case*</label
+            >
+            <div class="mt-2">
+              <input
+                id="case"
+                name="caseNo"
+                type="number"
+                value="<%= messages?.case %>"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+              />
+            </div>
+
+            <% if (messages?.errors) { %>
+            <p class="text-red-400 text-sm font-medium mt-4">
+              <%= JSON.parse(messages?.errors)?.case %>
             </p>
 
             <% } %>
@@ -191,6 +239,23 @@
                 type="text"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
               ><%= messages?.description %></textarea>
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="tags"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Tags</label
+            >
+            <div class="mt-2">
+              <input
+                id="tags"
+                name="tags"
+                type="text"
+                value="<%= messages?.tags %>"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+              />
             </div>
           </div>
 

@@ -14,6 +14,10 @@
             <th class="font-medium pb-4 border-b text-left">Name</th>
             <th class="font-medium pb-4 border-b text-left">Date</th>
             <th class="font-medium pb-4 border-b text-left">Order File</th>
+            <th class="font-medium pb-4 border-b text-left">Freight Rate</th>
+            <th class="font-medium pb-4 border-b text-left">Commission 1</th>
+            <th class="font-medium pb-4 border-b text-left">Commission 2</th>
+            <th class="font-medium pb-4 border-b text-left">Mark Up</th>
             <th class="font-medium pb-4 border-b text-left">Action</th>
           </thead>
 
@@ -24,7 +28,7 @@
             <tr>
               <td class="py-4 border-b"><%= idx + 1 %></td>
               <td class="py-4 border-b font-medium"><%= order?.name %></td>
-              <td class="py-4 border-b">
+              <td class="py-4 border-b gap-0">
                 <span><%= new Date(order?.createdDate)?.getDate() %></span>
                 <span>/</span>
                 <span><%= new Date(order?.createdDate)?.getMonth() + 1 %></span>
@@ -32,6 +36,10 @@
                 <span><%= new Date(order?.createdDate)?.getFullYear() %></span>
               </td>
               <td class="py-4 border-b"><%= order?.orderFileName %></td>
+              <td class="py-4 border-b">$<%= order?.freightRate %></td>
+              <td class="py-4 border-b"><%= order?.commission1 %>%</td>
+              <td class="py-4 border-b"><%= order?.commission2 %>%</td>
+              <td class="py-4 border-b"><%= order?.markUp %>%</td>
               <td class="py-4 border-b flex items-center gap-4">
                 <button class="bg-red-400 py-2 px-4 rounded-md text-white outline-none transition-all hover:bg-red-500 text-sm" onclick="deleteOrder(this)" data="<%= order?.id %>">Delete</button>
                 

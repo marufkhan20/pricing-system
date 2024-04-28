@@ -25,10 +25,19 @@ export const getAllProductController = async (req, res) => {
 // add new product controller
 export const addNewProductController = async (req, res) => {
   try {
-    const { name, price, wcCode, boxCode, ti, hi, upc, description } =
-      req.body || {};
-
-    console.log("file", req.file);
+    const {
+      name,
+      price,
+      wcCode,
+      boxCode,
+      ti,
+      hi,
+      upc,
+      description,
+      pack,
+      caseNo,
+      tags,
+    } = req.body || {};
 
     // check validation errors
     const validationErrors = {};
@@ -49,6 +58,14 @@ export const addNewProductController = async (req, res) => {
       validationErrors.hi = "HI is required!!";
     }
 
+    if (!pack) {
+      validationErrors.pack = "Pack is required!!";
+    }
+
+    if (!caseNo) {
+      validationErrors.case = "Case is required!!";
+    }
+
     if (Object.keys(validationErrors).length > 0) {
       req.flash("errors", JSON.stringify(validationErrors));
       req.flash("name", name);
@@ -59,6 +76,9 @@ export const addNewProductController = async (req, res) => {
       req.flash("hi", hi);
       req.flash("upc", upc);
       req.flash("description", description);
+      req.flash("pack", pack);
+      req.flash("case", caseNo);
+      req.flash("tags", tags);
       return res.redirect("/add-product");
     }
 
@@ -79,6 +99,9 @@ export const addNewProductController = async (req, res) => {
           image: `/uploads/${req.file?.filename}`,
           id: uuidv4(),
           name,
+          pack: Number(pack),
+          case: Number(caseNo),
+          tags,
           price: Number(price),
           wcCode,
           boxCode,

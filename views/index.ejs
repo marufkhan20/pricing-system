@@ -14,9 +14,13 @@
             <th class="font-medium pb-4 border-b text-left">Name</th>
             <th class="font-medium pb-4 border-b text-left">Image</th>
             <th class="font-medium pb-4 border-b text-left">Description</th>
-            <th class="font-medium pb-4 border-b text-left">Price</th>
-            <th class="font-medium pb-4 border-b text-left">Box Code</th>
-            <th class="font-medium pb-4 border-b text-left">WC Code</th>
+            <th class="font-medium pb-4 border-b text-left">Pack</th>
+            <th class="font-medium pb-4 border-b text-left">Unit</th>
+            <th class="font-medium pb-4 border-b text-left">Code</th>
+            <th class="font-medium pb-4 border-b text-left">Case</th>
+            <th class="font-medium pb-4 border-b text-left">TI</th>
+            <th class="font-medium pb-4 border-b text-left">HI</th>
+            <th class="font-medium pb-4 border-b text-left">Cases Per Pallet</th>
             <th class="font-medium pb-4 border-b text-left">Action</th>
           </thead>
 
@@ -31,9 +35,13 @@
                 <img src="<%= product?.image %>" class="w-14 rounded-md" alt="">
               </td>
               <td class="py-4 border-b"><%= product?.description %></td>
+              <td class="py-4 border-b"><%= product?.pack %></td>
               <td class="py-4 border-b">$<%= product?.price %></td>
               <td class="py-4 border-b"><%= product?.boxCode %></td>
-              <td class="py-4 border-b"><%= product?.wcCode %></td>
+              <td class="py-4 border-b">$<%= product?.case %></td>
+              <td class="py-4 border-b"><%= product?.ti %></td>
+              <td class="py-4 border-b"><%= product?.hi %></td>
+              <td class="py-4 border-b"><%= Number(product?.ti) * Number(product?.hi) %></td>
               <td class="py-4 border-b">
                 <button class="bg-red-400 py-2 px-4 rounded-md text-white outline-none transition-all hover:bg-red-500 text-sm" onclick="deleteProduct(this)" data="<%= product?.id %>">Delete</button>
               </td>

@@ -167,9 +167,19 @@ export const addNewOrderController = async (req, res) => {
       productsData?.forEach((product) => {
         productsIdArray?.forEach((productId) => {
           if (product?.id === productId) {
-            const { image, wcCode, boxCode, price, ti, hi, description, upc } =
-              product || {};
-            const pack = 15;
+            const {
+              image,
+              wcCode,
+              boxCode,
+              price,
+              ti,
+              hi,
+              description,
+              upc,
+              pack,
+              name,
+              case: caseNo,
+            } = product || {};
 
             const casesPerPallet = Number(ti) * Number(hi);
             const commission1PerUnit = Number(price) * Number(0 + commission1);
@@ -185,6 +195,7 @@ export const addNewOrderController = async (req, res) => {
 
             const productObj = {
               image,
+              name,
               pack,
               wcCode,
               boxCode,
@@ -192,7 +203,7 @@ export const addNewOrderController = async (req, res) => {
               hi,
               description,
               unit: `$ ${Math.floor(unit * 100) / 100}`,
-              case: `$ 20`,
+              case: `$ ${caseNo}`,
               casesPerPallet,
               upc,
               freightPerUnit: `$ ${Math.floor(freightPerUnit * 100) / 100}`,
@@ -239,6 +250,11 @@ export const addNewOrderController = async (req, res) => {
           createdDate: Date.now(),
           orderFileName: filename,
           path,
+          products: selectedProducts,
+          freightRate,
+          commission1,
+          commission2,
+          markUp,
         };
 
         // add new order data
@@ -282,8 +298,6 @@ export const deleteOrderController = async (req, res) => {
       const orders = JSON.parse(data);
 
       const deletedOrders = orders?.filter((order) => order?.id !== id);
-
-      console.log("delete");
 
       // delete Order
       fs.writeFile("data/orders.json", JSON.stringify(deletedOrders), (err) => {

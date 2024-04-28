@@ -25,7 +25,7 @@ const generateOrderFile = async (products) => {
     { header: "Freight Per Case", key: "freightPerCase", width: 30 },
     { header: "Commission 1 Per Unit", key: "commission1PerUnit", width: 30 },
     { header: "Commission 1 Per Case", key: "commission1PerCase", width: 30 },
-    { header: "Comission 2 Per Unit", key: "commission2PerUnit", width: 30 },
+    { header: "Commission 2 Per Unit", key: "commission2PerUnit", width: 30 },
     { header: "Commission 2 Per Case", key: "commission2PerCase", width: 30 },
     { header: "Mark Up Unit", key: "markUpUnit", width: 30 },
     { header: "Mark Up Case", key: "markUpCase", width: 30 },

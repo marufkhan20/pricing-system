@@ -27,9 +27,9 @@
                   <td class="py-4 border-b"><%= idx + 1 %></td>
                   <td class="py-4 border-b font-medium"><%= customer?.name %></td>
                   <td class="py-4 border-b">$<%= customer?.freightRate %></td>
-                  <td class="py-4 border-b">$<%= customer?.commission1 %></td>
-                  <td class="py-4 border-b">$<%= customer?.commission2 %></td>
-                  <td class="py-4 border-b">$<%= customer?.markUp %></td>
+                  <td class="py-4 border-b"><%= customer?.commission1 %>%</td>
+                  <td class="py-4 border-b"><%= customer?.commission2 %>%</td>
+                  <td class="py-4 border-b"><%= customer?.markUp %>%</td>
                   <td class="py-4 border-b">
                     <button class="bg-red-400 py-2 px-4 rounded-md text-white outline-none transition-all hover:bg-red-500 text-sm" onclick="deleteCustomer(this)" data="<%= customer?.id %>">Delete</button>
                   </td>
