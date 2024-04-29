@@ -11,20 +11,27 @@
         <div class="grid sm:grid-cols-2 gap-8">
           <div>
             <label
-              for="name"
+              for="description"
               class="block text-sm font-medium leading-6 text-gray-900"
-              >Name</label
+              >Description</label
             >
             <div class="mt-2">
-              <input
-                id="name"
-                name="name"
+              <textarea
+                id="description"
+                name="description"
                 type="text"
-                value="<%= messages?.name %>"
-                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-none px-4"
-              />
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
+              ><%= messages?.description %></textarea>
             </div>
+
+            <% if (messages?.errors) { %>
+            <p class="text-red-400 text-sm font-medium mt-4">
+              <%= JSON.parse(messages?.errors)?.description %>
+            </p>
+
+            <% } %>
           </div>
+
 
           <div>
             <label
@@ -48,28 +55,6 @@
             </p>
 
             <% } %>
-          </div>
-
-          <div>
-            <input
-              type="file"
-              name="image"
-              id="image"
-              class="hidden"
-            />
-            <label
-              for="image"
-              class="cursor-pointer border border-dashed transition-all hover:border-primary p-5 rounded-lg bg-[#FAFAFA] flex justify-center items-center flex-col gap-4"
-            >
-              <img class="w-10" src="/images/image-placeholder.png" alt="image placeholder">
-              <h3 class="text-base text-black/80 font-normal">
-                Click or drag file to this area to upload
-              </h3>
-              <!-- <span class="text-center text-sm text-black/45">
-                Support for a single upload. Strictly prohibited from uploading
-                company data or other banned files.
-              </span> -->
-            </label>
           </div>
   
           <div>
@@ -171,7 +156,7 @@
               <input
                 id="ti"
                 name="ti"
-                type="text"
+                type="number"
                 value="<%= messages?.ti %>"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
               />
@@ -195,7 +180,7 @@
               <input
                 id="hi"
                 name="hi"
-                type="text"
+                type="number"
                 value="<%= messages?.hi %>"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
               />
@@ -227,36 +212,25 @@
           </div>
 
           <div>
+            <input
+              type="file"
+              name="image"
+              id="image"
+              class="hidden"
+            />
             <label
-              for="description"
-              class="block text-sm font-medium leading-6 text-gray-900"
-              >Description</label
+              for="image"
+              class="cursor-pointer border border-dashed transition-all hover:border-primary p-5 rounded-lg bg-[#FAFAFA] flex justify-center items-center flex-col gap-4"
             >
-            <div class="mt-2">
-              <textarea
-                id="description"
-                name="description"
-                type="text"
-                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
-              ><%= messages?.description %></textarea>
-            </div>
-          </div>
-
-          <div>
-            <label
-              for="tags"
-              class="block text-sm font-medium leading-6 text-gray-900"
-              >Tags</label
-            >
-            <div class="mt-2">
-              <input
-                id="tags"
-                name="tags"
-                type="text"
-                value="<%= messages?.tags %>"
-                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4 outline-none"
-              />
-            </div>
+              <img class="w-10" src="/images/image-placeholder.png" alt="image placeholder">
+              <h3 class="text-base text-black/80 font-normal">
+                Click or drag file to this area to upload
+              </h3>
+              <!-- <span class="text-center text-sm text-black/45">
+                Support for a single upload. Strictly prohibited from uploading
+                company data or other banned files.
+              </span> -->
+            </label>
           </div>
 
         </div>

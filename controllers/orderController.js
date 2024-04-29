@@ -185,7 +185,7 @@ export const addNewOrderController = async (req, res) => {
             const commission1PerUnit = Number(price) * Number(0 + commission1);
             const commission2PerUnit = Number(price) * Number(0 + commission2);
             const markUpUnit = Number(price) * Number(0 + markUp);
-            const freightPerUnit = 4.33 / pack;
+            const freightPerUnit = Number(caseNo) / pack;
             const unit =
               Number(price) +
               freightPerUnit +

@@ -11,9 +11,8 @@
         <table class="w-full" style="min-width: 800px;">
           <thead>
             <th class="font-medium pb-4 border-b text-left">#</th>
-            <th class="font-medium pb-4 border-b text-left">Name</th>
-            <th class="font-medium pb-4 border-b text-left">Image</th>
             <th class="font-medium pb-4 border-b text-left">Description</th>
+            <th class="font-medium pb-4 border-b text-left">Image</th>
             <th class="font-medium pb-4 border-b text-left">Pack</th>
             <th class="font-medium pb-4 border-b text-left">Unit</th>
             <th class="font-medium pb-4 border-b text-left">Code</th>
@@ -30,11 +29,10 @@
 
             <tr>
               <td class="py-4 border-b"><%= idx + 1 %></td>
-              <td class="py-4 border-b font-medium"><%= product?.name %></td>
+              <td class="py-4 border-b"><%= product?.description %></td>
               <td class="py-4 border-b font-medium">
                 <img src="<%= product?.image %>" class="w-14 rounded-md" alt="">
               </td>
-              <td class="py-4 border-b"><%= product?.description %></td>
               <td class="py-4 border-b"><%= product?.pack %></td>
               <td class="py-4 border-b">$<%= product?.price %></td>
               <td class="py-4 border-b"><%= product?.boxCode %></td>
