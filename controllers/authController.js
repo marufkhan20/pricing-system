@@ -111,7 +111,7 @@ export const loginUserController = async (req, res) => {
           email,
         },
         process.env.SECRET_KEY,
-        { expiresIn: "30d" }
+        { expiresIn: "30 days" }
       );
 
       res.cookie("accessToken", accessToken);

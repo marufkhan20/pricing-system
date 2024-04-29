@@ -16,7 +16,6 @@
             <th class="font-medium pb-4 border-b text-left">Pack</th>
             <th class="font-medium pb-4 border-b text-left">Unit</th>
             <th class="font-medium pb-4 border-b text-left">Code</th>
-            <th class="font-medium pb-4 border-b text-left">Case</th>
             <th class="font-medium pb-4 border-b text-left">TI</th>
             <th class="font-medium pb-4 border-b text-left">HI</th>
             <th class="font-medium pb-4 border-b text-left">Cases Per Pallet</th>
@@ -36,7 +35,6 @@
               <td class="py-4 border-b"><%= product?.pack %></td>
               <td class="py-4 border-b">$<%= product?.price %></td>
               <td class="py-4 border-b"><%= product?.boxCode %></td>
-              <td class="py-4 border-b">$<%= product?.case %></td>
               <td class="py-4 border-b"><%= product?.ti %></td>
               <td class="py-4 border-b"><%= product?.hi %></td>
               <td class="py-4 border-b"><%= Number(product?.ti) * Number(product?.hi) %></td>

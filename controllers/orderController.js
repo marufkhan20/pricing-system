@@ -178,20 +178,20 @@ export const addNewOrderController = async (req, res) => {
               upc,
               pack,
               name,
-              case: caseNo,
             } = product || {};
 
             const casesPerPallet = Number(ti) * Number(hi);
             const commission1PerUnit = Number(price) * Number(0 + commission1);
             const commission2PerUnit = Number(price) * Number(0 + commission2);
             const markUpUnit = Number(price) * Number(0 + markUp);
-            const freightPerUnit = Number(caseNo) / pack;
+            const freightPerUnit = Number(freightRate) / pack;
             const unit =
               Number(price) +
               freightPerUnit +
               commission1PerUnit +
               commission2PerUnit +
               markUpUnit;
+            const caseNo = unit * Number(pack);
 
             const productObj = {
               image,
@@ -225,7 +225,6 @@ export const addNewOrderController = async (req, res) => {
               markUpUnit: `$ ${Math.floor(markUpUnit * 100) / 100}`,
               markUpCase: `$ ${Math.floor(markUpUnit * pack * 100) / 100}`,
             };
-            console.log("productObj", productObj);
             selectedProducts.push(productObj);
           }
         });
