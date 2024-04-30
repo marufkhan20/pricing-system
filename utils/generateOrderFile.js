@@ -32,7 +32,7 @@ const generateOrderFile = async (products) => {
   ];
 
   for (let i = 0; i < products.length; i++) {
-    console.log("product image", products[i]?.image);
+    // console.log("product image", products[i]?.image);
     if (products[i]?.image) {
       const imagePath = `public${products[i]?.image}`;
       const imageBuffer = await getImageBuffer(imagePath);

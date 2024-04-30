@@ -180,18 +180,37 @@ export const addNewOrderController = async (req, res) => {
             } = product || {};
 
             const casesPerPallet = Number(ti) * Number(hi);
+
             const commission1PerUnit =
               Number(price) * (Number(commission1) / 100);
+
+            const commission1PerCase = commission1PerUnit * Number(pack);
+
             const commission2PerUnit =
               Number(price) * (Number(commission2) / 100);
-            const markUpUnit = Number(price) * (Number(markUp) / 100);
+
+            const commission2PerCase = commission2PerUnit * Number(pack);
+
+            // const markUpUnit = Number(price) * (Number(markUp) / 100);
+
             const freightPerCase = Number(freightRate) / casesPerPallet;
-            const freightPerUnit = Number(freightPerCase) / pack;
+            const freightPerUnit = Number(freightPerCase) / Number(pack);
+
+            const markUpUnit =
+              (Number(price) +
+                commission1PerUnit +
+                commission2PerUnit +
+                freightPerUnit) *
+              (Number(markUp) / 100);
+
+            const markUpCase = markUpUnit * Number(pack);
+
             const unit =
-              Number(price) * (Number(commission1) / 100) +
-              Number(price) *
-                (Number(commission2) / 100) *
-                (Number(markUp) / 100);
+              commission1PerUnit +
+              commission2PerUnit +
+              freightPerUnit +
+              markUpUnit +
+              Number(price);
 
             // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
             const caseNo = unit * Number(pack);
@@ -205,7 +224,7 @@ export const addNewOrderController = async (req, res) => {
               hi,
               description,
               unit: `$ ${Math.floor(unit * 100) / 100}`,
-              case: `$ ${caseNo}`,
+              case: `$ ${Math.floor(caseNo * 100) / 100}`,
               casesPerPallet,
               upc,
               freightPerUnit: `$ ${Math.floor(freightPerUnit * 100) / 100}`,
@@ -225,7 +244,7 @@ export const addNewOrderController = async (req, res) => {
                 Math.floor(commission2PerUnit * pack * 100) / 100
               }`,
               markUpUnit: `$ ${Math.floor(markUpUnit * 100) / 100}`,
-              markUpCase: `$ ${Math.floor(markUpUnit * pack * 100) / 100}`,
+              markUpCase: `$ ${Math.floor(markUpCase * 100) / 100}`,
             };
             selectedProducts.push(productObj);
           }
