@@ -14,6 +14,7 @@ router.get("/customers", privateRoute, getAllCustomersController);
 router.get("/add-customer", privateRoute, (req, res) => {
   res.render("add_customer.ejs", {
     path: "customers",
+    title: "Add Customer",
   });
 });
 

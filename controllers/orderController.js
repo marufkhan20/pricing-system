@@ -16,6 +16,7 @@ export const getAllOrderController = async (req, res) => {
       res.render("order.ejs", {
         orders: JSON.parse(data),
         path: "orders",
+        title: "Orders",
       });
     });
   } catch (error) {
@@ -49,6 +50,7 @@ export const getOrderDetailsController = async (req, res) => {
       res.render("order_details.ejs", {
         order,
         path: "orders",
+        title: order?.name,
       });
     });
   } catch (error) {
@@ -82,6 +84,7 @@ export const addOrderViewController = async (req, res) => {
           customers: JSON.parse(data),
           products: JSON.parse(products),
           path: "orders",
+          title: "Add Order",
         });
       });
     });
@@ -223,28 +226,18 @@ export const addNewOrderController = async (req, res) => {
               ti,
               hi,
               description,
-              unit: `$ ${Math.floor(unit * 100) / 100}`,
-              case: `$ ${Math.floor(caseNo * 100) / 100}`,
+              unit: `$ ${unit?.toFixed(2)}`,
+              case: `$ ${caseNo?.toFixed(2)}`,
               casesPerPallet,
               upc,
-              freightPerUnit: `$ ${Math.floor(freightPerUnit * 100) / 100}`,
-              freightPerCase: `$ ${
-                Math.floor(Number(freightPerCase) * 100) / 100
-              }`,
-              commission1PerUnit: `$ ${
-                Math.floor(commission1PerUnit * 100) / 100
-              }`,
-              commission1PerCase: `$ ${
-                Math.floor(commission1PerUnit * pack * 100) / 100
-              }`,
-              commission2PerUnit: `$ ${
-                Math.floor(commission2PerUnit * 100) / 100
-              }`,
-              commission2PerCase: `$ ${
-                Math.floor(commission2PerUnit * pack * 100) / 100
-              }`,
-              markUpUnit: `$ ${Math.floor(markUpUnit * 100) / 100}`,
-              markUpCase: `$ ${Math.floor(markUpCase * 100) / 100}`,
+              freightPerUnit: `$ ${freightPerUnit?.toFixed(2)}`,
+              freightPerCase: `$ ${freightPerCase?.toFixed(2)}`,
+              commission1PerUnit: `$ ${commission1PerUnit?.toFixed(2)}`,
+              commission1PerCase: `$ ${commission1PerCase?.toFixed(2)}`,
+              commission2PerUnit: `$ ${commission2PerUnit?.toFixed(2)}`,
+              commission2PerCase: `$ ${commission2PerCase?.toFixed(2)}`,
+              markUpUnit: `$ ${markUpUnit?.toFixed(2)}`,
+              markUpCase: `$ ${markUpCase?.toFixed(2)}`,
             };
             selectedProducts.push(productObj);
           }

@@ -15,6 +15,7 @@ export const getAllCustomersController = async (req, res) => {
       res.render("customers.ejs", {
         customers: JSON.parse(data),
         path: "customers",
+        title: "Customers",
       });
     });
   } catch (error) {
