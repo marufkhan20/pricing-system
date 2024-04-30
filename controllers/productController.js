@@ -82,7 +82,7 @@ export const addNewProductController = async (req, res) => {
       const updatedProducts = [
         ...products,
         {
-          image: `/uploads/${req.file?.filename}`,
+          image: req?.file && `/uploads/${req.file?.filename}`,
           id: uuidv4(),
           pack: Number(pack),
           price: Number(price),

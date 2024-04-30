@@ -32,22 +32,25 @@ const generateOrderFile = async (products) => {
   ];
 
   for (let i = 0; i < products.length; i++) {
-    const imagePath = `public${products[i]?.image}`;
-    const imageBuffer = await getImageBuffer(imagePath);
-    const imageId = workbook.addImage({
-      buffer: imageBuffer,
-      extension: "jpeg",
-    });
+    console.log("product image", products[i]?.image);
+    if (products[i]?.image) {
+      const imagePath = `public${products[i]?.image}`;
+      const imageBuffer = await getImageBuffer(imagePath);
+      const imageId = workbook.addImage({
+        buffer: imageBuffer,
+        extension: "jpeg",
+      });
 
-    worksheet.addImage(imageId, {
-      tl: { col: 0, row: i + 2 },
-      br: { col: 1, row: i + 3 },
-      editAs: "undefined",
-      // ext: {
-      //   width: desiredWidth, // Set desired width
-      //   height: desiredHeight,
-      // },
-    });
+      worksheet.addImage(imageId, {
+        tl: { col: 0, row: i + 2 },
+        br: { col: 1, row: i + 3 },
+        editAs: "undefined",
+        // ext: {
+        //   width: desiredWidth, // Set desired width
+        //   height: desiredHeight,
+        // },
+      });
+    }
 
     worksheet.getCell(`B${i + 2}`).value = products[i].description;
     worksheet.getCell(`C${i + 2}`).value = products[i].wcCode;
