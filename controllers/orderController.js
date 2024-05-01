@@ -45,8 +45,6 @@ export const getOrderDetailsController = async (req, res) => {
       // get single order
       const order = orders?.find((item) => item?.id === id);
 
-      console.log("order", order);
-
       res.render("order_details.ejs", {
         order,
         path: "orders",
@@ -259,7 +257,7 @@ export const addNewOrderController = async (req, res) => {
 
         const newOrder = {
           id: uuidv4(),
-          name: `Order ${Number(ordersData?.length) + 1}`,
+          name: `Price List ${Number(ordersData?.length) + 1}`,
           createdDate: Date.now(),
           orderFileName: filename,
           path,
@@ -310,17 +308,31 @@ export const deleteOrderController = async (req, res) => {
       // Parse JSON data
       const orders = JSON.parse(data);
 
+      const deletedOrder = orders?.find((order) => order?.id === id);
+
       const deletedOrders = orders?.filter((order) => order?.id !== id);
 
-      // delete Order
-      fs.writeFile("data/orders.json", JSON.stringify(deletedOrders), (err) => {
+      // delete order file
+      fs.unlink(`public${deletedOrder?.path}`, (err) => {
         if (err) {
-          console.error(err);
-          res.status(500).send("Error writing to file");
+          console.error("Error deleting file:", err);
           return;
         }
 
-        res.status(200).json({ success: true });
+        // delete Order
+        fs.writeFile(
+          "data/orders.json",
+          JSON.stringify(deletedOrders),
+          (err) => {
+            if (err) {
+              console.error(err);
+              res.status(500).send("Error writing to file");
+              return;
+            }
+
+            res.status(200).json({ success: true });
+          }
+        );
       });
     });
   } catch (error) {

@@ -29,7 +29,7 @@ export const getAllProductController = async (req, res) => {
 // add new product controller
 export const addNewProductController = async (req, res) => {
   try {
-    const { price, wcCode, boxCode, ti, hi, upc, description, pack } =
+    const { price, wcCode, boxCode, ti, hi, upc, description, image, pack } =
       req.body || {};
 
     // check validation errors
@@ -69,6 +69,7 @@ export const addNewProductController = async (req, res) => {
       req.flash("upc", upc);
       req.flash("description", description);
       req.flash("pack", pack);
+      req.flash("image", image);
       return res.redirect("/add-product");
     }
 
@@ -86,7 +87,7 @@ export const addNewProductController = async (req, res) => {
       const updatedProducts = [
         ...products,
         {
-          image: req?.file && `/uploads/${req.file?.filename}`,
+          image,
           id: uuidv4(),
           pack: Number(pack),
           price: Number(price),
@@ -98,6 +99,138 @@ export const addNewProductController = async (req, res) => {
           description,
         },
       ];
+
+      // add new customer data
+      fs.writeFile(
+        "data/products.json",
+        JSON.stringify(updatedProducts),
+        (err) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send("Error writing to file");
+            return;
+          }
+
+          res.redirect("/");
+        }
+      );
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Server error occurred!!",
+    });
+  }
+};
+
+// edit product view controller
+export const editProductViewController = async (req, res) => {
+  try {
+    const { id } = req.params || {};
+
+    // get the products data
+    fs.readFile("data/products.json", "utf8", (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error reading file");
+        return;
+      }
+
+      // Parse JSON data
+      const products = JSON.parse(data);
+
+      const product = products?.find((product) => product?.id === id);
+
+      req.flash("price", product?.price);
+      req.flash("id", product?.id);
+      req.flash("wcCode", product?.wcCode);
+      req.flash("boxCode", product?.boxCode);
+      req.flash("ti", product?.ti);
+      req.flash("hi", product?.hi);
+      req.flash("upc", product?.upc);
+      req.flash("description", product?.description);
+      req.flash("pack", product?.pack);
+      req.flash("image", product?.image);
+      res.render("edit_product.ejs", {
+        path: "products",
+        title: "Edit Product",
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Server error occurred!!",
+    });
+  }
+};
+
+// edit product controller
+export const editProductController = async (req, res) => {
+  try {
+    const { price, wcCode, boxCode, ti, hi, upc, description, image, pack } =
+      req.body || {};
+
+    const { id } = req.params || {};
+
+    // check validation errors
+    const validationErrors = {};
+
+    if (!description) {
+      validationErrors.description = "Description is required!!";
+    }
+
+    if (!price) {
+      validationErrors.price = "Price is required!!";
+    }
+
+    if (!wcCode) {
+      validationErrors.wcCode = "WC Code is required!!";
+    }
+
+    if (!ti) {
+      validationErrors.ti = "TI is required!!";
+    }
+
+    if (!hi) {
+      validationErrors.hi = "HI is required!!";
+    }
+
+    if (!pack) {
+      validationErrors.pack = "Pack is required!!";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      req.flash("errors", JSON.stringify(validationErrors));
+      req.flash("price", price);
+      req.flash("wcCode", wcCode);
+      req.flash("boxCode", boxCode);
+      req.flash("ti", ti);
+      req.flash("hi", hi);
+      req.flash("upc", upc);
+      req.flash("description", description);
+      req.flash("pack", pack);
+      req.flash("image", image);
+      return res.redirect("/add-product");
+    }
+
+    // get the products data
+    fs.readFile("data/products.json", "utf8", (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error reading file");
+        return;
+      }
+
+      // Parse JSON data
+      const products = JSON.parse(data);
+
+      const updatedProducts = products?.map((product) => {
+        if (product?.id === id) {
+          return { ...product, ...req.body };
+        } else {
+          return product;
+        }
+      });
 
       // add new customer data
       fs.writeFile(

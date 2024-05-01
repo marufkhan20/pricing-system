@@ -1,5 +1,5 @@
+import axios from "axios";
 import ExcelJS from "exceljs";
-import fs from "fs";
 
 const generateOrderFile = async (products) => {
   // Create a new workbook
@@ -34,7 +34,7 @@ const generateOrderFile = async (products) => {
   for (let i = 0; i < products.length; i++) {
     // console.log("product image", products[i]?.image);
     if (products[i]?.image) {
-      const imagePath = `public${products[i]?.image}`;
+      const imagePath = products[i]?.image;
       const imageBuffer = await getImageBuffer(imagePath);
       const imageId = workbook.addImage({
         buffer: imageBuffer,
@@ -91,16 +91,30 @@ const generateOrderFile = async (products) => {
 };
 
 // Function to convert image to base64 string
-const getImageBuffer = (filePath) => {
-  return new Promise((resolve, reject) => {
-    fs.readFile(filePath, (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
+// const getImageBuffer = (filePath) => {
+//   return new Promise((resolve, reject) => {
+//     fs.readFile(filePath, (err, data) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         resolve(data);
+//       }
+//     });
+//   });
+// };
+
+const getImageBuffer = async (filePath) => {
+  try {
+    const response = await axios.get(filePath, {
+      responseType: "arraybuffer",
     });
-  });
+
+    const imageBuffer = Buffer.from(response.data, "binary");
+    return imageBuffer;
+  } catch (error) {
+    console.error("Error fetching image:", error);
+    throw error;
+  }
 };
 
 export default generateOrderFile;
