@@ -17,7 +17,7 @@ router.get("/order", privateRoute, getAllOrderController);
 router.post("/order", (req, res) => {
   res.render("order.ejs", {
     path: "orders",
-    title: "Orders",
+    title: "Price List",
   });
 });
 

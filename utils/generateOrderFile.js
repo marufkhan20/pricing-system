@@ -10,7 +10,7 @@ const generateOrderFile = async (products) => {
 
   // Add data to the worksheet
   worksheet.columns = [
-    { header: "Image", key: "image", width: 30 },
+    { header: "Image", key: "image", width: 50 },
     { header: "Description", key: "description", width: 30 },
     { header: "WC Code", key: "wcCode", width: 30 },
     { header: "Box Code", key: "boxCode", width: 30 },
@@ -33,6 +33,25 @@ const generateOrderFile = async (products) => {
 
   for (let i = 0; i < products.length; i++) {
     // console.log("product image", products[i]?.image);
+    // if (products[i]?.image) {
+    //   const imagePath = products[i]?.image;
+    //   const imageBuffer = await getImageBuffer(imagePath);
+    //   const imageId = workbook.addImage({
+    //     buffer: imageBuffer,
+    //     extension: "jpeg",
+    //   });
+
+    //   worksheet.addImage(imageId, {
+    //     tl: { col: 0, row: i + 2 },
+    //     br: { col: 1, row: i + 3 },
+    //     editAs: "undefined",
+    //     // ext: {
+    //     //   width: desiredWidth, // Set desired width
+    //     //   height: desiredHeight,
+    //     // },
+    //   });
+    // }
+
     worksheet.getCell(`A${i + 2}`).value = products[i]?.image;
     worksheet.getCell(`B${i + 2}`).value = products[i].description;
     worksheet.getCell(`C${i + 2}`).value = products[i].wcCode;

@@ -16,7 +16,7 @@ export const getAllOrderController = async (req, res) => {
       res.render("order.ejs", {
         orders: JSON.parse(data),
         path: "orders",
-        title: "Orders",
+        title: "Price List",
       });
     });
   } catch (error) {
@@ -82,7 +82,7 @@ export const addOrderViewController = async (req, res) => {
           customers: JSON.parse(data),
           products: JSON.parse(products),
           path: "orders",
-          title: "Add Order",
+          title: "Add Price List",
         });
       });
     });
@@ -342,7 +342,7 @@ export const editOrderViewController = async (req, res) => {
 
           res.render("edit_order.ejs", {
             path: "orders",
-            title: "Edit Order",
+            title: "Edit Price List",
             customers: JSON.parse(customers),
             products: JSON.parse(products),
           });
