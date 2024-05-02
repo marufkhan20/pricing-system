@@ -114,7 +114,15 @@ export const loginUserController = async (req, res) => {
         { expiresIn: "30 days" }
       );
 
-      res.cookie("accessToken", accessToken);
+      // Set cookie with expiration time
+      const expiryDate = new Date();
+      // Add 1 year to the current date
+      expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+      res.cookie("accessToken", accessToken, {
+        expires: expiryDate,
+        httpOnly: true, // recommended for security
+      });
 
       res.redirect("/");
     });
