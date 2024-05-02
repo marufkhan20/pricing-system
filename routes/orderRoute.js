@@ -3,6 +3,8 @@ import {
   addNewOrderController,
   addOrderViewController,
   deleteOrderController,
+  editOrderController,
+  editOrderViewController,
   getAllOrderController,
   getOrderDetailsController,
 } from "../controllers/orderController.js";
@@ -26,6 +28,10 @@ router.get("/order/:id", privateRoute, getOrderDetailsController);
 
 // add new order
 router.post("/add-order", privateRoute, addNewOrderController);
+
+// edit order
+router.get("/edit-order/:id", privateRoute, editOrderViewController);
+router.post("/edit-order/:id", privateRoute, editOrderController);
 
 // delete order
 router.delete("/order/:id", privateRoute, deleteOrderController);
