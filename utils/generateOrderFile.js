@@ -12,6 +12,8 @@ const generateOrderFile = async (products) => {
   worksheet.columns = [
     { header: "Image", key: "image", width: 50 },
     { header: "Description", key: "description", width: 30 },
+    { header: "Tag 1", key: "tag1", width: 30 },
+    { header: "Tag 2", key: "tag2", width: 30 },
     { header: "WC Code", key: "wcCode", width: 30 },
     { header: "Box Code", key: "boxCode", width: 30 },
     { header: "Pack", key: "pack", width: 30 },
@@ -54,23 +56,25 @@ const generateOrderFile = async (products) => {
 
     worksheet.getCell(`A${i + 2}`).value = products[i]?.image;
     worksheet.getCell(`B${i + 2}`).value = products[i].description;
-    worksheet.getCell(`C${i + 2}`).value = products[i].wcCode;
-    worksheet.getCell(`D${i + 2}`).value = products[i].boxCode;
-    worksheet.getCell(`E${i + 2}`).value = products[i].pack;
-    worksheet.getCell(`F${i + 2}`).value = products[i].unit;
-    worksheet.getCell(`G${i + 2}`).value = products[i].case;
-    worksheet.getCell(`H${i + 2}`).value = products[i].ti;
-    worksheet.getCell(`I${i + 2}`).value = products[i].hi;
-    worksheet.getCell(`J${i + 2}`).value = products[i].casesPerPallet;
-    worksheet.getCell(`K${i + 2}`).value = products[i].upc;
-    worksheet.getCell(`L${i + 2}`).value = products[i].freightPerUnit;
-    worksheet.getCell(`M${i + 2}`).value = products[i].freightPerCase;
-    worksheet.getCell(`N${i + 2}`).value = products[i].commission1PerUnit;
-    worksheet.getCell(`O${i + 2}`).value = products[i].commission1PerCase;
-    worksheet.getCell(`P${i + 2}`).value = products[i].commission2PerUnit;
-    worksheet.getCell(`Q${i + 2}`).value = products[i].commission2PerCase;
-    worksheet.getCell(`R${i + 2}`).value = products[i].markUpUnit;
-    worksheet.getCell(`S${i + 2}`).value = products[i].markUpCase;
+    worksheet.getCell(`C${i + 2}`).value = products[i].tag1;
+    worksheet.getCell(`D${i + 2}`).value = products[i].tag2;
+    worksheet.getCell(`E${i + 2}`).value = products[i].wcCode;
+    worksheet.getCell(`F${i + 2}`).value = products[i].boxCode;
+    worksheet.getCell(`G${i + 2}`).value = products[i].pack;
+    worksheet.getCell(`H${i + 2}`).value = products[i].unit;
+    worksheet.getCell(`I${i + 2}`).value = products[i].case;
+    worksheet.getCell(`J${i + 2}`).value = products[i].ti;
+    worksheet.getCell(`K${i + 2}`).value = products[i].hi;
+    worksheet.getCell(`L${i + 2}`).value = products[i].casesPerPallet;
+    worksheet.getCell(`M${i + 2}`).value = products[i].upc;
+    worksheet.getCell(`N${i + 2}`).value = products[i].freightPerUnit;
+    worksheet.getCell(`O${i + 2}`).value = products[i].freightPerCase;
+    worksheet.getCell(`P${i + 2}`).value = products[i].commission1PerUnit;
+    worksheet.getCell(`Q${i + 2}`).value = products[i].commission1PerCase;
+    worksheet.getCell(`R${i + 2}`).value = products[i].commission2PerUnit;
+    worksheet.getCell(`S${i + 2}`).value = products[i].commission2PerCase;
+    worksheet.getCell(`T${i + 2}`).value = products[i].markUpUnit;
+    worksheet.getCell(`U${i + 2}`).value = products[i].markUpCase;
   }
 
   const name = Date.now();

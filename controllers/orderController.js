@@ -178,6 +178,8 @@ export const addNewOrderController = async (req, res) => {
               description,
               upc,
               pack,
+              tag1,
+              tag2,
             } = product || {};
 
             const casesPerPallet = Number(ti) * Number(hi);
@@ -218,6 +220,8 @@ export const addNewOrderController = async (req, res) => {
 
             const productObj = {
               id: productId,
+              tag1,
+              tag2,
               image,
               pack,
               wcCode,

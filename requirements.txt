@@ -1,0 +1,15 @@
+1. TODO: [DONE] Add 2 new fields to the product page, Tag 1 and Tag 2. These will be added to the excel spreadsheet at the beginning of the row - TODO: understand
+
+2. Fix empty price list bug. I think all fields should be required for the Add Price List form. - TODO: understand
+
+3. Remove the product selector from the Add Price List form and use all the products listed on the Products page. - TODO: understand
+
+4. Add an edit function to the Customers page like the other pages have. - TODO: understand
+
+5. Add a “Base Unit Modifier” field to the Customers form. This will be used to adjust the Base Unit Price before calculations. It needs to be a float to 2 places. - TODO: understand
+
+6. Round up all commissions and markup calculations to the nearest penny. - TODO: understand
+
+7. After obtaining the Unit price, round it up to the nearest number divisible by .05 (either .05 or .00). - TODO: understand
+
+8. Can the excel file be formatted to auto fit the column width before downloading? - TODO: understand

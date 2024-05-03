@@ -29,8 +29,19 @@ export const getAllProductController = async (req, res) => {
 // add new product controller
 export const addNewProductController = async (req, res) => {
   try {
-    const { price, wcCode, boxCode, ti, hi, upc, description, image, pack } =
-      req.body || {};
+    const {
+      price,
+      wcCode,
+      boxCode,
+      ti,
+      hi,
+      upc,
+      description,
+      image,
+      pack,
+      tag1,
+      tag2,
+    } = req.body || {};
 
     // check validation errors
     const validationErrors = {};
@@ -70,6 +81,8 @@ export const addNewProductController = async (req, res) => {
       req.flash("description", description);
       req.flash("pack", pack);
       req.flash("image", image);
+      req.flash("tag1", tag1);
+      req.flash("tag2", tag2);
       return res.redirect("/add-product");
     }
 
@@ -96,6 +109,8 @@ export const addNewProductController = async (req, res) => {
           ti: Number(ti),
           hi: Number(hi),
           upc,
+          tag1,
+          tag2,
           description,
         },
       ];
@@ -151,6 +166,8 @@ export const editProductViewController = async (req, res) => {
       req.flash("description", product?.description);
       req.flash("pack", product?.pack);
       req.flash("image", product?.image);
+      req.flash("tag1", product?.tag1);
+      req.flash("tag2", product?.tag2);
       res.render("edit_product.ejs", {
         path: "products",
         title: "Edit Product",
@@ -167,8 +184,19 @@ export const editProductViewController = async (req, res) => {
 // edit product controller
 export const editProductController = async (req, res) => {
   try {
-    const { price, wcCode, boxCode, ti, hi, upc, description, image, pack } =
-      req.body || {};
+    const {
+      price,
+      wcCode,
+      boxCode,
+      ti,
+      hi,
+      upc,
+      description,
+      image,
+      pack,
+      tag1,
+      tag2,
+    } = req.body || {};
 
     const { id } = req.params || {};
 
@@ -210,6 +238,8 @@ export const editProductController = async (req, res) => {
       req.flash("description", description);
       req.flash("pack", pack);
       req.flash("image", image);
+      req.flash("tag1", tag1);
+      req.flash("tag2", tag2);
       return res.redirect("/add-product");
     }
 
