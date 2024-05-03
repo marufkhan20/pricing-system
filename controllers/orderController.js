@@ -70,20 +70,10 @@ export const addOrderViewController = async (req, res) => {
         return;
       }
 
-      // get all products
-      fs.readFile("data/products.json", "utf8", (err, products) => {
-        if (err) {
-          console.error(err);
-          res.status(500).send("Error reading file");
-          return;
-        }
-
-        res.render("add_order.ejs", {
-          customers: JSON.parse(data),
-          products: JSON.parse(products),
-          path: "orders",
-          title: "Add Price List",
-        });
+      res.render("add_order.ejs", {
+        customers: JSON.parse(data),
+        path: "orders",
+        title: "Add Price List",
       });
     });
   } catch (error) {
@@ -97,24 +87,14 @@ export const addOrderViewController = async (req, res) => {
 // add new Order controller
 export const addNewOrderController = async (req, res) => {
   try {
-    const {
-      customer,
-      products,
-      freightRate,
-      commission1,
-      commission2,
-      markUp,
-    } = req.body || {};
+    const { customer, freightRate, commission1, commission2, markUp } =
+      req.body || {};
 
     // check validation errors
     const validationErrors = {};
 
     if (!customer) {
       validationErrors.customer = "Customer is required!!";
-    }
-
-    if (!products) {
-      validationErrors.products = "Products is required!!";
     }
 
     if (!freightRate) {
@@ -136,7 +116,6 @@ export const addNewOrderController = async (req, res) => {
     if (Object.keys(validationErrors).length > 0) {
       req.flash("errors", JSON.stringify(validationErrors));
       req.flash("customer", customer);
-      req.flash("products", products);
       req.flash("freightRate", freightRate);
       req.flash("commission1", commission1);
       req.flash("commission2", commission2);
@@ -155,96 +134,83 @@ export const addNewOrderController = async (req, res) => {
       // Parse JSON data
       const productsData = JSON.parse(data);
 
-      let productsIdArray = [];
-
-      if (typeof products === "string") {
-        productsIdArray.push(products);
-      } else {
-        productsIdArray = products;
-      }
-
       const selectedProducts = [];
 
       productsData?.forEach((product) => {
-        productsIdArray?.forEach((productId) => {
-          if (product?.id === productId) {
-            const {
-              image,
-              wcCode,
-              boxCode,
-              price,
-              ti,
-              hi,
-              description,
-              upc,
-              pack,
-              tag1,
-              tag2,
-            } = product || {};
+        const {
+          id,
+          image,
+          wcCode,
+          boxCode,
+          price,
+          ti,
+          hi,
+          description,
+          upc,
+          pack,
+          tag1,
+          tag2,
+        } = product || {};
 
-            const casesPerPallet = Number(ti) * Number(hi);
+        const casesPerPallet = Number(ti) * Number(hi);
 
-            const commission1PerUnit =
-              Number(price) * (Number(commission1) / 100);
+        const commission1PerUnit = Number(price) * (Number(commission1) / 100);
 
-            const commission1PerCase = commission1PerUnit * Number(pack);
+        const commission1PerCase = commission1PerUnit * Number(pack);
 
-            const commission2PerUnit =
-              Number(price) * (Number(commission2) / 100);
+        const commission2PerUnit = Number(price) * (Number(commission2) / 100);
 
-            const commission2PerCase = commission2PerUnit * Number(pack);
+        const commission2PerCase = commission2PerUnit * Number(pack);
 
-            // const markUpUnit = Number(price) * (Number(markUp) / 100);
+        // const markUpUnit = Number(price) * (Number(markUp) / 100);
 
-            const freightPerCase = Number(freightRate) / casesPerPallet;
-            const freightPerUnit = Number(freightPerCase) / Number(pack);
+        const freightPerCase = Number(freightRate) / casesPerPallet;
+        const freightPerUnit = Number(freightPerCase) / Number(pack);
 
-            const markUpUnit =
-              (Number(price) +
-                commission1PerUnit +
-                commission2PerUnit +
-                freightPerUnit) *
-              (Number(markUp) / 100);
+        const markUpUnit =
+          (Number(price) +
+            commission1PerUnit +
+            commission2PerUnit +
+            freightPerUnit) *
+          (Number(markUp) / 100);
 
-            const markUpCase = markUpUnit * Number(pack);
+        const markUpCase = markUpUnit * Number(pack);
 
-            const unit =
-              commission1PerUnit +
-              commission2PerUnit +
-              freightPerUnit +
-              markUpUnit +
-              Number(price);
+        const unit =
+          commission1PerUnit +
+          commission2PerUnit +
+          freightPerUnit +
+          markUpUnit +
+          Number(price);
 
-            // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
-            const caseNo = unit * Number(pack);
+        // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
+        const caseNo = unit * Number(pack);
 
-            const productObj = {
-              id: productId,
-              tag1,
-              tag2,
-              image,
-              pack,
-              wcCode,
-              boxCode,
-              ti,
-              hi,
-              description,
-              unit: `$ ${unit?.toFixed(2)}`,
-              case: `$ ${caseNo?.toFixed(2)}`,
-              casesPerPallet,
-              upc,
-              freightPerUnit: `$ ${freightPerUnit?.toFixed(2)}`,
-              freightPerCase: `$ ${freightPerCase?.toFixed(2)}`,
-              commission1PerUnit: `$ ${commission1PerUnit?.toFixed(2)}`,
-              commission1PerCase: `$ ${commission1PerCase?.toFixed(2)}`,
-              commission2PerUnit: `$ ${commission2PerUnit?.toFixed(2)}`,
-              commission2PerCase: `$ ${commission2PerCase?.toFixed(2)}`,
-              markUpUnit: `$ ${markUpUnit?.toFixed(2)}`,
-              markUpCase: `$ ${markUpCase?.toFixed(2)}`,
-            };
-            selectedProducts.push(productObj);
-          }
-        });
+        const productObj = {
+          id,
+          tag1,
+          tag2,
+          image,
+          pack,
+          wcCode,
+          boxCode,
+          ti,
+          hi,
+          description,
+          unit: `$ ${unit?.toFixed(2)}`,
+          case: `$ ${caseNo?.toFixed(2)}`,
+          casesPerPallet,
+          upc,
+          freightPerUnit: `$ ${freightPerUnit?.toFixed(2)}`,
+          freightPerCase: `$ ${freightPerCase?.toFixed(2)}`,
+          commission1PerUnit: `$ ${commission1PerUnit?.toFixed(2)}`,
+          commission1PerCase: `$ ${commission1PerCase?.toFixed(2)}`,
+          commission2PerUnit: `$ ${commission2PerUnit?.toFixed(2)}`,
+          commission2PerCase: `$ ${commission2PerCase?.toFixed(2)}`,
+          markUpUnit: `$ ${markUpUnit?.toFixed(2)}`,
+          markUpCase: `$ ${markUpCase?.toFixed(2)}`,
+        };
+        selectedProducts.push(productObj);
       });
 
       const { filename, path } = await generateOrderFile(selectedProducts);
@@ -324,32 +290,20 @@ export const editOrderViewController = async (req, res) => {
           return;
         }
 
-        // get all products
-        fs.readFile("data/products.json", "utf8", (err, products) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send("Error reading file");
-            return;
-          }
+        const orderProducts = order?.products?.map((product) => product?.id);
 
-          const orderProducts = order?.products?.map((product) => product?.id);
+        req.flash("id", order?.id);
+        req.flash("customer", order?.customer);
+        req.flash("products", orderProducts);
+        req.flash("freightRate", order?.freightRate);
+        req.flash("commission1", order?.commission1);
+        req.flash("commission2", order?.commission2);
+        req.flash("markUp", order?.markUp);
 
-          console.log("orderProducts", orderProducts);
-
-          req.flash("id", order?.id);
-          req.flash("customer", order?.customer);
-          req.flash("products", orderProducts);
-          req.flash("freightRate", order?.freightRate);
-          req.flash("commission1", order?.commission1);
-          req.flash("commission2", order?.commission2);
-          req.flash("markUp", order?.markUp);
-
-          res.render("edit_order.ejs", {
-            path: "orders",
-            title: "Edit Price List",
-            customers: JSON.parse(customers),
-            products: JSON.parse(products),
-          });
+        res.render("edit_order.ejs", {
+          path: "orders",
+          title: "Edit Price List",
+          customers: JSON.parse(customers),
         });
       });
     });
@@ -364,14 +318,8 @@ export const editOrderViewController = async (req, res) => {
 // edit Order controller
 export const editOrderController = async (req, res) => {
   try {
-    const {
-      customer,
-      products,
-      freightRate,
-      commission1,
-      commission2,
-      markUp,
-    } = req.body || {};
+    const { customer, freightRate, commission1, commission2, markUp } =
+      req.body || {};
 
     const { id } = req.params || {};
 
@@ -380,10 +328,6 @@ export const editOrderController = async (req, res) => {
 
     if (!customer) {
       validationErrors.customer = "Customer is required!!";
-    }
-
-    if (!products) {
-      validationErrors.products = "Products is required!!";
     }
 
     if (!freightRate) {
@@ -405,7 +349,6 @@ export const editOrderController = async (req, res) => {
     if (Object.keys(validationErrors).length > 0) {
       req.flash("errors", JSON.stringify(validationErrors));
       req.flash("customer", customer);
-      req.flash("products", products);
       req.flash("freightRate", freightRate);
       req.flash("commission1", commission1);
       req.flash("commission2", commission2);
@@ -424,92 +367,79 @@ export const editOrderController = async (req, res) => {
       // Parse JSON data
       const productsData = JSON.parse(data);
 
-      let productsIdArray = [];
-
-      if (typeof products === "string") {
-        productsIdArray.push(products);
-      } else {
-        productsIdArray = products;
-      }
-
       const selectedProducts = [];
 
       productsData?.forEach((product) => {
-        productsIdArray?.forEach((productId) => {
-          if (product?.id === productId) {
-            const {
-              image,
-              wcCode,
-              boxCode,
-              price,
-              ti,
-              hi,
-              description,
-              upc,
-              pack,
-            } = product || {};
+        const {
+          id,
+          image,
+          wcCode,
+          boxCode,
+          price,
+          ti,
+          hi,
+          description,
+          upc,
+          pack,
+        } = product || {};
 
-            const casesPerPallet = Number(ti) * Number(hi);
+        const casesPerPallet = Number(ti) * Number(hi);
 
-            const commission1PerUnit =
-              Number(price) * (Number(commission1) / 100);
+        const commission1PerUnit = Number(price) * (Number(commission1) / 100);
 
-            const commission1PerCase = commission1PerUnit * Number(pack);
+        const commission1PerCase = commission1PerUnit * Number(pack);
 
-            const commission2PerUnit =
-              Number(price) * (Number(commission2) / 100);
+        const commission2PerUnit = Number(price) * (Number(commission2) / 100);
 
-            const commission2PerCase = commission2PerUnit * Number(pack);
+        const commission2PerCase = commission2PerUnit * Number(pack);
 
-            // const markUpUnit = Number(price) * (Number(markUp) / 100);
+        // const markUpUnit = Number(price) * (Number(markUp) / 100);
 
-            const freightPerCase = Number(freightRate) / casesPerPallet;
-            const freightPerUnit = Number(freightPerCase) / Number(pack);
+        const freightPerCase = Number(freightRate) / casesPerPallet;
+        const freightPerUnit = Number(freightPerCase) / Number(pack);
 
-            const markUpUnit =
-              (Number(price) +
-                commission1PerUnit +
-                commission2PerUnit +
-                freightPerUnit) *
-              (Number(markUp) / 100);
+        const markUpUnit =
+          (Number(price) +
+            commission1PerUnit +
+            commission2PerUnit +
+            freightPerUnit) *
+          (Number(markUp) / 100);
 
-            const markUpCase = markUpUnit * Number(pack);
+        const markUpCase = markUpUnit * Number(pack);
 
-            const unit =
-              commission1PerUnit +
-              commission2PerUnit +
-              freightPerUnit +
-              markUpUnit +
-              Number(price);
+        const unit =
+          commission1PerUnit +
+          commission2PerUnit +
+          freightPerUnit +
+          markUpUnit +
+          Number(price);
 
-            // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
-            const caseNo = unit * Number(pack);
+        // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
+        const caseNo = unit * Number(pack);
 
-            const productObj = {
-              id: productId,
-              image,
-              pack,
-              wcCode,
-              boxCode,
-              ti,
-              hi,
-              description,
-              unit: `$ ${unit?.toFixed(2)}`,
-              case: `$ ${caseNo?.toFixed(2)}`,
-              casesPerPallet,
-              upc,
-              freightPerUnit: `$ ${freightPerUnit?.toFixed(2)}`,
-              freightPerCase: `$ ${freightPerCase?.toFixed(2)}`,
-              commission1PerUnit: `$ ${commission1PerUnit?.toFixed(2)}`,
-              commission1PerCase: `$ ${commission1PerCase?.toFixed(2)}`,
-              commission2PerUnit: `$ ${commission2PerUnit?.toFixed(2)}`,
-              commission2PerCase: `$ ${commission2PerCase?.toFixed(2)}`,
-              markUpUnit: `$ ${markUpUnit?.toFixed(2)}`,
-              markUpCase: `$ ${markUpCase?.toFixed(2)}`,
-            };
-            selectedProducts.push(productObj);
-          }
-        });
+        const productObj = {
+          id,
+          image,
+          pack,
+          wcCode,
+          boxCode,
+          ti,
+          hi,
+          description,
+          unit: `$ ${unit?.toFixed(2)}`,
+          case: `$ ${caseNo?.toFixed(2)}`,
+          casesPerPallet,
+          upc,
+          freightPerUnit: `$ ${freightPerUnit?.toFixed(2)}`,
+          freightPerCase: `$ ${freightPerCase?.toFixed(2)}`,
+          commission1PerUnit: `$ ${commission1PerUnit?.toFixed(2)}`,
+          commission1PerCase: `$ ${commission1PerCase?.toFixed(2)}`,
+          commission2PerUnit: `$ ${commission2PerUnit?.toFixed(2)}`,
+          commission2PerCase: `$ ${commission2PerCase?.toFixed(2)}`,
+          markUpUnit: `$ ${markUpUnit?.toFixed(2)}`,
+          markUpCase: `$ ${markUpCase?.toFixed(2)}`,
+        };
+        selectedProducts.push(productObj);
       });
 
       const { filename, path } = await generateOrderFile(selectedProducts);
