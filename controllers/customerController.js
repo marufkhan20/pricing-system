@@ -57,8 +57,14 @@ export const getCustomerController = async (req, res) => {
 // add new customer controller
 export const addNewCustomerController = async (req, res) => {
   try {
-    const { name, freightRate, markUp, commission1, commission2 } =
-      req.body || {};
+    const {
+      name,
+      freightRate,
+      markUp,
+      commission1,
+      commission2,
+      baseUnitModifier,
+    } = req.body || {};
 
     // check validation error
     const validationErrors = {};
@@ -89,6 +95,7 @@ export const addNewCustomerController = async (req, res) => {
       req.flash("markUp", markUp);
       req.flash("commission1", commission1);
       req.flash("commission2", commission2);
+      req.flash("baseUnitModifier", baseUnitModifier);
       req.flash("errors", JSON.stringify(validationErrors));
       return res.redirect("/add-customer");
     }
@@ -113,6 +120,7 @@ export const addNewCustomerController = async (req, res) => {
           markUp,
           commission1,
           commission2,
+          baseUnitModifier,
         },
       ];
 
@@ -163,6 +171,7 @@ export const editCustomerViewController = async (req, res) => {
       req.flash("markUp", customer?.markUp);
       req.flash("commission1", customer?.commission1);
       req.flash("commission2", customer?.commission2);
+      req.flash("baseUnitModifier", customer?.baseUnitModifier);
 
       res.render("edit_customer.ejs", {
         path: "customers",

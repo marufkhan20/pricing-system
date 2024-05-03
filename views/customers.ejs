@@ -13,6 +13,7 @@
             <th class="font-medium pb-4 border-b text-left">#</th>
             <th class="font-medium pb-4 border-b text-left">Name</th>
             <th class="font-medium pb-4 border-b text-left">Freight Rate</th>
+            <th class="font-medium pb-4 border-b text-left">Base Unit Modifier</th>
             <th class="font-medium pb-4 border-b text-left">Commission 1</th>
             <th class="font-medium pb-4 border-b text-left">Commission 2</th>
             <th class="font-medium pb-4 border-b text-left">Mark Up</th>
@@ -27,6 +28,7 @@
                   <td class="py-4 border-b"><%= idx + 1 %></td>
                   <td class="py-4 border-b font-medium"><%= customer?.name %></td>
                   <td class="py-4 border-b">$<%= customer?.freightRate %></td>
+                  <td class="py-4 border-b">$<%= customer?.baseUnitModifier %></td>
                   <td class="py-4 border-b"><%= customer?.commission1 %>%</td>
                   <td class="py-4 border-b"><%= customer?.commission2 %>%</td>
                   <td class="py-4 border-b"><%= customer?.markUp %>%</td>

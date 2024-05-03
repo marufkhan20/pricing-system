@@ -136,124 +136,144 @@ export const addNewOrderController = async (req, res) => {
 
       const selectedProducts = [];
 
-      productsData?.forEach((product) => {
-        const {
-          id,
-          image,
-          wcCode,
-          boxCode,
-          price,
-          ti,
-          hi,
-          description,
-          upc,
-          pack,
-          tag1,
-          tag2,
-        } = product || {};
-
-        const casesPerPallet = Number(ti) * Number(hi);
-
-        const commission1PerUnit = Number(price) * (Number(commission1) / 100);
-
-        const commission1PerCase = commission1PerUnit * Number(pack);
-
-        const commission2PerUnit = Number(price) * (Number(commission2) / 100);
-
-        const commission2PerCase = commission2PerUnit * Number(pack);
-
-        // const markUpUnit = Number(price) * (Number(markUp) / 100);
-
-        const freightPerCase = Number(freightRate) / casesPerPallet;
-        const freightPerUnit = Number(freightPerCase) / Number(pack);
-
-        const markUpUnit =
-          (Number(price) +
-            commission1PerUnit +
-            commission2PerUnit +
-            freightPerUnit) *
-          (Number(markUp) / 100);
-
-        const markUpCase = markUpUnit * Number(pack);
-
-        const unit =
-          commission1PerUnit +
-          commission2PerUnit +
-          freightPerUnit +
-          markUpUnit +
-          Number(price);
-
-        // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
-        const caseNo = unit * Number(pack);
-
-        const productObj = {
-          id,
-          tag1,
-          tag2,
-          image,
-          pack,
-          wcCode,
-          boxCode,
-          ti,
-          hi,
-          description,
-          unit: `$ ${unit?.toFixed(2)}`,
-          case: `$ ${caseNo?.toFixed(2)}`,
-          casesPerPallet,
-          upc,
-          freightPerUnit: `$ ${freightPerUnit?.toFixed(2)}`,
-          freightPerCase: `$ ${freightPerCase?.toFixed(2)}`,
-          commission1PerUnit: `$ ${commission1PerUnit?.toFixed(2)}`,
-          commission1PerCase: `$ ${commission1PerCase?.toFixed(2)}`,
-          commission2PerUnit: `$ ${commission2PerUnit?.toFixed(2)}`,
-          commission2PerCase: `$ ${commission2PerCase?.toFixed(2)}`,
-          markUpUnit: `$ ${markUpUnit?.toFixed(2)}`,
-          markUpCase: `$ ${markUpCase?.toFixed(2)}`,
-        };
-        selectedProducts.push(productObj);
-      });
-
-      const { filename, path } = await generateOrderFile(selectedProducts);
-
-      // get the orders data
-      fs.readFile("data/orders.json", "utf8", (err, data) => {
+      // get customers
+      fs.readFile("data/customers.json", "utf8", async (err, customers) => {
         if (err) {
           console.error(err);
           res.status(500).send("Error reading file");
           return;
         }
 
-        // Parse JSON data
-        const ordersData = JSON.parse(data);
-
-        const newOrder = {
-          id: uuidv4(),
-          customer,
-          name: `Price List ${Number(ordersData?.length) + 1}`,
-          createdDate: Date.now(),
-          orderFileName: filename,
-          path,
-          products: selectedProducts,
-          freightRate,
-          commission1,
-          commission2,
-          markUp,
-        };
-
-        // add new order data
-        fs.writeFile(
-          "data/orders.json",
-          JSON.stringify([...ordersData, newOrder]),
-          (err) => {
-            if (err) {
-              console.error(err);
-              res.status(500).send("Error writing to file");
-              return;
-            }
-
-            res.redirect(`/order/${newOrder?.id}`);
-          }
+        const customerData = JSON.parse(customers)?.find(
+          (item) => item?.id === customer
         );
+
+        productsData?.forEach((product) => {
+          const {
+            id,
+            image,
+            wcCode,
+            boxCode,
+            price,
+            ti,
+            hi,
+            description,
+            upc,
+            pack,
+            tag1,
+            tag2,
+          } = product || {};
+
+          // calculate base unit price
+          const baseUnitPrice = customerData?.baseUnitModifier
+            ? Number(price) - Number(customerData?.baseUnitModifier)
+            : price;
+
+          const casesPerPallet = Number(ti) * Number(hi);
+
+          const commission1PerUnit =
+            Number(baseUnitPrice) * (Number(commission1) / 100);
+
+          const commission1PerCase = commission1PerUnit * Number(pack);
+
+          const commission2PerUnit =
+            Number(baseUnitPrice) * (Number(commission2) / 100);
+
+          const commission2PerCase = commission2PerUnit * Number(pack);
+
+          // const markUpUnit = Number(baseUnitPrice) * (Number(markUp) / 100);
+
+          const freightPerCase = Number(freightRate) / casesPerPallet;
+          const freightPerUnit = Number(freightPerCase) / Number(pack);
+
+          const markUpUnit =
+            (Number(baseUnitPrice) +
+              commission1PerUnit +
+              commission2PerUnit +
+              freightPerUnit) *
+            (Number(markUp) / 100);
+
+          const markUpCase = markUpUnit * Number(pack);
+
+          const unit =
+            commission1PerUnit +
+            commission2PerUnit +
+            freightPerUnit +
+            markUpUnit +
+            Number(baseUnitPrice);
+
+          // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
+          const caseNo = unit * Number(pack);
+
+          const productObj = {
+            id,
+            tag1,
+            tag2,
+            image,
+            pack,
+            wcCode,
+            boxCode,
+            ti,
+            hi,
+            description,
+            unit: `$ ${unit?.toFixed(2)}`,
+            case: `$ ${caseNo?.toFixed(2)}`,
+            casesPerPallet,
+            upc,
+            freightPerUnit: `$ ${freightPerUnit?.toFixed(2)}`,
+            freightPerCase: `$ ${freightPerCase?.toFixed(2)}`,
+            commission1PerUnit: `$ ${commission1PerUnit?.toFixed(2)}`,
+            commission1PerCase: `$ ${commission1PerCase?.toFixed(2)}`,
+            commission2PerUnit: `$ ${commission2PerUnit?.toFixed(2)}`,
+            commission2PerCase: `$ ${commission2PerCase?.toFixed(2)}`,
+            markUpUnit: `$ ${markUpUnit?.toFixed(2)}`,
+            markUpCase: `$ ${markUpCase?.toFixed(2)}`,
+          };
+          selectedProducts.push(productObj);
+        });
+
+        const { filename, path } = await generateOrderFile(selectedProducts);
+
+        // get the orders data
+        fs.readFile("data/orders.json", "utf8", (err, data) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send("Error reading file");
+            return;
+          }
+
+          // Parse JSON data
+          const ordersData = JSON.parse(data);
+
+          const newOrder = {
+            id: uuidv4(),
+            customer,
+            name: `Price List ${Number(ordersData?.length) + 1}`,
+            createdDate: Date.now(),
+            orderFileName: filename,
+            path,
+            products: selectedProducts,
+            freightRate,
+            commission1,
+            commission2,
+            markUp,
+          };
+
+          // add new order data
+          fs.writeFile(
+            "data/orders.json",
+            JSON.stringify([...ordersData, newOrder]),
+            (err) => {
+              if (err) {
+                console.error(err);
+                res.status(500).send("Error writing to file");
+                return;
+              }
+
+              res.redirect(`/order/${newOrder?.id}`);
+            }
+          );
+        });
       });
     });
   } catch (error) {
@@ -367,141 +387,163 @@ export const editOrderController = async (req, res) => {
       // Parse JSON data
       const productsData = JSON.parse(data);
 
-      const selectedProducts = [];
-
-      productsData?.forEach((product) => {
-        const {
-          id,
-          image,
-          wcCode,
-          boxCode,
-          price,
-          ti,
-          hi,
-          description,
-          upc,
-          pack,
-        } = product || {};
-
-        const casesPerPallet = Number(ti) * Number(hi);
-
-        const commission1PerUnit = Number(price) * (Number(commission1) / 100);
-
-        const commission1PerCase = commission1PerUnit * Number(pack);
-
-        const commission2PerUnit = Number(price) * (Number(commission2) / 100);
-
-        const commission2PerCase = commission2PerUnit * Number(pack);
-
-        // const markUpUnit = Number(price) * (Number(markUp) / 100);
-
-        const freightPerCase = Number(freightRate) / casesPerPallet;
-        const freightPerUnit = Number(freightPerCase) / Number(pack);
-
-        const markUpUnit =
-          (Number(price) +
-            commission1PerUnit +
-            commission2PerUnit +
-            freightPerUnit) *
-          (Number(markUp) / 100);
-
-        const markUpCase = markUpUnit * Number(pack);
-
-        const unit =
-          commission1PerUnit +
-          commission2PerUnit +
-          freightPerUnit +
-          markUpUnit +
-          Number(price);
-
-        // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
-        const caseNo = unit * Number(pack);
-
-        const productObj = {
-          id,
-          image,
-          pack,
-          wcCode,
-          boxCode,
-          ti,
-          hi,
-          description,
-          unit: `$ ${unit?.toFixed(2)}`,
-          case: `$ ${caseNo?.toFixed(2)}`,
-          casesPerPallet,
-          upc,
-          freightPerUnit: `$ ${freightPerUnit?.toFixed(2)}`,
-          freightPerCase: `$ ${freightPerCase?.toFixed(2)}`,
-          commission1PerUnit: `$ ${commission1PerUnit?.toFixed(2)}`,
-          commission1PerCase: `$ ${commission1PerCase?.toFixed(2)}`,
-          commission2PerUnit: `$ ${commission2PerUnit?.toFixed(2)}`,
-          commission2PerCase: `$ ${commission2PerCase?.toFixed(2)}`,
-          markUpUnit: `$ ${markUpUnit?.toFixed(2)}`,
-          markUpCase: `$ ${markUpCase?.toFixed(2)}`,
-        };
-        selectedProducts.push(productObj);
-      });
-
-      const { filename, path } = await generateOrderFile(selectedProducts);
-
-      // get the orders data
-      fs.readFile("data/orders.json", "utf8", (err, data) => {
+      // get customers
+      fs.readFile("data/customers.json", "utf8", async (err, customers) => {
         if (err) {
           console.error(err);
           res.status(500).send("Error reading file");
           return;
         }
 
+        const customerData = JSON.parse(customers)?.find(
+          (item) => item?.id === customer
+        );
+
+        const selectedProducts = [];
+
+        productsData?.forEach((product) => {
+          const {
+            id,
+            image,
+            wcCode,
+            boxCode,
+            price,
+            ti,
+            hi,
+            description,
+            upc,
+            pack,
+          } = product || {};
+
+          // calculate base unit price
+          const baseUnitPrice = customerData?.baseUnitModifier
+            ? Number(price) - Number(customerData?.baseUnitModifier)
+            : price;
+
+          const casesPerPallet = Number(ti) * Number(hi);
+
+          const commission1PerUnit =
+            Number(baseUnitPrice) * (Number(commission1) / 100);
+
+          const commission1PerCase = commission1PerUnit * Number(pack);
+
+          const commission2PerUnit =
+            Number(baseUnitPrice) * (Number(commission2) / 100);
+
+          const commission2PerCase = commission2PerUnit * Number(pack);
+
+          // const markUpUnit = Number(baseUnitPrice) * (Number(markUp) / 100);
+
+          const freightPerCase = Number(freightRate) / casesPerPallet;
+          const freightPerUnit = Number(freightPerCase) / Number(pack);
+
+          const markUpUnit =
+            (Number(baseUnitPrice) +
+              commission1PerUnit +
+              commission2PerUnit +
+              freightPerUnit) *
+            (Number(markUp) / 100);
+
+          const markUpCase = markUpUnit * Number(pack);
+
+          const unit =
+            commission1PerUnit +
+            commission2PerUnit +
+            freightPerUnit +
+            markUpUnit +
+            Number(baseUnitPrice);
+
+          // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
+          const caseNo = unit * Number(pack);
+
+          const productObj = {
+            id,
+            image,
+            pack,
+            wcCode,
+            boxCode,
+            ti,
+            hi,
+            description,
+            unit: `$ ${unit?.toFixed(2)}`,
+            case: `$ ${caseNo?.toFixed(2)}`,
+            casesPerPallet,
+            upc,
+            freightPerUnit: `$ ${freightPerUnit?.toFixed(2)}`,
+            freightPerCase: `$ ${freightPerCase?.toFixed(2)}`,
+            commission1PerUnit: `$ ${commission1PerUnit?.toFixed(2)}`,
+            commission1PerCase: `$ ${commission1PerCase?.toFixed(2)}`,
+            commission2PerUnit: `$ ${commission2PerUnit?.toFixed(2)}`,
+            commission2PerCase: `$ ${commission2PerCase?.toFixed(2)}`,
+            markUpUnit: `$ ${markUpUnit?.toFixed(2)}`,
+            markUpCase: `$ ${markUpCase?.toFixed(2)}`,
+          };
+          selectedProducts.push(productObj);
+        });
+
+        const { filename, path } = await generateOrderFile(selectedProducts);
+
         // get the orders data
-        fs.readFile("data/orders.json", "utf8", async (err, orders) => {
+        fs.readFile("data/orders.json", "utf8", (err, data) => {
           if (err) {
             console.error(err);
             res.status(500).send("Error reading file");
             return;
           }
 
-          const ordersData = JSON.parse(orders);
-
-          const existingOrder = ordersData?.find((order) => order?.id === id);
-
-          const updatedOrders = ordersData?.map((order) => {
-            if (order?.id === id) {
-              return {
-                ...order,
-                customer,
-                orderFileName: filename,
-                path,
-                products: selectedProducts,
-                freightRate,
-                commission1,
-                commission2,
-                markUp,
-              };
+          // get the orders data
+          fs.readFile("data/orders.json", "utf8", async (err, orders) => {
+            if (err) {
+              console.error(err);
+              res.status(500).send("Error reading file");
+              return;
             }
-          });
 
-          // add new order data
-          fs.writeFile(
-            "data/orders.json",
-            JSON.stringify(updatedOrders),
-            (err) => {
-              if (err) {
-                console.error(err);
-                res.status(500).send("Error writing to file");
-                return;
+            const ordersData = JSON.parse(orders);
+
+            const existingOrder = ordersData?.find((order) => order?.id === id);
+
+            const updatedOrders = ordersData?.map((order) => {
+              if (order?.id === id) {
+                return {
+                  ...order,
+                  customer,
+                  orderFileName: filename,
+                  path,
+                  products: selectedProducts,
+                  freightRate,
+                  commission1,
+                  commission2,
+                  markUp,
+                };
+              } else {
+                return order;
               }
+            });
 
-              // delete existing order file
-              fs.unlink(`public${existingOrder?.path}`, (err) => {
+            // add new order data
+            fs.writeFile(
+              "data/orders.json",
+              JSON.stringify(updatedOrders),
+              (err) => {
                 if (err) {
-                  console.error("Error deleting file:", err);
+                  console.error(err);
+                  res.status(500).send("Error writing to file");
                   return;
                 }
 
-                res.redirect(`/order/${id}`);
-              });
-            }
-          );
+                // delete existing order file
+                fs.unlink(`public${existingOrder?.path}`, (err) => {
+                  if (err) {
+                    console.error("Error deleting file:", err);
+                    return;
+                  }
+
+                  res.redirect(`/order/${id}`);
+                });
+              }
+            );
+          });
         });
       });
     });
