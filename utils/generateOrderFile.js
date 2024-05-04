@@ -10,27 +10,27 @@ const generateOrderFile = async (products) => {
 
   // Add data to the worksheet
   worksheet.columns = [
-    { header: "Image", key: "image", width: 50 },
-    { header: "Description", key: "description", width: 30 },
-    { header: "Tag 1", key: "tag1", width: 30 },
-    { header: "Tag 2", key: "tag2", width: 30 },
-    { header: "WC Code", key: "wcCode", width: 30 },
-    { header: "Box Code", key: "boxCode", width: 30 },
-    { header: "Pack", key: "pack", width: 30 },
-    { header: "Unit", key: "unit", width: 30 },
-    { header: "Case", key: "case", width: 30 },
-    { header: "Ti", key: "ti", width: 30 },
-    { header: "Hi", key: "hi", width: 30 },
-    { header: "Case Per Pallet", key: "casePerPallet", width: 30 },
-    { header: "UPC", key: "upc", width: 30 },
-    { header: "Freight Per Unit", key: "freightPerUnit", width: 30 },
-    { header: "Freight Per Case", key: "freightPerCase", width: 30 },
-    { header: "Commission 1 Per Unit", key: "commission1PerUnit", width: 30 },
-    { header: "Commission 1 Per Case", key: "commission1PerCase", width: 30 },
-    { header: "Commission 2 Per Unit", key: "commission2PerUnit", width: 30 },
-    { header: "Commission 2 Per Case", key: "commission2PerCase", width: 30 },
-    { header: "Mark Up Unit", key: "markUpUnit", width: 30 },
-    { header: "Mark Up Case", key: "markUpCase", width: 30 },
+    { header: "Image", key: "image" },
+    { header: "Description", key: "description" },
+    { header: "Tag 1", key: "tag1" },
+    { header: "Tag 2", key: "tag2" },
+    { header: "WC Code", key: "wcCode" },
+    { header: "Box Code", key: "boxCode" },
+    { header: "Pack", key: "pack" },
+    { header: "Unit", key: "unit" },
+    { header: "Case", key: "case" },
+    { header: "Ti", key: "ti" },
+    { header: "Hi", key: "hi" },
+    { header: "Case Per Pallet", key: "casePerPallet" },
+    { header: "UPC", key: "upc" },
+    { header: "Freight Per Unit", key: "freightPerUnit" },
+    { header: "Freight Per Case", key: "freightPerCase" },
+    { header: "Commission 1 Per Unit", key: "commission1PerUnit" },
+    { header: "Commission 1 Per Case", key: "commission1PerCase" },
+    { header: "Commission 2 Per Unit", key: "commission2PerUnit" },
+    { header: "Commission 2 Per Case", key: "commission2PerCase" },
+    { header: "Mark Up Unit", key: "markUpUnit" },
+    { header: "Mark Up Case", key: "markUpCase" },
   ];
 
   for (let i = 0; i < products.length; i++) {
@@ -76,6 +76,18 @@ const generateOrderFile = async (products) => {
     worksheet.getCell(`T${i + 2}`).value = products[i].markUpUnit;
     worksheet.getCell(`U${i + 2}`).value = products[i].markUpCase;
   }
+
+  // Calculate column widths based on content
+  worksheet.columns.forEach((column, index) => {
+    let maxLength = 0;
+    column.eachCell({ includeEmpty: true }, (cell) => {
+      const length = cell.value ? String(cell.value).length : 0;
+      if (length > maxLength) {
+        maxLength = length;
+      }
+    });
+    column.width = maxLength < 10 ? 10 : maxLength + 3; // Set minimum width
+  });
 
   const name = Date.now();
 

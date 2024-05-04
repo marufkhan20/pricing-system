@@ -6,10 +6,8 @@
 
 4. TODO: [DONE] Add an edit function to the Customers page like the other pages have. - TODO: understand
 
-5. TODO: [WORKING] Add a “Base Unit Modifier” field to the Customers form. This will be used to adjust the Base Unit Price before calculations. It needs to be a float to 2 places. - TODO: understand
+5. TODO: [DONE] Add a “Base Unit Modifier” field to the Customers form. This will be used to adjust the Base Unit Price before calculations. It needs to be a float to 2 places. - TODO: understand
 
-6. Round up all commissions and markup calculations to the nearest penny. - TODO: understand
+6. TODO: [WORKING] Round up all commissions and markup calculations to the nearest penny. After obtaining the Unit price, round it up to the nearest number divisible by .05 (either .05 or .00). - TODO: understand
 
-7. After obtaining the Unit price, round it up to the nearest number divisible by .05 (either .05 or .00). - TODO: understand
-
-8. Can the excel file be formatted to auto fit the column width before downloading? - TODO: understand
+7. TODO: [DONE] Can the excel file be formatted to auto fit the column width before downloading? - TODO: understand
