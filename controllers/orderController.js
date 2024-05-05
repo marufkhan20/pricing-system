@@ -165,42 +165,79 @@ export const addNewOrderController = async (req, res) => {
           } = product || {};
 
           // calculate base unit price
-          const baseUnitPrice = customerData?.baseUnitModifier
+          let baseUnitPrice = customerData?.baseUnitModifier
             ? Number(price) - Number(customerData?.baseUnitModifier)
             : price;
 
+          baseUnitPrice =
+            Math.round((baseUnitPrice + Number.EPSILON) * 100) / 100;
+
           const casesPerPallet = Number(ti) * Number(hi);
 
-          const commission1PerUnit =
+          // commission 1 per unit
+          let commission1PerUnit =
             Number(baseUnitPrice) * (Number(commission1) / 100);
 
-          const commission1PerCase = commission1PerUnit * Number(pack);
+          commission1PerUnit =
+            Math.round((commission1PerUnit + Number.EPSILON) * 100) / 100;
 
-          const commission2PerUnit =
+          // commission per case
+          let commission1PerCase = commission1PerUnit * Number(pack);
+
+          commission1PerCase =
+            Math.round((commission1PerCase + Number.EPSILON) * 100) / 100;
+
+          // commission 2 per unit
+          let commission2PerUnit =
             Number(baseUnitPrice) * (Number(commission2) / 100);
 
-          const commission2PerCase = commission2PerUnit * Number(pack);
+          commission2PerUnit =
+            Math.round((commission2PerUnit + Number.EPSILON) * 100) / 100;
+
+          // commission 2 per case
+          let commission2PerCase = commission2PerUnit * Number(pack);
+
+          commission2PerCase =
+            Math.round((commission2PerCase + Number.EPSILON) * 100) / 100;
 
           // const markUpUnit = Number(baseUnitPrice) * (Number(markUp) / 100);
 
-          const freightPerCase = Number(freightRate) / casesPerPallet;
-          const freightPerUnit = Number(freightPerCase) / Number(pack);
+          // freight per case
+          let freightPerCase = Number(freightRate) / casesPerPallet;
 
-          const markUpUnit =
+          freightPerCase =
+            Math.round((freightPerCase + Number.EPSILON) * 100) / 100;
+
+          // freight per unit
+          let freightPerUnit = Number(freightPerCase) / Number(pack);
+
+          freightPerUnit =
+            Math.round((freightPerUnit + Number.EPSILON) * 100) / 100;
+
+          // mark up unit
+          let markUpUnit =
             (Number(baseUnitPrice) +
               commission1PerUnit +
               commission2PerUnit +
               freightPerUnit) *
             (Number(markUp) / 100);
 
-          const markUpCase = markUpUnit * Number(pack);
+          markUpUnit = Math.round((markUpUnit + Number.EPSILON) * 100) / 100;
 
-          const unit =
+          // mark up case
+          let markUpCase = markUpUnit * Number(pack);
+
+          markUpCase = Math.round((markUpCase + Number.EPSILON) * 100) / 100;
+
+          // unit
+          let unit =
             commission1PerUnit +
             commission2PerUnit +
             freightPerUnit +
             markUpUnit +
             Number(baseUnitPrice);
+
+          unit = Math.round((unit + Number.EPSILON) * 100) / 100;
 
           // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
           const caseNo = unit * Number(pack);
