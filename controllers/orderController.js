@@ -165,12 +165,20 @@ export const addNewOrderController = async (req, res) => {
           } = product || {};
 
           // calculate base unit price
-          const baseUnitPrice = customerData?.baseUnitModifier
-            ? Number(price) - Number(customerData?.baseUnitModifier)
-            : price;
+          let baseUnitPrice = 0;
+          let baseUnitModifier = customerData?.baseUnitModifier;
 
-          // baseUnitPrice =
-          // Math.round((baseUnitPrice + Nujmber.EPSILON) * 100) / 100;
+          if (baseUnitModifier && baseUnitModifier?.includes("-")) {
+            baseUnitModifier = baseUnitModifier?.replace("-", "");
+
+            baseUnitPrice = Number(price) - Number(baseUnitModifier);
+          } else if (baseUnitModifier && baseUnitModifier?.includes("+")) {
+            baseUnitModifier = baseUnitModifier?.replace("+", "");
+
+            baseUnitPrice = Number(price) + Number(baseUnitModifier);
+          } else {
+            baseUnitPrice = Number(price);
+          }
 
           const casesPerPallet = Number(ti) * Number(hi);
 
@@ -209,12 +217,14 @@ export const addNewOrderController = async (req, res) => {
           const freightPerUnit = Number(freightPerCase) / Number(pack);
 
           // mark up unit
-          const markUpUnit =
+          let markUpUnit =
             (Number(baseUnitPrice) +
               commission1PerUnit +
               commission2PerUnit +
               freightPerUnit) *
             (Number(markUp) / 100);
+
+          markUpUnit = Math.round((markUpUnit + Number.EPSILON) * 100) / 100;
 
           // mark up case
           const markUpCase = markUpUnit * Number(pack);
