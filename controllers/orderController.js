@@ -227,7 +227,9 @@ export const addNewOrderController = async (req, res) => {
           markUpUnit = Math.round((markUpUnit + Number.EPSILON) * 100) / 100;
 
           // mark up case
-          const markUpCase = markUpUnit * Number(pack);
+          let markUpCase = markUpUnit * Number(pack);
+
+          markUpCase = Math.round((markUpCase + Number.EPSILON) * 100) / 100;
 
           // unit
           const unit =
@@ -513,7 +515,9 @@ export const editOrderController = async (req, res) => {
           markUpUnit = Math.round((markUpUnit + Number.EPSILON) * 100) / 100;
 
           // mark up case
-          const markUpCase = markUpUnit * Number(pack);
+          let markUpCase = markUpUnit * Number(pack);
+
+          markUpCase = Math.round((markUpCase + Number.EPSILON) * 100) / 100;
 
           // unit
           const unit =
