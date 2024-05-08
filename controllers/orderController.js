@@ -187,27 +187,23 @@ export const addNewOrderController = async (req, res) => {
           let commission1PerUnit =
             Number(baseUnitPrice) * (Number(commission1) / 100);
 
-          commission1PerUnit =
-            Math.round((commission1PerUnit + Number.EPSILON) * 100) / 100;
+          commission1PerUnit = Math.ceil(commission1PerUnit * 100) / 100;
 
           // commission per case
           let commission1PerCase = commission1PerUnit * Number(pack);
 
-          commission1PerCase =
-            Math.round((commission1PerCase + Number.EPSILON) * 100) / 100;
+          commission1PerCase = Math.ceil(commission1PerCase * 100) / 100;
 
           // commission 2 per unit
           let commission2PerUnit =
             Number(baseUnitPrice) * (Number(commission2) / 100);
 
-          commission2PerUnit =
-            Math.round((commission2PerUnit + Number.EPSILON) * 100) / 100;
+          commission2PerUnit = Math.ceil(commission2PerUnit * 100) / 100;
 
           // commission 2 per case
           let commission2PerCase = commission2PerUnit * Number(pack);
 
-          commission2PerCase =
-            Math.round((commission2PerCase + Number.EPSILON) * 100) / 100;
+          commission2PerCase = Math.ceil(commission2PerCase * 100) / 100;
 
           // const markUpUnit = Number(baseUnitPrice) * (Number(markUp) / 100);
 
@@ -225,12 +221,12 @@ export const addNewOrderController = async (req, res) => {
               freightPerUnit) *
             (Number(markUp) / 100);
 
-          markUpUnit = Math.round((markUpUnit + Number.EPSILON) * 100) / 100;
+          markUpUnit = Math.ceil(markUpUnit * 100) / 100;
 
           // mark up case
           let markUpCase = markUpUnit * Number(pack);
 
-          markUpCase = Math.round((markUpCase + Number.EPSILON) * 100) / 100;
+          markUpCase = Math.ceil(markUpCase * 100) / 100;
 
           // unit
           let unit =
@@ -477,27 +473,23 @@ export const editOrderController = async (req, res) => {
           let commission1PerUnit =
             Number(baseUnitPrice) * (Number(commission1) / 100);
 
-          commission1PerUnit =
-            Math.round((commission1PerUnit + Number.EPSILON) * 100) / 100;
+          commission1PerUnit = Math.ceil(commission1PerUnit * 100) / 100;
 
           // commission per case
           let commission1PerCase = commission1PerUnit * Number(pack);
 
-          commission1PerCase =
-            Math.round((commission1PerCase + Number.EPSILON) * 100) / 100;
+          commission1PerCase = Math.ceil(commission1PerCase * 100) / 100;
 
           // commission 2 per unit
           let commission2PerUnit =
             Number(baseUnitPrice) * (Number(commission2) / 100);
 
-          commission2PerUnit =
-            Math.round((commission2PerUnit + Number.EPSILON) * 100) / 100;
+          commission2PerUnit = Math.ceil(commission2PerUnit * 100) / 100;
 
           // commission 2 per case
           let commission2PerCase = commission2PerUnit * Number(pack);
 
-          commission2PerCase =
-            Math.round((commission2PerCase + Number.EPSILON) * 100) / 100;
+          commission2PerCase = Math.ceil(commission2PerCase * 100) / 100;
 
           // const markUpUnit = Number(baseUnitPrice) * (Number(markUp) / 100);
 
@@ -515,12 +507,12 @@ export const editOrderController = async (req, res) => {
               freightPerUnit) *
             (Number(markUp) / 100);
 
-          markUpUnit = Math.round((markUpUnit + Number.EPSILON) * 100) / 100;
+          markUpUnit = Math.ceil(markUpUnit * 100) / 100;
 
           // mark up case
           let markUpCase = markUpUnit * Number(pack);
 
-          markUpCase = Math.round((markUpCase + Number.EPSILON) * 100) / 100;
+          markUpCase = Math.ceil(markUpCase * 100) / 100;
 
           // unit
           let unit =
