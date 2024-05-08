@@ -10,10 +10,10 @@ const generateOrderFile = async (products) => {
 
   // Add data to the worksheet
   worksheet.columns = [
-    { header: "Image", key: "image" },
-    { header: "Description", key: "description" },
     { header: "Tag 1", key: "tag1" },
     { header: "Tag 2", key: "tag2" },
+    { header: "Image", key: "image" },
+    { header: "Description", key: "description" },
     { header: "WC Code", key: "wcCode" },
     { header: "Box Code", key: "boxCode" },
     { header: "Pack", key: "pack" },
@@ -54,10 +54,10 @@ const generateOrderFile = async (products) => {
     //   });
     // }
 
-    worksheet.getCell(`A${i + 2}`).value = products[i]?.image;
-    worksheet.getCell(`B${i + 2}`).value = products[i].description;
-    worksheet.getCell(`C${i + 2}`).value = products[i].tag1;
-    worksheet.getCell(`D${i + 2}`).value = products[i].tag2;
+    worksheet.getCell(`A${i + 2}`).value = products[i]?.tag1;
+    worksheet.getCell(`B${i + 2}`).value = products[i].tag2;
+    worksheet.getCell(`C${i + 2}`).value = products[i].image;
+    worksheet.getCell(`D${i + 2}`).value = products[i].description;
     worksheet.getCell(`E${i + 2}`).value = products[i].wcCode;
     worksheet.getCell(`F${i + 2}`).value = products[i].boxCode;
     worksheet.getCell(`G${i + 2}`).value = products[i].pack;

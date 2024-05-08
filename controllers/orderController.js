@@ -1,5 +1,6 @@
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
+import { roundToNearestFiveOrZero } from "../utils/converter.js";
 import generateOrderFile from "../utils/generateOrderFile.js";
 
 // get all orders controller
@@ -232,12 +233,14 @@ export const addNewOrderController = async (req, res) => {
           markUpCase = Math.round((markUpCase + Number.EPSILON) * 100) / 100;
 
           // unit
-          const unit =
+          let unit =
             commission1PerUnit +
             commission2PerUnit +
             freightPerUnit +
             markUpUnit +
             Number(baseUnitPrice);
+
+          unit = roundToNearestFiveOrZero(Number(unit));
 
           // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
           const caseNo = unit * Number(pack);
@@ -520,12 +523,14 @@ export const editOrderController = async (req, res) => {
           markUpCase = Math.round((markUpCase + Number.EPSILON) * 100) / 100;
 
           // unit
-          const unit =
+          let unit =
             commission1PerUnit +
             commission2PerUnit +
             freightPerUnit +
             markUpUnit +
             Number(baseUnitPrice);
+
+          unit = roundToNearestFiveOrZero(Number(unit));
 
           // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
           const caseNo = unit * Number(pack);
