@@ -1,6 +1,5 @@
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
-import { roundToNearestFiveOrZero } from "../utils/converter.js";
 import generateOrderFile from "../utils/generateOrderFile.js";
 
 // get all orders controller
@@ -208,10 +207,14 @@ export const addNewOrderController = async (req, res) => {
           // const markUpUnit = Number(baseUnitPrice) * (Number(markUp) / 100);
 
           // freight per case
-          const freightPerCase = Number(freightRate) / casesPerPallet;
+          let freightPerCase = Number(freightRate) / casesPerPallet;
+
+          freightPerCase = Math.ceil(freightPerCase * 100) / 100;
 
           // freight per unit
-          const freightPerUnit = Number(freightPerCase) / Number(pack);
+          let freightPerUnit = Number(freightPerCase) / Number(pack);
+
+          freightPerUnit = Math.ceil(freightPerUnit * 100) / 100;
 
           // mark up unit
           let markUpUnit =
@@ -236,7 +239,7 @@ export const addNewOrderController = async (req, res) => {
             markUpUnit +
             Number(baseUnitPrice);
 
-          unit = roundToNearestFiveOrZero(Number(unit));
+          unit = Number((Math.ceil(unit * 20) / 20).toFixed(2));
 
           // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
           const caseNo = unit * Number(pack);
@@ -494,10 +497,14 @@ export const editOrderController = async (req, res) => {
           // const markUpUnit = Number(baseUnitPrice) * (Number(markUp) / 100);
 
           // freight per case
-          const freightPerCase = Number(freightRate) / casesPerPallet;
+          let freightPerCase = Number(freightRate) / casesPerPallet;
+
+          freightPerCase = Math.ceil(freightPerCase * 100) / 100;
 
           // freight per unit
-          const freightPerUnit = Number(freightPerCase) / Number(pack);
+          let freightPerUnit = Number(freightPerCase) / Number(pack);
+
+          freightPerUnit = Math.ceil(freightPerUnit * 100) / 100;
 
           // mark up unit
           let markUpUnit =
@@ -522,7 +529,7 @@ export const editOrderController = async (req, res) => {
             markUpUnit +
             Number(baseUnitPrice);
 
-          unit = roundToNearestFiveOrZero(Number(unit));
+          unit = Number((Math.ceil(unit * 20) / 20).toFixed(2));
 
           // ((2.00 * commission1) + (2.00 * commission2) + 2.00)) * markup
           const caseNo = unit * Number(pack);
