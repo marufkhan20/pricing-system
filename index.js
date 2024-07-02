@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import express from "express";
 import flash from "express-flash";
 import session from "express-session";
+import mongoose from "mongoose";
 import authRoute from "./routes/authRoute.js";
 import customerRoute from "./routes/customerRoute.js";
 import orderRoute from "./routes/orderRoute.js";
@@ -48,6 +49,19 @@ app.use("/", customerRoute);
 app.use("/", authRoute);
 
 app.use("/", productRoute);
+
+// Connect to MongoDB
+mongoose
+  .connect(process.env.MONGODB_CONNECT, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB", err);
+  });
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

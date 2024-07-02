@@ -1,5 +1,5 @@
-import fs from "fs";
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 // create new user controller
 export const createNewUserController = async (req, res) => {
@@ -71,61 +71,40 @@ export const loginUserController = async (req, res) => {
     }
 
     // check availabe user
+    const user = await User.findOne({ email, password });
 
-    // read user data
-    fs.readFile("data/users.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      // Parse JSON data
-      const users = JSON.parse(data);
-
-      let isUserHave;
-
-      if (users) {
-        users.forEach((user) => {
-          if (user?.email === email && user.password === password) {
-            isUserHave = user;
-          }
-        });
-      }
-
-      if (!isUserHave) {
-        req.flash("email", email);
-        req.flash(
-          "errors",
-          JSON.stringify({
-            password: "Email or password is incorrect!!",
-          })
-        );
-        return res.redirect("/login");
-      }
-
-      // generate new token
-      const accessToken = jwt.sign(
-        {
-          name: isUserHave?.name,
-          email,
-        },
-        process.env.SECRET_KEY,
-        { expiresIn: "30days" }
+    if (!user) {
+      req.flash("email", email);
+      req.flash(
+        "errors",
+        JSON.stringify({
+          password: "Email or password is incorrect!!",
+        })
       );
+      return res.redirect("/login");
+    }
 
-      // Set cookie with expiration time
-      const expiryDate = new Date();
-      // Add 1 year to the current date
-      expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+    // generate new token
+    const accessToken = jwt.sign(
+      {
+        name: user?.name,
+        email,
+      },
+      process.env.SECRET_KEY,
+      { expiresIn: "30days" }
+    );
 
-      res.cookie("accessToken", accessToken, {
-        expires: expiryDate,
-        httpOnly: true, // recommended for security
-      });
+    // Set cookie with expiration time
+    const expiryDate = new Date();
+    // Add 1 year to the current date
+    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
 
-      res.redirect("/");
+    res.cookie("accessToken", accessToken, {
+      expires: expiryDate,
+      httpOnly: true, // recommended for security
     });
+
+    res.redirect("/");
   } catch (error) {
     console.error(error);
     res.status(500).json({

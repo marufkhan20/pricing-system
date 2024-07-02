@@ -1,22 +1,14 @@
-import fs from "fs";
-import { v4 as uuidv4 } from "uuid";
+import Customer from "../models/Customer.js";
 
 // get all customers controller
 export const getAllCustomersController = async (req, res) => {
   try {
     // get all customers
-    fs.readFile("data/customers.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      res.render("customers.ejs", {
-        customers: JSON.parse(data),
-        path: "customers",
-        title: "Customers",
-      });
+    const customers = await Customer.find();
+    res.render("customers.ejs", {
+      customers,
+      path: "customers",
+      title: "Customers",
     });
   } catch (error) {
     console.error(error);
@@ -31,21 +23,9 @@ export const getCustomerController = async (req, res) => {
   try {
     const { id } = req.params || {};
 
-    // get the customers data
-    fs.readFile("data/customers.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      // Parse JSON data
-      const customers = JSON.parse(data);
-
-      const customer = customers?.find((customer) => customer?.id === id);
-
-      res.status(200).json({ customer });
-    });
+    // get the customer
+    const customer = await Customer.findById(id);
+    res.status(200).json({ customer });
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -100,45 +80,19 @@ export const addNewCustomerController = async (req, res) => {
       return res.redirect("/add-customer");
     }
 
-    // get the customers data
-    fs.readFile("data/customers.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      // Parse JSON data
-      const customers = JSON.parse(data);
-
-      const allCustomers = [
-        ...customers,
-        {
-          id: uuidv4(),
-          name,
-          freightRate,
-          markUp,
-          commission1,
-          commission2,
-          baseUnitModifier,
-        },
-      ];
-
-      // add new customer data
-      fs.writeFile(
-        "data/customers.json",
-        JSON.stringify(allCustomers),
-        (err) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send("Error writing to file");
-            return;
-          }
-
-          res.redirect("/customers");
-        }
-      );
+    // add new customer
+    const newCustomer = new Customer({
+      name,
+      freightRate: Number(freightRate),
+      markUp: Number(markUp),
+      commission1: Number(commission1),
+      commission2: Number(commission2),
+      baseUnitModifier,
     });
+
+    await newCustomer.save();
+
+    res.redirect("/customers");
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -152,31 +106,19 @@ export const editCustomerViewController = async (req, res) => {
   try {
     const { id } = req.params || {};
 
-    // get the customers data
-    fs.readFile("data/customers.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
+    // get the customer
+    const customer = await Customer.findById(id);
+    req.flash("id", customer?.id);
+    req.flash("name", customer?.name);
+    req.flash("freightRate", customer?.freightRate);
+    req.flash("markUp", customer?.markUp);
+    req.flash("commission1", customer?.commission1);
+    req.flash("commission2", customer?.commission2);
+    req.flash("baseUnitModifier", customer?.baseUnitModifier);
 
-      // Parse JSON data
-      const customers = JSON.parse(data);
-
-      const customer = customers?.find((customer) => customer?.id === id);
-
-      req.flash("id", customer?.id);
-      req.flash("name", customer?.name);
-      req.flash("freightRate", customer?.freightRate);
-      req.flash("markUp", customer?.markUp);
-      req.flash("commission1", customer?.commission1);
-      req.flash("commission2", customer?.commission2);
-      req.flash("baseUnitModifier", customer?.baseUnitModifier);
-
-      res.render("edit_customer.ejs", {
-        path: "customers",
-        title: "Edit Customer",
-      });
+    res.render("edit_customer.ejs", {
+      path: "customers",
+      title: "Edit Customer",
     });
   } catch (error) {
     console.error(error);
@@ -189,8 +131,14 @@ export const editCustomerViewController = async (req, res) => {
 // edit customer controller
 export const editCustomerController = async (req, res) => {
   try {
-    const { name, freightRate, markUp, commission1, commission2 } =
-      req.body || {};
+    const {
+      name,
+      freightRate,
+      markUp,
+      baseUnitModifier,
+      commission1,
+      commission2,
+    } = req.body || {};
 
     const { id } = req.params || {};
 
@@ -227,43 +175,20 @@ export const editCustomerController = async (req, res) => {
       return res.redirect("/add-customer");
     }
 
-    // get the customers data
-    fs.readFile("data/customers.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      // Parse JSON data
-      const customers = JSON.parse(data);
-
-      const updatedCustomers = customers?.map((customer) => {
-        if (customer?.id === id) {
-          return {
-            ...customer,
-            ...req.body,
-          };
-        } else {
-          return customer;
-        }
-      });
-
-      // add new customer data
-      fs.writeFile(
-        "data/customers.json",
-        JSON.stringify(updatedCustomers),
-        (err) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send("Error writing to file");
-            return;
-          }
-
-          res.redirect("/customers");
-        }
-      );
+    const updatedCustomer = await Customer.findByIdAndUpdate(id, {
+      $set: {
+        name,
+        freightRate: Number(freightRate),
+        markUp: Number(markUp),
+        commission1: Number(commission1),
+        commission2: Number(commission2),
+        baseUnitModifier,
+      },
     });
+
+    if (updatedCustomer) {
+      res.redirect("/customers");
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -277,36 +202,11 @@ export const deleteCustomerController = async (req, res) => {
   try {
     const { id } = req.params || {};
 
-    // get the customers data
-    fs.readFile("data/customers.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      // Parse JSON data
-      const customers = JSON.parse(data);
-
-      const deletedCustomers = customers?.filter(
-        (customer) => customer?.id !== id
-      );
-
-      // add new customer data
-      fs.writeFile(
-        "data/customers.json",
-        JSON.stringify(deletedCustomers),
-        (err) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send("Error writing to file");
-            return;
-          }
-
-          res.status(200).json({ success: true });
-        }
-      );
-    });
+    // delete customer
+    const deletedCustomer = await Customer.findByIdAndDelete(id);
+    if (deletedCustomer) {
+      res.status(200).json({ success: true });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({

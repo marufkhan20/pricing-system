@@ -1,22 +1,14 @@
-import fs from "fs";
-import { v4 as uuidv4 } from "uuid";
+import Product from "../models/Product.js";
 
 // get all products controller
 export const getAllProductController = async (req, res) => {
   try {
     // get all products
-    fs.readFile("data/products.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      res.render("index.ejs", {
-        products: JSON.parse(data),
-        path: "products",
-        title: "Products",
-      });
+    const products = await Product.find();
+    res.render("index.ejs", {
+      products,
+      path: "products",
+      title: "Products",
     });
   } catch (error) {
     console.error(error);
@@ -86,50 +78,23 @@ export const addNewProductController = async (req, res) => {
       return res.redirect("/add-product");
     }
 
-    // get the products data
-    fs.readFile("data/products.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      // Parse JSON data
-      const products = JSON.parse(data);
-
-      const updatedProducts = [
-        ...products,
-        {
-          image,
-          id: uuidv4(),
-          pack: Number(pack),
-          price: Number(price),
-          wcCode,
-          boxCode,
-          ti: Number(ti),
-          hi: Number(hi),
-          upc,
-          tag1,
-          tag2,
-          description,
-        },
-      ];
-
-      // add new customer data
-      fs.writeFile(
-        "data/products.json",
-        JSON.stringify(updatedProducts),
-        (err) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send("Error writing to file");
-            return;
-          }
-
-          res.redirect("/");
-        }
-      );
+    // add new product
+    const newProduct = new Product({
+      image,
+      pack: Number(pack),
+      price: Number(price),
+      wcCode,
+      boxCode,
+      ti: Number(ti),
+      hi: Number(hi),
+      upc,
+      tag1,
+      tag2,
+      description,
     });
+
+    await newProduct.save();
+    res.redirect("/");
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -143,35 +108,23 @@ export const editProductViewController = async (req, res) => {
   try {
     const { id } = req.params || {};
 
-    // get the products data
-    fs.readFile("data/products.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      // Parse JSON data
-      const products = JSON.parse(data);
-
-      const product = products?.find((product) => product?.id === id);
-
-      req.flash("price", product?.price);
-      req.flash("id", product?.id);
-      req.flash("wcCode", product?.wcCode);
-      req.flash("boxCode", product?.boxCode);
-      req.flash("ti", product?.ti);
-      req.flash("hi", product?.hi);
-      req.flash("upc", product?.upc);
-      req.flash("description", product?.description);
-      req.flash("pack", product?.pack);
-      req.flash("image", product?.image);
-      req.flash("tag1", product?.tag1);
-      req.flash("tag2", product?.tag2);
-      res.render("edit_product.ejs", {
-        path: "products",
-        title: "Edit Product",
-      });
+    // get the product
+    const product = await Product.findById(id);
+    req.flash("price", product?.price);
+    req.flash("id", product?.id);
+    req.flash("wcCode", product?.wcCode);
+    req.flash("boxCode", product?.boxCode);
+    req.flash("ti", product?.ti);
+    req.flash("hi", product?.hi);
+    req.flash("upc", product?.upc);
+    req.flash("description", product?.description);
+    req.flash("pack", product?.pack);
+    req.flash("image", product?.image);
+    req.flash("tag1", product?.tag1);
+    req.flash("tag2", product?.tag2);
+    res.render("edit_product.ejs", {
+      path: "products",
+      title: "Edit Product",
     });
   } catch (error) {
     console.error(error);
@@ -243,40 +196,26 @@ export const editProductController = async (req, res) => {
       return res.redirect("/add-product");
     }
 
-    // get the products data
-    fs.readFile("data/products.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      // Parse JSON data
-      const products = JSON.parse(data);
-
-      const updatedProducts = products?.map((product) => {
-        if (product?.id === id) {
-          return { ...product, ...req.body };
-        } else {
-          return product;
-        }
-      });
-
-      // add new customer data
-      fs.writeFile(
-        "data/products.json",
-        JSON.stringify(updatedProducts),
-        (err) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send("Error writing to file");
-            return;
-          }
-
-          res.redirect("/");
-        }
-      );
+    // update product
+    const updatedProduct = await Product.findByIdAndUpdate(id, {
+      $set: {
+        image,
+        pack: Number(pack),
+        price: Number(price),
+        wcCode,
+        boxCode,
+        ti: Number(ti),
+        hi: Number(hi),
+        upc,
+        tag1,
+        tag2,
+        description,
+      },
     });
+
+    if (updatedProduct) {
+      res.redirect("/");
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -290,34 +229,11 @@ export const deleteProductController = async (req, res) => {
   try {
     const { id } = req.params || {};
 
-    // get the products data
-    fs.readFile("data/products.json", "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-
-      // Parse JSON data
-      const products = JSON.parse(data);
-
-      const deletedProducts = products?.filter((product) => product?.id !== id);
-
-      // delete product
-      fs.writeFile(
-        "data/products.json",
-        JSON.stringify(deletedProducts),
-        (err) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send("Error writing to file");
-            return;
-          }
-
-          res.status(200).json({ success: true });
-        }
-      );
-    });
+    // delete product
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (deletedProduct) {
+      res.status(200).json({ success: true });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({
