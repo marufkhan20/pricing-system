@@ -4,7 +4,15 @@
     <div class="border rounded-lg mt-10 bg-white p-10">
       <div class="flex items-center justify-between gap-5 flex-wrap">
         <h2 class="font-medium text-lg">Price List</h2>
-        <a href="/add-order" class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add Price List</a>
+        <div class="flex items-center gap-4">
+          <a href="/add-order" class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add Price List</a>
+
+          <form action="/import-order" method="post" enctype="multipart/form-data">
+            <input type="file" id="file" name="file" class="hidden" accept=".xlsx,.xls">
+            <label for="file" class="rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Import Price List</label>
+            <button type="submit">Upload</button>
+        </form>
+        </div>
       </div>
 
       <div class="mt-10 overflow-auto">

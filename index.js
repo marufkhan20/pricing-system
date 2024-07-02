@@ -31,17 +31,6 @@ app.use(
 );
 app.use(flash());
 
-const saveData = (data, file) => {
-  const finished = (error) => {
-    if (error) {
-      console.error(error);
-      return;
-    }
-    const jsonData = JSON.stringify(data, null, 2);
-    FileSystem.writeFile(file, jsonData, finished);
-  };
-};
-
 app.use("/", orderRoute);
 
 app.use("/", customerRoute);

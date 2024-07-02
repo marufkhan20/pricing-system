@@ -1,4 +1,5 @@
 import fs from "fs";
+import xlsx from "xlsx";
 import Customer from "../models/Customer.js";
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
@@ -256,6 +257,70 @@ export const addNewOrderController = async (req, res) => {
       error: "Server error occurred!!",
     });
   }
+};
+
+// importOrderViewController
+export const importOrderViewController = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded");
+  }
+
+  const filePath = req.file.path;
+  const workbook = xlsx.readFile(filePath);
+  const sheetName = workbook.SheetNames[0];
+  const sheet = workbook.Sheets[sheetName];
+  const data = xlsx.utils.sheet_to_json(sheet);
+
+  const propertyMapping = {
+    "Tag 1": "tag1",
+    "Tag 2": "tag2",
+    Image: "image",
+    Description: "description",
+    "WC Code": "wccode",
+    "Box Code": "boxCode",
+    Pack: "pack",
+    Unit: "unit",
+    Case: "case",
+    Ti: "ti",
+    Hi: "hi",
+    "Case Per Pallet": "casePerPallet",
+    UPC: "upc",
+    "Freight Per Unit": "freightPerUnit",
+    "Freight Per Case": "freightPerCase",
+    "Commission 1 Per Unit": "commission1PerUnit",
+    "Commission 1 Per Case": "commission1PerCase",
+    "Commission 2 Per Unit": "commission2PerUnit",
+    "Commission 2 Per Case": "commission2PerCase",
+    "Mark Up Unit": "markUpUnit",
+    "Mark Up Case": "markUpCase",
+  };
+
+  const transformedData = data.map((item) => {
+    const newItem = {};
+    for (const key in item) {
+      newItem[propertyMapping[key?.trim()] || key?.trim()] = item[key?.trim()];
+    }
+    return newItem;
+  });
+
+  const { filename, path } = await generateOrderFile(transformedData);
+
+  const newOrder = new Order({
+    customer: "66838caf4647d877e117b2a7",
+    name: "Price List",
+    createdDate: Date.now(),
+    orderFileName: filename,
+    path,
+    products: transformedData,
+    freightRate: 45,
+    commission1: 5,
+    commission2: 5,
+    markUp: 4,
+  });
+
+  await newOrder.save();
+
+  res.redirect("/order");
 };
 
 // edit order view controller
