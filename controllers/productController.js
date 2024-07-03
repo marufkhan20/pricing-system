@@ -260,7 +260,7 @@ export const importProductsController = async (req, res) => {
     "Tag 2": "tag2",
     Image: "image",
     Description: "description",
-    "WC Code": "wccode",
+    "WC Code": "wcCode",
     "Box Code": "boxCode",
     Pack: "pack",
     Unit: "unit",
