@@ -288,6 +288,7 @@ export const importProductsController = async (req, res) => {
   });
 
   transformedData.forEach(async (item) => {
+    console.log("item", item);
     const newProduct = new Product({
       image: item?.image,
       pack: item?.pack,
