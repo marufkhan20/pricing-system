@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: mongodb-backup-app
+    env: node
+    buildCommand: |
+      apt-get update
+      apt-get install -y mongodb-database-tools
+      yarn install
+    startCommand: node index.js
+    envVars:
+      - key: MONGODB_CONNECT
+        value: mongodb+srv://tmilliken:45VA7lXvpht36Kis@cluster0.kxunl99.mongodb.net/wc-pricing
+      - kye: SECRET_KEY
+        value: secret_key

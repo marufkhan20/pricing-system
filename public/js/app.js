@@ -93,3 +93,29 @@ const logout = async () => {
     console.error(error);
   }
 };
+
+// download database backup
+function downloadBackup() {
+  fetch("/backup")
+    .then((response) => {
+      if (response.ok) {
+        return response.blob();
+      } else {
+        throw new Error("Backup failed");
+      }
+    })
+    .then((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = `backup_${Date.now()}.gz`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Backup failed");
+    });
+}

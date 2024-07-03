@@ -1,3 +1,4 @@
+import { exec } from "child_process";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import express from "express";
@@ -38,6 +39,32 @@ app.use("/", customerRoute);
 app.use("/", authRoute);
 
 app.use("/", productRoute);
+
+app.use("/settings", (req, res) => {
+  res.render("settings.ejs", {
+    path: "settings",
+    title: "Settings",
+  });
+});
+
+app.get("/backup", (req, res) => {
+  const command = `mongodump --uri="${process.env.MONGODB_CONNECT}" --archive --gzip`;
+
+  exec(command, { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
+    // Increase buffer size if needed
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return res.status(500).send("Backup failed");
+    }
+
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
+
+    res.setHeader("Content-Disposition", "attachment; filename=backup.gz");
+    res.setHeader("Content-Type", "application/gzip");
+    res.send(stdout);
+  });
+});
 
 // Connect to MongoDB
 mongoose
