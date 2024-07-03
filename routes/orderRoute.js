@@ -7,10 +7,8 @@ import {
   editOrderViewController,
   getAllOrderController,
   getOrderDetailsController,
-  importOrderViewController,
 } from "../controllers/orderController.js";
 import privateRoute from "../middlewares/privateRoute.js";
-import { upload } from "../utils/upload.js";
 
 const router = Router();
 
@@ -30,14 +28,6 @@ router.get("/order/:id", privateRoute, getOrderDetailsController);
 
 // add new order
 router.post("/add-order", privateRoute, addNewOrderController);
-
-// import order data
-router.post(
-  "/import-order",
-  privateRoute,
-  upload.single("file"),
-  importOrderViewController
-);
 
 // edit order
 router.get("/edit-order/:id", privateRoute, editOrderViewController);

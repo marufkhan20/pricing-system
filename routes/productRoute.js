@@ -5,8 +5,10 @@ import {
   editProductController,
   editProductViewController,
   getAllProductController,
+  importProductsController,
 } from "../controllers/productController.js";
 import privateRoute from "../middlewares/privateRoute.js";
+import upload from "../upload.js";
 
 const router = Router();
 
@@ -29,6 +31,14 @@ router.post("/add-product", privateRoute, addNewProductController);
 
 // edit product
 router.get("/edit-product/:id", privateRoute, editProductViewController);
+
+// import products
+router.post(
+  "/import-products",
+  privateRoute,
+  upload.single("file"),
+  importProductsController
+);
 
 router.post("/edit-product/:id", privateRoute, editProductController);
 

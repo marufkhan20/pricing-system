@@ -1,3 +1,4 @@
+import xlsx from "xlsx";
 import Product from "../models/Product.js";
 
 // get all products controller
@@ -240,4 +241,69 @@ export const deleteProductController = async (req, res) => {
       error: "Server error occurred!!",
     });
   }
+};
+
+// import products Controller
+export const importProductsController = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded");
+  }
+
+  const filePath = req.file.path;
+  const workbook = xlsx.readFile(filePath);
+  const sheetName = workbook.SheetNames[0];
+  const sheet = workbook.Sheets[sheetName];
+  const data = xlsx.utils.sheet_to_json(sheet);
+
+  const propertyMapping = {
+    "Tag 1": "tag1",
+    "Tag 2": "tag2",
+    Image: "image",
+    Description: "description",
+    "WC Code": "wccode",
+    "Box Code": "boxCode",
+    Pack: "pack",
+    Unit: "unit",
+    Case: "case",
+    Ti: "ti",
+    Hi: "hi",
+    "Case Per Pallet": "casePerPallet",
+    UPC: "upc",
+    "Freight Per Unit": "freightPerUnit",
+    "Freight Per Case": "freightPerCase",
+    "Commission 1 Per Unit": "commission1PerUnit",
+    "Commission 1 Per Case": "commission1PerCase",
+    "Commission 2 Per Unit": "commission2PerUnit",
+    "Commission 2 Per Case": "commission2PerCase",
+    "Mark Up Unit": "markUpUnit",
+    "Mark Up Case": "markUpCase",
+  };
+
+  const transformedData = data.map((item) => {
+    const newItem = {};
+    for (const key in item) {
+      newItem[propertyMapping[key?.trim()] || key?.trim()] = item[key?.trim()];
+    }
+    return newItem;
+  });
+
+  transformedData.forEach(async (item) => {
+    const newProduct = new Product({
+      image: item?.image,
+      pack: item?.pack,
+      price: Number(item?.unit?.replace("$ ", "")),
+      wcCode: item?.wcCode,
+      boxCode: item?.boxCode,
+      ti: item?.ti,
+      hi: item?.hi,
+      upc: item?.upc,
+      tag1: item?.tag1,
+      tag2: item?.tag2,
+      description: item?.description,
+    });
+
+    await newProduct.save();
+  });
+
+  res.redirect("/");
 };
