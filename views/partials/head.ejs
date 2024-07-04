@@ -118,6 +118,19 @@
                   class="text-black hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Price List</a
                 >
+                <% } %> <% if (path === "settings") { %>
+                <a
+                  href="/settings"
+                  class="bg-black text-white block rounded-md px-3 py-2 text-base font-medium"
+                  aria-current="page"
+                  >Settings</a
+                >
+                <% } else { %>
+                <a
+                  href="/settings"
+                  class="text-black hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                  >Settings</a
+                >
                 <% } %>
               </div>
             </div>
@@ -230,6 +243,19 @@
             href="/order"
             class="text-black hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
             >Price List</a
+          >
+          <% } %> <% if (path === "settings") { %>
+          <a
+            href="/settings"
+            class="bg-black text-white block rounded-md px-3 py-2 text-base font-medium"
+            aria-current="page"
+            >Settings</a
+          >
+          <% } else { %>
+          <a
+            href="/settings"
+            class="text-black hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+            >Settings</a
           >
           <% } %>
         </div>

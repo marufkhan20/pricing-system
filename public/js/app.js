@@ -96,6 +96,7 @@ const logout = async () => {
 
 // download database backup
 function downloadBackup() {
+  console.log("hello");
   fetch("/backup")
     .then((response) => {
       if (response.ok) {
@@ -109,7 +110,7 @@ function downloadBackup() {
       const a = document.createElement("a");
       a.style.display = "none";
       a.href = url;
-      a.download = `backup_${Date.now()}.gz`;
+      a.download = `backup_${Date.now()}.json`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -118,4 +119,36 @@ function downloadBackup() {
       console.error("Error:", error);
       alert("Backup failed");
     });
+}
+
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  const button = document.getElementById("downloadBtn");
+  button.innerHTML = "Downloading...";
+  button.classList.add("animate-pulse");
+  button.classList.add("disabled");
+  button.classList.add("cursor-not-allowed");
+  fetch("/backup")
+    .then((response) => response.blob())
+    .then((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = "data.json";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch((error) => console.error("Error downloading the file:", error))
+    .finally(() => {
+      button.innerHTML = "Download Database Backup";
+      button.classList.remove("animate-pulse");
+      button.classList.remove("disabled");
+      button.classList.remove("cursor-not-allowed");
+    });
+});
+
+function downloadJson() {
+  // Simulate a click on the server endpoint
+  window.location.href = "/backup";
 }

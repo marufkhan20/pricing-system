@@ -1,10 +1,15 @@
-import { exec } from "child_process";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import express from "express";
 import flash from "express-flash";
 import session from "express-session";
+import fs from "fs";
 import mongoose from "mongoose";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+import Customer from "./models/Customer.js";
+import Order from "./models/Order.js";
+import Product from "./models/Product.js";
 import authRoute from "./routes/authRoute.js";
 import customerRoute from "./routes/customerRoute.js";
 import orderRoute from "./routes/orderRoute.js";
@@ -17,6 +22,9 @@ const port = 8000;
 app.use(express.static("public"));
 
 config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Middleware to parse form submissions
 app.use(express.json());
@@ -47,23 +55,31 @@ app.use("/settings", (req, res) => {
   });
 });
 
-app.get("/backup", (req, res) => {
-  const command = `mongodump --uri="${process.env.MONGODB_CONNECT}" --archive --gzip`;
+app.get("/backup", async (req, res) => {
+  try {
+    const customers = await Customer.find().lean().exec();
+    const orders = await Order.find().lean().exec();
+    const products = await Product.find().lean().exec();
 
-  exec(command, { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
-    // Increase buffer size if needed
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return res.status(500).send("Backup failed");
-    }
+    const jsonData = { customers, orders, products };
 
-    console.log(`stdout: ${stdout}`);
-    console.error(`stderr: ${stderr}`);
+    console.log("jsonData", jsonData);
 
-    res.setHeader("Content-Disposition", "attachment; filename=backup.gz");
-    res.setHeader("Content-Type", "application/gzip");
-    res.send(stdout);
-  });
+    const jsonString = JSON.stringify(jsonData, null, 2);
+
+    const filePath = path.join(__dirname, "data.json");
+    fs.writeFileSync(filePath, jsonString);
+
+    res.download(filePath, "data.json", (err) => {
+      if (err) {
+        console.error("Error downloading the file:", err);
+        res.status(500).send("Error downloading the file");
+      }
+      fs.unlinkSync(filePath); // delete file after download
+    });
+  } catch (error) {
+    console.log("error", error);
+  }
 });
 
 // Connect to MongoDB
