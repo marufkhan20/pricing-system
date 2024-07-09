@@ -1,6 +1,6 @@
 <%- include('partials/head.ejs') %>
 
-<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+<div class="mx-auto max-w-7xl mb-10 px-2 sm:px-6 lg:px-8">
   <div class="border rounded-lg mt-10 bg-white p-10">
     <h2 class="font-medium text-lg">Price List Details</h2>
     
@@ -65,11 +65,11 @@
         </thead>
 
         <tbody>
-          <% if (order?.products) { %>
-            <% order?.products?.forEach((product, idx) => { %>
+          <% if (products) { %>
+            <% products?.forEach((product, idx) => { %>
 
           <tr>
-            <td class="py-4 border-b"><%= idx + 1 %></td>
+            <td class="py-4 border-b"><%= startIndex + idx + 1 %></td>
             <td class="py-4 border-b font-medium">
               <img src="<%= product?.image %>" class="w-14 rounded-md" alt="">
             </td>
@@ -89,8 +89,24 @@
         </tbody>
       </table>
 
-      <% if (order?.products?.length === 0) { %>
+      <% if (products?.length === 0) { %>
         <p class="mt-4 text-center text-lg">No product Found! Please add new order.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <div class="flex items-center flex-wrap justify-center gap-2">
+      <% if (currentPage > 1) { %>
+        <a class="px-3 py-1 rounded hover:bg-black hover:text-white" href="/order/<%= order?._id %>?page=<%= Number(currentPage) - 1 %>&limit=<%= 20 %>">Previous</a>
+      <% } %>
+      
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <a class="h-8 w-8 rounded-full <%= (currentPage == i) ? 'bg-black text-white' : 'hover:bg-black hover:text-white' %> flex items-center justify-center" href="/order/<%= order?._id %>?page=<%= i %>&limit=<%= 20 %>"><%= i %></a>
+      <% } %>
+      
+      <% if (currentPage < totalPages) { %>
+        <a class="px-3 py-1 rounded hover:bg-black hover:text-white" href="/order/<%= order?._id %>?page=<%= Number(currentPage) + 1 %>&limit=<%= 20 %>">Next</a>
       <% } %>
     </div>
   </div>

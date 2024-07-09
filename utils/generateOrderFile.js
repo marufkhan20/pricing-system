@@ -56,7 +56,10 @@ const generateOrderFile = async (products) => {
 
     worksheet.getCell(`A${i + 2}`).value = products[i]?.tag1;
     worksheet.getCell(`B${i + 2}`).value = products[i].tag2;
-    worksheet.getCell(`C${i + 2}`).value = products[i].image;
+    worksheet.getCell(`C${i + 2}`).value = {
+      text: "View Image",
+      hyperlink: products[i].image,
+    };
     worksheet.getCell(`D${i + 2}`).value = products[i].description;
     worksheet.getCell(`E${i + 2}`).value = products[i].wcCode;
     worksheet.getCell(`F${i + 2}`).value = products[i].boxCode;

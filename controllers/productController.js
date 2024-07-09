@@ -4,12 +4,23 @@ import Product from "../models/Product.js";
 // get all products controller
 export const getAllProductController = async (req, res) => {
   try {
+    const { page = 1, limit = 20 } = req.query;
+
     // get all products
-    const products = await Product.find();
+    const products = await Product.find()
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .exec();
+
+    const count = await Product.countDocuments();
+
     res.render("index.ejs", {
       products,
       path: "products",
       title: "Products",
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      startIndex: (page - 1) * limit,
     });
   } catch (error) {
     console.error(error);
@@ -253,7 +264,12 @@ export const importProductsController = async (req, res) => {
   const workbook = xlsx.readFile(filePath);
   const sheetName = workbook.SheetNames[0];
   const sheet = workbook.Sheets[sheetName];
-  const data = xlsx.utils.sheet_to_json(sheet);
+  const data = xlsx.utils.sheet_to_json(sheet, { raw: true, header: 1 });
+
+  // Extract headers
+  const headers = data[0];
+  // Extract rows
+  const rows = data.slice(1);
 
   const propertyMapping = {
     "Tag 1": "tag1",
@@ -279,11 +295,17 @@ export const importProductsController = async (req, res) => {
     "Mark Up Case": "markUpCase",
   };
 
-  const transformedData = data.map((item) => {
+  const transformedData = rows.map((row, rowIndex) => {
     const newItem = {};
-    for (const key in item) {
-      newItem[propertyMapping[key?.trim()] || key?.trim()] = item[key?.trim()];
-    }
+    headers.forEach((header, columnIndex) => {
+      const key = propertyMapping[header.trim()] || header.trim();
+      const cellAddress = xlsx.utils.encode_cell({
+        c: columnIndex,
+        r: rowIndex + 1,
+      });
+      const cell = sheet[cellAddress];
+      newItem[key] = cell && cell.l ? cell.l.Target : row[columnIndex]; // Check for hyperlink and use Target
+    });
     return newItem;
   });
 
