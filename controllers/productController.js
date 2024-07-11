@@ -205,7 +205,7 @@ export const editProductController = async (req, res) => {
       req.flash("image", image);
       req.flash("tag1", tag1);
       req.flash("tag2", tag2);
-      return res.redirect("/add-product");
+      return res.redirect("/edit-product");
     }
 
     // update product

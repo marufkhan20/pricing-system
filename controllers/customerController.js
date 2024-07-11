@@ -172,7 +172,7 @@ export const editCustomerController = async (req, res) => {
       req.flash("commission1", commission1);
       req.flash("commission2", commission2);
       req.flash("errors", JSON.stringify(validationErrors));
-      return res.redirect("/add-customer");
+      return res.redirect("/edit-customer");
     }
 
     const updatedCustomer = await Customer.findByIdAndUpdate(id, {
