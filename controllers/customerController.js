@@ -166,13 +166,8 @@ export const editCustomerController = async (req, res) => {
     }
 
     if (Object.keys(validationErrors).length > 0) {
-      req.flash("name", name);
-      req.flash("freightRate", freightRate);
-      req.flash("markUp", markUp);
-      req.flash("commission1", commission1);
-      req.flash("commission2", commission2);
       req.flash("errors", JSON.stringify(validationErrors));
-      return res.redirect("/edit-customer");
+      return res.redirect(`/edit-customer/${id}`);
     }
 
     const updatedCustomer = await Customer.findByIdAndUpdate(id, {

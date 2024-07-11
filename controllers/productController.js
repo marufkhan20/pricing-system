@@ -165,6 +165,8 @@ export const editProductController = async (req, res) => {
 
     const { id } = req.params || {};
 
+    console.log("body", req.body);
+
     // check validation errors
     const validationErrors = {};
 
@@ -194,18 +196,7 @@ export const editProductController = async (req, res) => {
 
     if (Object.keys(validationErrors).length > 0) {
       req.flash("errors", JSON.stringify(validationErrors));
-      req.flash("price", price);
-      req.flash("wcCode", wcCode);
-      req.flash("boxCode", boxCode);
-      req.flash("ti", ti);
-      req.flash("hi", hi);
-      req.flash("upc", upc);
-      req.flash("description", description);
-      req.flash("pack", pack);
-      req.flash("image", image);
-      req.flash("tag1", tag1);
-      req.flash("tag2", tag2);
-      return res.redirect("/edit-product");
+      return res.redirect(`/edit-product/${id}`);
     }
 
     // update product
