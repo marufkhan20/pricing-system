@@ -3,7 +3,12 @@
 <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 mb-10">
     <div class="border rounded-lg mt-10 bg-white p-10">
       <div class="flex items-center justify-between gap-5 flex-wrap">
-        <h2 class="font-medium text-lg">Products</h2>
+        <div class="flex items-center gap-5 flex-wrap">
+          <h2 class="font-medium text-lg">Products</h2>
+          <form action="">
+            <input name="query" type="text" placeholder="Search products..." value="<%= query %>" class="outline-none py-2 px-4 rounded border bg-transparent">
+          </form>
+        </div>
 
         <div class="flex items-center gap-4">
         <a href="/add-product" class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add Product</a>
@@ -69,15 +74,15 @@
     <div class="mt-10">
       <div class="flex items-center flex-wrap justify-center gap-2">
         <% if (currentPage > 1) { %>
-          <a class="px-3 py-1 rounded hover:bg-black hover:text-white" href="/?page=<%= Number(currentPage) - 1 %>&limit=<%= 20 %>">Previous</a>
+          <a class="px-3 py-1 rounded hover:bg-black hover:text-white" href="/?query=<%= query %>&page=<%= Number(currentPage) - 1 %>&limit=<%= 20 %>">Previous</a>
         <% } %>
         
         <% for (let i = 1; i <= totalPages; i++) { %>
-          <a class="h-8 w-8 rounded-full <%= (currentPage == i) ? 'bg-black text-white' : 'hover:bg-black hover:text-white' %> flex items-center justify-center" href="/?page=<%= i %>&limit=<%= 20 %>"><%= i %></a>
+          <a class="h-8 w-8 rounded-full <%= (currentPage == i) ? 'bg-black text-white' : 'hover:bg-black hover:text-white' %> flex items-center justify-center" href="/?query=<%= query %>&page=<%= i %>&limit=<%= 20 %>"><%= i %></a>
         <% } %>
         
         <% if (currentPage < totalPages) { %>
-          <a class="px-3 py-1 rounded hover:bg-black hover:text-white" href="/?page=<%= Number(currentPage) + 1 %>&limit=<%= 20 %>">Next</a>
+          <a class="px-3 py-1 rounded hover:bg-black hover:text-white" href="/?query=<%= query %>&page=<%= Number(currentPage) + 1 %>&limit=<%= 20 %>">Next</a>
         <% } %>
       </div>
     </div>

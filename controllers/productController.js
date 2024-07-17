@@ -4,15 +4,21 @@ import Product from "../models/Product.js";
 // get all products controller
 export const getAllProductController = async (req, res) => {
   try {
-    const { page = 1, limit = 20 } = req.query;
+    const { query, page = 1, limit = 20 } = req.query;
+
+    const searchOptions = query
+      ? {
+          $or: [{ description: new RegExp(query, "i") }],
+        }
+      : {};
 
     // get all products
-    const products = await Product.find()
+    const products = await Product.find(searchOptions)
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();
 
-    const count = await Product.countDocuments();
+    const count = await Product.countDocuments(searchOptions);
 
     res.render("index.ejs", {
       products,
@@ -21,6 +27,7 @@ export const getAllProductController = async (req, res) => {
       totalPages: Math.ceil(count / limit),
       currentPage: page,
       startIndex: (page - 1) * limit,
+      query,
     });
   } catch (error) {
     console.error(error);
