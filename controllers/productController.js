@@ -13,10 +13,10 @@ export const getAllProductController = async (req, res) => {
       : {};
 
     // get all products
-    const products = await Product.find(searchOptions)
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
-      .exec();
+    const products = await Product.find(searchOptions);
+      // .limit(limit * 1)
+      // .skip((page - 1) * limit)
+      // .exec();
 
     const count = await Product.countDocuments(searchOptions);
 
