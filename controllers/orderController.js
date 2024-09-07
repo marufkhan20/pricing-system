@@ -25,26 +25,26 @@ export const getAllOrderController = async (req, res) => {
 // get order details controller
 export const getOrderDetailsController = async (req, res) => {
   try {
-    const { page = 1, limit = 20 } = req.query;
+    // const { page = 1, limit = 20 } = req.query;
     const { id } = req.params || {};
 
     // get order
     const order = await Order.findById(id);
 
-    const startIndex = Number((page - 1) * Number(limit));
-    const endIndex = Number(startIndex + Number(limit));
+    // const startIndex = Number((page - 1) * Number(limit));
+    // const endIndex = Number(startIndex + Number(limit));
 
-    const paginatedProducts = order?.products.slice(startIndex, endIndex);
+    // const paginatedProducts = order?.products.slice(startIndex, endIndex);
 
     res.render("order_details.ejs", {
       order,
       path: "orders",
       title: order?.name,
-      products: paginatedProducts,
-      totalPages: Math.ceil(order.products.length / limit),
-      currentPage: parseInt(page),
-      limit: parseInt(limit),
-      startIndex: (page - 1) * limit,
+      products: order.products,
+      // totalPages: Math.ceil(order.products.length / limit),
+      // currentPage: parseInt(page),
+      // limit: parseInt(limit),
+      startIndex: 0,
     });
   } catch (error) {
     console.error(error);
