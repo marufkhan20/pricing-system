@@ -13,6 +13,8 @@ const productSchema = new Schema(
     tag1: String,
     tag2: String,
     description: String,
+    uom: String,
+    availableInventory: String,
   },
   {
     timestamps: true,

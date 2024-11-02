@@ -3,6 +3,7 @@ import {
   addNewOrderController,
   addOrderViewController,
   deleteOrderController,
+  downloadOrderDataController,
   editOrderController,
   editOrderViewController,
   getAllOrderController,
@@ -36,9 +37,6 @@ router.post("/edit-order/:id", privateRoute, editOrderController);
 // delete order
 router.delete("/order/:id", privateRoute, deleteOrderController);
 
-router.get("/order/download/:filename", (req, res) => {
-  const { filename } = req.params || {};
-  res.download(`public/orders/${filename}`);
-});
+router.get("/order/download/:id", downloadOrderDataController);
 
 export default router;

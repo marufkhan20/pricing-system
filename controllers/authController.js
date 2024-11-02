@@ -28,18 +28,11 @@ export const createNewUserController = async (req, res) => {
       return res.redirect("/signup");
     }
 
-    // const jsonString = JSON.stringify(req.body, null, 2);
+    const user = new User({ name, email, password });
 
-    // Write JSON data to a file asynchronously
-    // fs.writeFile("data/users.json", jsonString, (err) => {
-    //   if (err) {
-    //     console.error(err);
-    //     res.status(500).send("Error writing to file");
-    //     return;
-    //   }
-    //   console.log("JSON data written to file successfully");
-    //   res.send("JSON data written to file successfully");
-    // });
+    await user.save();
+
+    res.redirect("/login");
   } catch (error) {
     console.error(error);
     res.status(500).json({

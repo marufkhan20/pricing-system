@@ -1,4 +1,3 @@
-import axios from "axios";
 import ExcelJS from "exceljs";
 
 const generateOrderFile = async (products) => {
@@ -31,29 +30,11 @@ const generateOrderFile = async (products) => {
     { header: "Commission 2 Per Case", key: "commission2PerCase" },
     { header: "Mark Up Unit", key: "markUpUnit" },
     { header: "Mark Up Case", key: "markUpCase" },
+    { header: "UOM", key: "uom" },
+    { header: "The Inventory Available", key: "availableInventory" },
   ];
 
   for (let i = 0; i < products.length; i++) {
-    // console.log("product image", products[i]?.image);
-    // if (products[i]?.image) {
-    //   const imagePath = products[i]?.image;
-    //   const imageBuffer = await getImageBuffer(imagePath);
-    //   const imageId = workbook.addImage({
-    //     buffer: imageBuffer,
-    //     extension: "jpeg",
-    //   });
-
-    //   worksheet.addImage(imageId, {
-    //     tl: { col: 0, row: i + 2 },
-    //     br: { col: 1, row: i + 3 },
-    //     editAs: "undefined",
-    //     // ext: {
-    //     //   width: desiredWidth, // Set desired width
-    //     //   height: desiredHeight,
-    //     // },
-    //   });
-    // }
-
     worksheet.getCell(`A${i + 2}`).value = products[i]?.tag1;
     worksheet.getCell(`B${i + 2}`).value = products[i].tag2;
     worksheet.getCell(`C${i + 2}`).value = {
@@ -78,6 +59,8 @@ const generateOrderFile = async (products) => {
     worksheet.getCell(`S${i + 2}`).value = products[i].commission2PerCase;
     worksheet.getCell(`T${i + 2}`).value = products[i].markUpUnit;
     worksheet.getCell(`U${i + 2}`).value = products[i].markUpCase;
+    worksheet.getCell(`V${i + 2}`).value = products[i].uom;
+    worksheet.getCell(`W${i + 2}`).value = products[i].availableInventory;
   }
 
   // Calculate column widths based on content
@@ -108,33 +91,6 @@ const generateOrderFile = async (products) => {
     filename: name + ".xlsx",
     path: `/orders/${name}.xlsx`,
   };
-};
-
-// Function to convert image to base64 string
-// const getImageBuffer = (filePath) => {
-//   return new Promise((resolve, reject) => {
-//     fs.readFile(filePath, (err, data) => {
-//       if (err) {
-//         reject(err);
-//       } else {
-//         resolve(data);
-//       }
-//     });
-//   });
-// };
-
-const getImageBuffer = async (filePath) => {
-  try {
-    const response = await axios.get(filePath, {
-      responseType: "arraybuffer",
-    });
-
-    const imageBuffer = Buffer.from(response.data, "binary");
-    return imageBuffer;
-  } catch (error) {
-    console.error("Error fetching image:", error);
-    throw error;
-  }
 };
 
 export default generateOrderFile;

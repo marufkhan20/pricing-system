@@ -8,8 +8,6 @@ const orderSchema = new Schema(
       ref: "Customer",
     },
     name: String,
-    orderFileName: String,
-    path: String,
     createdDate: Date,
     products: [],
     freightRate: Number,
