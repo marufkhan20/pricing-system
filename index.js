@@ -53,56 +53,63 @@ app.use("/", productRoute);
 app.post("/update-products", async (req, res) => {
   try {
     const filePath = path.join(__dirname, "product-data/InvQtys.csv"); // Path to the CSV file
-    const data = await readCSVFile(filePath); // Read the CSV file
+    const data = await readCSVFile(filePath);
+    const orders = await Order.find();
 
-    const orders = await Order.find(); // Fetch all orders
-
-    // update order products data
-    for (let i = 0; i < orders.length; i++) {
-      const order = orders[i]; // Current order
-      const products = order.products;
-
-      for (let j = 0; j < products.length; j++) {
-        const product = products[j];
-
-        // Find corresponding data from the CSV
-        const matchingData = data.find(
-          (item) => item.PartNumber === product?.wcCode
-        );
-        // console.log("matchingData", matchingData);
-
-        if (matchingData) {
-          product.uom = matchingData.UOM;
-          product.availableInventory = matchingData.Qty;
+    const result = Object.values(
+      data.reduce((acc, item) => {
+        if (acc[item.PartNumber]) {
+          acc[item.PartNumber].qty += Number(item.Qty); // Add to existing qty
+        } else {
+          acc[item.PartNumber] = {
+            partNumber: item.PartNumber,
+            qty: Number(item.Qty), // Initialize qty
+            uom: item.UOM, // Set uom
+          };
         }
-      }
+        return acc;
+      }, {})
+    );
 
-      // Save the updated order
-      await Order.findByIdAndUpdate(order?.id, { $set: { products } });
-    }
+    // console.log(result);
 
-    // update products data
-    for (let i = 0; i < data.length; i++) {
-      const element = data[i]; // Current data element
-
-      // Update product in the Product collection
+    for (const item of result) {
+      // update product
       await Product.findOneAndUpdate(
-        { wcCode: element?.PartNumber },
+        { wcCode: item?.partNumber },
         {
-          $set: { uom: element?.UOM, availableInventory: element?.Qty },
+          $set: { uom: item?.uom, availableInventory: item?.qty },
         },
         { new: true } // Return the updated document
       );
+
+      // update orders products
+      for (let i = 0; i < orders.length; i++) {
+        const order = orders[i]; // Current order
+        const products = order.products;
+
+        for (let j = 0; j < products.length; j++) {
+          const product = products[j];
+
+          if (product?.wcCode === item?.partNumber) {
+            product.uom = item?.uom;
+            product.availableInventory = Number(item?.qty);
+          }
+        }
+
+        // Save the updated order
+        await Order.findByIdAndUpdate(order?.id, { $set: { products } });
+      }
     }
 
-    res.json(data);
+    res.json(result);
   } catch (error) {
     console.error("Error updating products:", error);
     res.status(500).json({ error: "Failed to update products" });
   }
 });
 
-cron.schedule("*/5 * * * *", async () => {
+cron.schedule("*/2 * * * *", async () => {
   console.log("Running scheduled task every 5 minutes");
 
   try {
@@ -117,41 +124,50 @@ cron.schedule("*/5 * * * *", async () => {
     const data = await readCSVFile(filePath); // Read the CSV file
     const orders = await Order.find(); // Fetch all orders
 
-    // Update order products data
-    for (let i = 0; i < orders.length; i++) {
-      const order = orders[i]; // Current order
-      const products = order.products;
-
-      for (let j = 0; j < products.length; j++) {
-        const product = products[j];
-
-        // Find corresponding data from the CSV
-        const matchingData = data.find(
-          (item) => item.PartNumber === product?.wcCode
-        );
-
-        if (matchingData) {
-          product.uom = matchingData.UOM;
-          product.availableInventory = matchingData.Qty;
+    const result = Object.values(
+      data.reduce((acc, item) => {
+        if (acc[item.PartNumber]) {
+          acc[item.PartNumber].qty += Number(item.Qty); // Add to existing qty
+        } else {
+          acc[item.PartNumber] = {
+            partNumber: item.PartNumber,
+            qty: Number(item.Qty), // Initialize qty
+            uom: item.UOM, // Set uom
+          };
         }
-      }
+        return acc;
+      }, {})
+    );
 
-      // Save the updated order
-      await Order.findByIdAndUpdate(order?.id, { $set: { products } });
-    }
+    // console.log(result);
 
-    // Update products data
-    for (let i = 0; i < data.length; i++) {
-      const element = data[i]; // Current data element
-
-      // Update product in the Product collection
+    for (const item of result) {
+      // update product
       await Product.findOneAndUpdate(
-        { wcCode: element?.PartNumber },
+        { wcCode: item?.partNumber },
         {
-          $set: { uom: element?.UOM, availableInventory: element?.Qty },
+          $set: { uom: item?.uom, availableInventory: item?.qty },
         },
         { new: true } // Return the updated document
       );
+
+      // update orders products
+      for (let i = 0; i < orders.length; i++) {
+        const order = orders[i]; // Current order
+        const products = order.products;
+
+        for (let j = 0; j < products.length; j++) {
+          const product = products[j];
+
+          if (product?.wcCode === item?.partNumber) {
+            product.uom = item?.uom;
+            product.availableInventory = Number(item?.qty);
+          }
+        }
+
+        // Save the updated order
+        await Order.findByIdAndUpdate(order?.id, { $set: { products } });
+      }
     }
   } catch (error) {
     console.error("Error updating products:", error);
