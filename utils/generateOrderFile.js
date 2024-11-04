@@ -18,6 +18,8 @@ const generateOrderFile = async (products) => {
     { header: "Pack", key: "pack" },
     { header: "Unit", key: "unit" },
     { header: "Case", key: "case" },
+    { header: "UOM", key: "uom" },
+    { header: "Available", key: "availableInventory" },
     { header: "Ti", key: "ti" },
     { header: "Hi", key: "hi" },
     { header: "Case Per Pallet", key: "casePerPallet" },
@@ -30,8 +32,6 @@ const generateOrderFile = async (products) => {
     { header: "Commission 2 Per Case", key: "commission2PerCase" },
     { header: "Mark Up Unit", key: "markUpUnit" },
     { header: "Mark Up Case", key: "markUpCase" },
-    { header: "UOM", key: "uom" },
-    { header: "The Inventory Available", key: "availableInventory" },
   ];
 
   for (let i = 0; i < products.length; i++) {
@@ -47,20 +47,20 @@ const generateOrderFile = async (products) => {
     worksheet.getCell(`G${i + 2}`).value = products[i].pack;
     worksheet.getCell(`H${i + 2}`).value = products[i].unit;
     worksheet.getCell(`I${i + 2}`).value = products[i].case;
-    worksheet.getCell(`J${i + 2}`).value = products[i].ti;
-    worksheet.getCell(`K${i + 2}`).value = products[i].hi;
-    worksheet.getCell(`L${i + 2}`).value = products[i].casesPerPallet;
-    worksheet.getCell(`M${i + 2}`).value = products[i].upc;
-    worksheet.getCell(`N${i + 2}`).value = products[i].freightPerUnit;
-    worksheet.getCell(`O${i + 2}`).value = products[i].freightPerCase;
-    worksheet.getCell(`P${i + 2}`).value = products[i].commission1PerUnit;
-    worksheet.getCell(`Q${i + 2}`).value = products[i].commission1PerCase;
-    worksheet.getCell(`R${i + 2}`).value = products[i].commission2PerUnit;
-    worksheet.getCell(`S${i + 2}`).value = products[i].commission2PerCase;
-    worksheet.getCell(`T${i + 2}`).value = products[i].markUpUnit;
-    worksheet.getCell(`U${i + 2}`).value = products[i].markUpCase;
-    worksheet.getCell(`V${i + 2}`).value = products[i].uom;
-    worksheet.getCell(`W${i + 2}`).value = products[i].availableInventory;
+    worksheet.getCell(`J${i + 2}`).value = products[i].uom;
+    worksheet.getCell(`K${i + 2}`).value = products[i].availableInventory;
+    worksheet.getCell(`L${i + 2}`).value = products[i].ti;
+    worksheet.getCell(`M${i + 2}`).value = products[i].hi;
+    worksheet.getCell(`N${i + 2}`).value = products[i].casesPerPallet;
+    worksheet.getCell(`O${i + 2}`).value = products[i].upc;
+    worksheet.getCell(`P${i + 2}`).value = products[i].freightPerUnit;
+    worksheet.getCell(`Q${i + 2}`).value = products[i].freightPerCase;
+    worksheet.getCell(`R${i + 2}`).value = products[i].commission1PerUnit;
+    worksheet.getCell(`S${i + 2}`).value = products[i].commission1PerCase;
+    worksheet.getCell(`T${i + 2}`).value = products[i].commission2PerUnit;
+    worksheet.getCell(`U${i + 2}`).value = products[i].commission2PerCase;
+    worksheet.getCell(`V${i + 2}`).value = products[i].markUpUnit;
+    worksheet.getCell(`W${i + 2}`).value = products[i].markUpCase;
   }
 
   // Calculate column widths based on content
