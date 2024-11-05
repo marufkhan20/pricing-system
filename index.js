@@ -52,7 +52,7 @@ app.use("/", productRoute);
 
 app.post("/update-products", async (req, res) => {
   try {
-    const filePath = path.join(__dirname, "product-data/InvQtys.csv"); // Path to the CSV file
+    const filePath = path.join(__dirname, "product-data/test.csv"); // Path to the CSV file
     const data = await readCSVFile(filePath);
     const orders = await Order.find();
 
@@ -73,34 +73,34 @@ app.post("/update-products", async (req, res) => {
 
     // console.log(result);
 
-    for (const item of result) {
-      // update product
-      await Product.findOneAndUpdate(
-        { wcCode: item?.partNumber },
-        {
-          $set: { uom: item?.uom, availableInventory: item?.qty },
-        },
-        { new: true } // Return the updated document
-      );
+    // for (const item of result) {
+    //   // update product
+    //   await Product.findOneAndUpdate(
+    //     { wcCode: item?.partNumber },
+    //     {
+    //       $set: { uom: item?.uom, availableInventory: item?.qty },
+    //     },
+    //     { new: true } // Return the updated document
+    //   );
 
-      // update orders products
-      for (let i = 0; i < orders.length; i++) {
-        const order = orders[i]; // Current order
-        const products = order.products;
+    //   // update orders products
+    //   for (let i = 0; i < orders.length; i++) {
+    //     const order = orders[i]; // Current order
+    //     const products = order.products;
 
-        for (let j = 0; j < products.length; j++) {
-          const product = products[j];
+    //     for (let j = 0; j < products.length; j++) {
+    //       const product = products[j];
 
-          if (product?.wcCode === item?.partNumber) {
-            product.uom = item?.uom;
-            product.availableInventory = Number(item?.qty);
-          }
-        }
+    //       if (product?.wcCode === item?.partNumber) {
+    //         product.uom = item?.uom;
+    //         product.availableInventory = Number(item?.qty);
+    //       }
+    //     }
 
-        // Save the updated order
-        await Order.findByIdAndUpdate(order?.id, { $set: { products } });
-      }
-    }
+    //     // Save the updated order
+    //     await Order.findByIdAndUpdate(order?.id, { $set: { products } });
+    //   }
+    // }
 
     res.json(result);
   } catch (error) {
@@ -109,7 +109,7 @@ app.post("/update-products", async (req, res) => {
   }
 });
 
-cron.schedule("*/2 * * * *", async () => {
+cron.schedule("*/5 * * * *", async () => {
   console.log("Running scheduled task every 5 minutes");
 
   try {
