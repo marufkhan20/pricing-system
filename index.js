@@ -52,7 +52,7 @@ app.use("/", productRoute);
 
 app.post("/update-products", async (req, res) => {
   try {
-    const filePath = path.join(__dirname, "product-data/test.csv"); // Path to the CSV file
+    const filePath = path.join(__dirname, "product-data/invAvail.csv"); // Path to the CSV file
     const data = await readCSVFile(filePath);
     const orders = await Order.find();
 
@@ -105,7 +105,7 @@ app.post("/update-products", async (req, res) => {
     const inventoryNumber = 1094.14;
     const formattedNumber = formatInventoryNumber(inventoryNumber);
 
-    res.json(formattedNumber);
+    res.json(data);
   } catch (error) {
     console.error("Error updating products:", error);
     res.status(500).json({ error: "Failed to update products" });
@@ -116,7 +116,7 @@ cron.schedule("*/2 * * * *", async () => {
   console.log("Running scheduled task every hour at 15 after");
 
   try {
-    const filePath = path.join(__dirname, "product-data/InvQtys.csv"); // Path to the CSV file
+    const filePath = path.join(__dirname, "product-data/invAvail.csv"); // Path to the CSV file
 
     // Check if the file exists before proceeding
     if (!fs.existsSync(filePath)) {
@@ -129,12 +129,12 @@ cron.schedule("*/2 * * * *", async () => {
 
     const result = Object.values(
       data.reduce((acc, item) => {
-        if (acc[item.PartNumber]) {
-          acc[item.PartNumber].qty += Number(item.Qty); // Add to existing qty
+        if (acc[item.Part]) {
+          acc[item.Part].qty += Number(item.Available); // Add to existing qty
         } else {
-          acc[item.PartNumber] = {
-            partNumber: item.PartNumber,
-            qty: Number(item.Qty), // Initialize qty
+          acc[item.Part] = {
+            partNumber: item.Part,
+            qty: Number(item.Available), // Initialize qty
             uom: item.UOM, // Set uom
           };
         }
@@ -167,7 +167,7 @@ cron.schedule("*/2 * * * *", async () => {
 
           if (product?.wcCode === item?.partNumber) {
             product.uom = item?.uom;
-            product.availableInventory = Number(item?.qty);
+            product.availableInventory = formatInventoryNumber(item?.qty);
           }
         }
 

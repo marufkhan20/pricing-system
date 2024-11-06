@@ -1,16 +1,43 @@
-import csv from "csv-parser";
 import fs from "fs";
 import Customer from "../models/Customer.js";
 import Product from "../models/Product.js";
 
 export const readCSVFile = (filePath) => {
   return new Promise((resolve, reject) => {
-    const results = [];
-    fs.createReadStream(filePath)
-      .pipe(csv())
-      .on("data", (data) => results.push(data))
-      .on("end", () => resolve(results))
-      .on("error", (error) => reject(error));
+    fs.readFile(filePath, "utf8", (err, data) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      const rows = data.split("\n");
+      const results = [];
+
+      // Get the 4th row as headers
+      const headerRow = rows[3]?.split(",").map((header) => header.trim());
+
+      if (!headerRow) {
+        reject(new Error("Failed to read headers from the 4th row"));
+        return;
+      }
+
+      // Process each row after the 4th row
+      for (let i = 4; i < rows.length; i++) {
+        const rowValues = rows[i].split(",").map((value) => value.trim());
+
+        // Skip empty rows
+        if (rowValues.length !== headerRow.length) continue;
+
+        const rowObject = {};
+        headerRow.forEach((header, index) => {
+          rowObject[header] = rowValues[index];
+        });
+
+        results.push(rowObject);
+      }
+
+      resolve(results);
+    });
   });
 };
 
