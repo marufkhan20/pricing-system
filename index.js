@@ -112,8 +112,8 @@ app.post("/update-products", async (req, res) => {
   }
 });
 
-cron.schedule("*/5 * * * *", async () => {
-  console.log("Running scheduled task every 5 minutes");
+cron.schedule("15 * * * *", async () => {
+  console.log("Running scheduled task every hour at 15 after");
 
   try {
     const filePath = path.join(__dirname, "product-data/InvQtys.csv"); // Path to the CSV file
