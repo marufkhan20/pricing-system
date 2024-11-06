@@ -1,13 +1,9 @@
-1. TODO: [DONE] Add 2 new fields to the product page, Tag 1 and Tag 2. These will be added to the excel spreadsheet at the beginning of the row - TODO: understand
+1. Change "WC Code" to "HG Code" in all locations - [Done]
 
-2. TODO: [DONE] Fix empty price list bug. I think all fields should be required for the Add Price List form. - TODO: don't understand
+2. Add a field on the add-product page for "PLT Code". Make it optional. See 1.png. - [TODO: DONE]
 
-3. TODO: [DONE] Remove the product selector from the Add Price List form and use all the products listed on the Products page. - TODO: understand
+3. Put the "PLT Code" in the spreadsheet export like in the "sample export.xlsx". - [TODO: DONE]
 
-4. TODO: [DONE] Add an edit function to the Customers page like the other pages have. - TODO: understand
+4. Truncate the decimals on all the inventory numbers (or round down to nearest integer) and add a comma for thousands. - [TODO: DONE]
 
-5. TODO: [DONE] Add a “Base Unit Modifier” field to the Customers form. This will be used to adjust the Base Unit Price before calculations. It needs to be a float to 2 places. - TODO: understand
-
-6. TODO: [DONE] Round up all commissions and markup calculations to the nearest penny. After obtaining the Unit price, round it up to the nearest number divisible by .05 (either .05 or .00). - TODO: understand
-
-7. TODO: [DONE] Can the excel file be formatted to auto fit the column width before downloading? - TODO: understand
+5. On the Products page and the Price List > View, clean up the columns so that there is equal spacing to make it easier to read and remove the image column. Try centering the column titles and contents. - [TODO: DONE]

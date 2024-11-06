@@ -15,7 +15,7 @@ import authRoute from "./routes/authRoute.js";
 import customerRoute from "./routes/customerRoute.js";
 import orderRoute from "./routes/orderRoute.js";
 import productRoute from "./routes/productRoute.js";
-import { readCSVFile } from "./utils/index.js";
+import { formatInventoryNumber, readCSVFile } from "./utils/index.js";
 
 const app = express();
 const port = 8000;
@@ -102,7 +102,10 @@ app.post("/update-products", async (req, res) => {
     //   }
     // }
 
-    res.json(result);
+    const inventoryNumber = 1094.14;
+    const formattedNumber = formatInventoryNumber(inventoryNumber);
+
+    res.json(formattedNumber);
   } catch (error) {
     console.error("Error updating products:", error);
     res.status(500).json({ error: "Failed to update products" });
@@ -146,7 +149,10 @@ cron.schedule("*/5 * * * *", async () => {
       await Product.findOneAndUpdate(
         { wcCode: item?.partNumber },
         {
-          $set: { uom: item?.uom, availableInventory: item?.qty },
+          $set: {
+            uom: item?.uom,
+            availableInventory: formatInventoryNumber(item?.qty),
+          },
         },
         { new: true } // Return the updated document
       );

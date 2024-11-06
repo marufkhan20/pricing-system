@@ -32,6 +32,7 @@ export const getProducts = async ({
       _id,
       image,
       wcCode,
+      pltCode,
       boxCode,
       price,
       ti,
@@ -132,6 +133,7 @@ export const getProducts = async ({
       image,
       pack,
       wcCode,
+      pltCode,
       boxCode,
       ti,
       hi,
@@ -155,4 +157,9 @@ export const getProducts = async ({
   });
 
   return selectedProducts;
+};
+
+export const formatInventoryNumber = (number) => {
+  const truncatedNumber = Math.floor(number);
+  return truncatedNumber.toLocaleString();
 };

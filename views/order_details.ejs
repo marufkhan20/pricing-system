@@ -51,19 +51,18 @@
     <div class="mt-10 overflow-auto">
       <table class="w-full" style="min-width: 800px;">
         <thead>
-          <th class="font-medium pb-4 border-b text-left">#</th>
-          <th class="font-medium pb-4 border-b text-left">Image</th>
-          <th class="font-medium pb-4 border-b text-left">Description</th>
-          <th class="font-medium pb-4 border-b text-left">Pack</th>
-          <th class="font-medium pb-4 border-b text-left">Unit</th>
-          <th class="font-medium pb-4 border-b text-left">Code</th>
-          <th class="font-medium pb-4 border-b text-left">Case</th>
-          <th class="font-medium pb-4 border-b text-left">Commission</th>
-          <th class="font-medium pb-4 border-b text-left">TI</th>
-          <th class="font-medium pb-4 border-b text-left">HI</th>
-          <th class="font-medium pb-4 border-b text-left">Cases Per Pallet</th>
-          <th class="font-medium pb-4 border-b text-left pr-2">UOM</th>
-          <th class="font-medium pb-4 border-b text-left">Available</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t border-l pt-4">#</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">Description</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">Pack</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">Unit</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">Code</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">Case</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">Commission</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">TI</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">HI</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">Cases Per Pallet</th>
+          <th class="font-medium pb-4 border-b text-center pr-2 border-r px-1 border-t pt-4">UOM</th>
+          <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">Available</th>
         </thead>
 
         <tbody>
@@ -71,21 +70,18 @@
             <% products?.forEach((product, idx) => { %>
 
           <tr>
-            <td class="py-4 border-b"><%= startIndex + idx + 1 %></td>
-            <td class="py-4 border-b font-medium">
-              <img src="<%= product?.image %>" loading="lazy" class="w-14 rounded-md" alt="">
-            </td>
-            <td class="py-4 border-b"><%= product?.description %></td>
-            <td class="py-4 border-b"><%= product?.pack %></td>
-            <td class="py-4 border-b"><%= product?.unit %></td>
-            <td class="py-4 border-b"><%= product?.boxCode %></td>
-            <td class="py-4 border-b"><%= product?.case %></td>
-            <td class="py-4 border-b"><%= product?.commission1PerUnit %></td>
-            <td class="py-4 border-b"><%= product?.ti %></td>
-            <td class="py-4 border-b"><%= product?.hi %></td>
-            <td class="py-4 border-b"><%= Number(product?.ti) * Number(product?.hi) %></td>
-            <td class="py-4 border-b"><%= product?.uom %></td>
-            <td class="py-4 border-b"><%= product?.availableInventory || 0 %></td>
+            <td class="py-4 border-b border-r border-l px-1 text-center"><%= startIndex + idx + 1 %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.description %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.pack %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.unit %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.boxCode %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.case %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.commission1PerUnit %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.ti %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.hi %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= Number(product?.ti) * Number(product?.hi) %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.uom %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.availableInventory || 0 %></td>
           </tr>
           
           <% }) } %>

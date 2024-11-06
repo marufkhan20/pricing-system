@@ -14,9 +14,9 @@ export const getAllProductController = async (req, res) => {
 
     // get all products
     const products = await Product.find(searchOptions);
-      // .limit(limit * 1)
-      // .skip((page - 1) * limit)
-      // .exec();
+    // .limit(limit * 1)
+    // .skip((page - 1) * limit)
+    // .exec();
 
     const count = await Product.countDocuments(searchOptions);
 
@@ -43,6 +43,7 @@ export const addNewProductController = async (req, res) => {
     const {
       price,
       wcCode,
+      pltCode,
       boxCode,
       ti,
       hi,
@@ -85,6 +86,7 @@ export const addNewProductController = async (req, res) => {
       req.flash("errors", JSON.stringify(validationErrors));
       req.flash("price", price);
       req.flash("wcCode", wcCode);
+      req.flash("pltCode", pltCode);
       req.flash("boxCode", boxCode);
       req.flash("ti", ti);
       req.flash("hi", hi);
@@ -103,6 +105,7 @@ export const addNewProductController = async (req, res) => {
       pack: Number(pack),
       price: Number(price),
       wcCode,
+      pltCode,
       boxCode,
       ti: Number(ti),
       hi: Number(hi),
@@ -129,9 +132,11 @@ export const editProductViewController = async (req, res) => {
 
     // get the product
     const product = await Product.findById(id);
+
     req.flash("price", product?.price);
     req.flash("id", product?.id);
     req.flash("wcCode", product?.wcCode);
+    req.flash("pltCode", product?.pltCode);
     req.flash("boxCode", product?.boxCode);
     req.flash("ti", product?.ti);
     req.flash("hi", product?.hi);
@@ -159,6 +164,7 @@ export const editProductController = async (req, res) => {
     const {
       price,
       wcCode,
+      pltCode,
       boxCode,
       ti,
       hi,
@@ -171,8 +177,6 @@ export const editProductController = async (req, res) => {
     } = req.body || {};
 
     const { id } = req.params || {};
-
-    console.log("body", req.body);
 
     // check validation errors
     const validationErrors = {};
@@ -213,6 +217,7 @@ export const editProductController = async (req, res) => {
         pack: Number(pack),
         price: Number(price),
         wcCode,
+        pltCode,
         boxCode,
         ti: Number(ti),
         hi: Number(hi),
@@ -275,6 +280,7 @@ export const importProductsController = async (req, res) => {
     Image: "image",
     Description: "description",
     "WC Code": "wcCode",
+    "PLT Code": "pltCode",
     "Box Code": "boxCode",
     Pack: "pack",
     Unit: "unit",
@@ -314,6 +320,7 @@ export const importProductsController = async (req, res) => {
       pack: item?.pack,
       price: Number(item?.unit?.replace("$ ", "")),
       wcCode: item?.wcCode,
+      pltCode: item?.pltCode,
       boxCode: item?.boxCode,
       ti: item?.ti,
       hi: item?.hi,

@@ -6,6 +6,7 @@ const productSchema = new Schema(
     pack: Number,
     price: Number,
     wcCode: String,
+    pltCode: String,
     boxCode: String,
     ti: Number,
     hi: Number,
