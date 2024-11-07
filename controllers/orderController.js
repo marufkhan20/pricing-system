@@ -211,13 +211,20 @@ export const editOrderController = async (req, res) => {
     }
 
     if (Object.keys(validationErrors).length > 0) {
+      const customers = await Customer.find();
+
       req.flash("errors", JSON.stringify(validationErrors));
       req.flash("customer", customer);
+      req.flash("id", id);
       req.flash("freightRate", freightRate);
       req.flash("commission1", commission1);
       req.flash("commission2", commission2);
       req.flash("markUp", markUp);
-      return res.redirect("/add-Order");
+      return res.render("edit_order.ejs", {
+        path: "orders",
+        title: "Edit Price List",
+        customers,
+      });
     }
 
     const products = await getProducts({
@@ -228,7 +235,7 @@ export const editOrderController = async (req, res) => {
       markUp,
     });
 
-    const updatedOrder = await Order.findByIdAndUpdate(id, {
+    await Order.findByIdAndUpdate(id, {
       $set: {
         customer,
         products,
