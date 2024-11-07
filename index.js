@@ -134,7 +134,7 @@ app.post("/update-products", async (req, res) => {
   }
 });
 
-cron.schedule("*/2 * * * *", async () => {
+cron.schedule("*/1 * * * *", async () => {
   console.log("Running scheduled task every hour at 15 after");
 
   try {
@@ -202,7 +202,7 @@ cron.schedule("*/2 * * * *", async () => {
           // console.log("partNumber", product?.partNumber);
 
           if (product?.wcCode === item?.partNumber) {
-            console.log("working");
+            // console.log("working");
             product.uom = item?.uom;
             product.availableInventory = formatInventoryNumber(item?.qty);
           }

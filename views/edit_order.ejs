@@ -27,7 +27,7 @@
               <% if (customers) { %>
                 
                 <% customers?.forEach((customer, idx) => { %>
-                  <option <%= customer?.id === messages?.customer[0] ? 'selected' : '' %> value="<%= customer?.id %>"><%= customer?.name %></option>
+                  <option selected="<%= customer?.id === messages[0] %>" value="<%= customer?.id %>"><%= customer?.name %></option>
 
               <% }) } %>
 
