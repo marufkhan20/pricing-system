@@ -53,17 +53,38 @@ app.use("/", productRoute);
 app.post("/update-products", async (req, res) => {
   try {
     const filePath = path.join(__dirname, "product-data/invAvail.csv"); // Path to the CSV file
-    const data = await readCSVFile(filePath);
-    const orders = await Order.find();
+
+    // Check if the file exists before proceeding
+    if (!fs.existsSync(filePath)) {
+      console.log("File not found, skipping update tasks.");
+      return; // Exit if the file does not exist
+    }
+
+    const data = await readCSVFile(filePath); // Read the CSV file
+    const orders = await Order.find(); // Fetch all orders
+
+    // reset products availableInventory data
+    await Product.updateMany({}, { availableInventory: 0 });
+
+    // reset order products availableInventory data
+    for (let i = 0; i < orders.length; i++) {
+      const order = orders[i];
+      const products = order.products;
+
+      for (let j = 0; j < products.length; j++) {
+        const product = products[j];
+        product.availableInventory = "";
+      }
+    }
 
     const result = Object.values(
       data.reduce((acc, item) => {
-        if (acc[item.PartNumber]) {
-          acc[item.PartNumber].qty += Number(item.Qty); // Add to existing qty
+        if (acc[item.Part]) {
+          acc[item.Part].qty += Number(item.Available); // Add to existing qty
         } else {
-          acc[item.PartNumber] = {
-            partNumber: item.PartNumber,
-            qty: Number(item.Qty), // Initialize qty
+          acc[item.Part] = {
+            partNumber: item.Part,
+            qty: Number(item.Available), // Initialize qty
             uom: item.UOM, // Set uom
           };
         }
@@ -71,39 +92,40 @@ app.post("/update-products", async (req, res) => {
       }, {})
     );
 
-    // console.log(result);
+    for (const item of result) {
+      // update product
+      await Product.findOneAndUpdate(
+        { wcCode: item?.partNumber },
+        {
+          $set: {
+            uom: item?.uom,
+            availableInventory: formatInventoryNumber(item?.qty),
+          },
+        },
+        { new: true } // Return the updated document
+      );
 
-    // for (const item of result) {
-    //   // update product
-    //   await Product.findOneAndUpdate(
-    //     { wcCode: item?.partNumber },
-    //     {
-    //       $set: { uom: item?.uom, availableInventory: item?.qty },
-    //     },
-    //     { new: true } // Return the updated document
-    //   );
+      for (let i = 0; i < orders.length; i++) {
+        const order = orders[i]; // Current order
+        const products = order.products;
 
-    //   // update orders products
-    //   for (let i = 0; i < orders.length; i++) {
-    //     const order = orders[i]; // Current order
-    //     const products = order.products;
+        for (let j = 0; j < products.length; j++) {
+          const product = products[j];
 
-    //     for (let j = 0; j < products.length; j++) {
-    //       const product = products[j];
+          console.log("wc code", product?.wcCode);
+          console.log("partNumber", product?.partNumber);
 
-    //       if (product?.wcCode === item?.partNumber) {
-    //         product.uom = item?.uom;
-    //         product.availableInventory = Number(item?.qty);
-    //       }
-    //     }
+          if (product?.wcCode === item?.partNumber) {
+            console.log("working");
+            product.uom = item?.uom;
+            product.availableInventory = formatInventoryNumber(item?.qty);
+          }
+        }
 
-    //     // Save the updated order
-    //     await Order.findByIdAndUpdate(order?.id, { $set: { products } });
-    //   }
-    // }
-
-    const inventoryNumber = 1094.14;
-    const formattedNumber = formatInventoryNumber(inventoryNumber);
+        // Save the updated order
+        await Order.findByIdAndUpdate(order?.id, { $set: { products } });
+      }
+    }
 
     res.json(data);
   } catch (error) {
@@ -112,7 +134,7 @@ app.post("/update-products", async (req, res) => {
   }
 });
 
-cron.schedule("*/2 * * * *", async () => {
+cron.schedule("*/1 * * * *", async () => {
   console.log("Running scheduled task every hour at 15 after");
 
   try {
@@ -127,9 +149,10 @@ cron.schedule("*/2 * * * *", async () => {
     const data = await readCSVFile(filePath); // Read the CSV file
     const orders = await Order.find(); // Fetch all orders
 
-    // reset availableInventory data
+    // reset products availableInventory data
     await Product.updateMany({}, { availableInventory: 0 });
 
+    // reset order products availableInventory data
     for (let i = 0; i < orders.length; i++) {
       const order = orders[i];
       const products = order.products;

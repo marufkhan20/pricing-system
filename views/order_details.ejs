@@ -62,6 +62,7 @@
           <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">HI</th>
           <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">Cases Per Pallet</th>
           <th class="font-medium pb-4 border-b text-center pr-2 border-r px-1 border-t pt-4">UOM</th>
+          <th class="font-medium pb-4 border-b text-center pr-2 border-r px-1 border-t pt-4">HG CODE</th>
           <th class="font-medium pb-4 border-b text-center border-r px-1 border-t pt-4">Available</th>
         </thead>
 
@@ -81,6 +82,7 @@
             <td class="py-4 border-b border-r px-1 text-center"><%= product?.hi %></td>
             <td class="py-4 border-b border-r px-1 text-center"><%= Number(product?.ti) * Number(product?.hi) %></td>
             <td class="py-4 border-b border-r px-1 text-center"><%= product?.uom %></td>
+            <td class="py-4 border-b border-r px-1 text-center"><%= product?.wcCode %></td>
             <td class="py-4 border-b border-r px-1 text-center"><%= product?.availableInventory || 0 %></td>
           </tr>
           

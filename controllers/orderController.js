@@ -420,5 +420,5 @@ export const downloadOrderDataController = async (req, res) => {
       const filePath = `public/orders/${filename}`;
       res.download(filePath);
     }
-  }, 500);
+  }, 1500);
 };
