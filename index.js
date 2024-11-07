@@ -80,11 +80,11 @@ app.post("/update-products", async (req, res) => {
     const result = Object.values(
       data.reduce((acc, item) => {
         if (acc[item.Part]) {
-          acc[item.Part].qty += Number(item.Available); // Add to existing qty
+          acc[item.Part].qty += Number(item.Available.replace(/,/g, "")); // Add to existing qty
         } else {
           acc[item.Part] = {
             partNumber: item.Part,
-            qty: Number(item.Available), // Initialize qty
+            qty: Number(item.Available.replace(/,/g, "")), // Initialize qty
             uom: item.UOM, // Set uom
           };
         }
@@ -134,7 +134,7 @@ app.post("/update-products", async (req, res) => {
   }
 });
 
-cron.schedule("*/1 * * * *", async () => {
+cron.schedule("*/2 * * * *", async () => {
   console.log("Running scheduled task every hour at 15 after");
 
   try {
@@ -166,11 +166,11 @@ cron.schedule("*/1 * * * *", async () => {
     const result = Object.values(
       data.reduce((acc, item) => {
         if (acc[item.Part]) {
-          acc[item.Part].qty += Number(item.Available); // Add to existing qty
+          acc[item.Part].qty += Number(item.Available.replace(/,/g, "")); // Add to existing qty
         } else {
           acc[item.Part] = {
             partNumber: item.Part,
-            qty: Number(item.Available), // Initialize qty
+            qty: Number(item.Available.replace(/,/g, "")), // Initialize qty
             uom: item.UOM, // Set uom
           };
         }

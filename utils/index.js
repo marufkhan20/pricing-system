@@ -21,20 +21,36 @@ export const readCSVFile = (filePath) => {
         return;
       }
 
+      console.log("rows", rows?.length);
+      console.log("headerRow", headerRow);
+
       // Process each row after the 4th row
       for (let i = 4; i < rows.length; i++) {
-        const rowValues = rows[i].split(",").map((value) => value.trim());
+        const rowValues = rows[i]
+          .match(/([^,]+),([^,]+),"?(.*?)"?$/)
+          .slice(1)
+          .map((value) => value.trim());
 
-        // Skip empty rows
-        if (rowValues.length !== headerRow.length) continue;
+        // console.log("rowValues", rowValues.length);
+
+        // if (rowValues.length !== headerRow.length) {
+        //   console.log("skip", i);
+        // }
+
+        // // Skip empty rows
+        // if (rowValues.length !== headerRow.length) continue;
 
         const rowObject = {};
         headerRow.forEach((header, index) => {
           rowObject[header] = rowValues[index];
         });
 
+        // console.log("rowObject", Object.keys(rowObject).length);
+
         results.push(rowObject);
       }
+
+      console.log("results", results.length);
 
       resolve(results);
     });
