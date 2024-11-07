@@ -134,7 +134,7 @@ app.post("/update-products", async (req, res) => {
   }
 });
 
-cron.schedule("*/40 * * * *", async () => {
+cron.schedule("*/2 * * * *", async () => {
   console.log("Running scheduled task every hour at 15 after");
 
   try {
