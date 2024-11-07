@@ -112,8 +112,8 @@ app.post("/update-products", async (req, res) => {
         for (let j = 0; j < products.length; j++) {
           const product = products[j];
 
-          console.log("wc code", product?.wcCode);
-          console.log("partNumber", product?.partNumber);
+          // console.log("wc code", product?.wcCode);
+          // console.log("partNumber", product?.partNumber);
 
           if (product?.wcCode === item?.partNumber) {
             console.log("working");
@@ -198,8 +198,8 @@ cron.schedule("*/1 * * * *", async () => {
         for (let j = 0; j < products.length; j++) {
           const product = products[j];
 
-          console.log("wc code", product?.wcCode);
-          console.log("partNumber", product?.partNumber);
+          // console.log("wc code", product?.wcCode);
+          // console.log("partNumber", product?.partNumber);
 
           if (product?.wcCode === item?.partNumber) {
             console.log("working");
