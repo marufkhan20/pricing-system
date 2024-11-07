@@ -127,6 +127,19 @@ cron.schedule("*/2 * * * *", async () => {
     const data = await readCSVFile(filePath); // Read the CSV file
     const orders = await Order.find(); // Fetch all orders
 
+    // reset availableInventory data
+    await Product.updateMany({}, { availableInventory: 0 });
+
+    for (let i = 0; i < orders.length; i++) {
+      const order = orders[i];
+      const products = order.products;
+
+      for (let j = 0; j < products.length; j++) {
+        const product = products[j];
+        product.availableInventory = "";
+      }
+    }
+
     const result = Object.values(
       data.reduce((acc, item) => {
         if (acc[item.Part]) {
@@ -142,8 +155,6 @@ cron.schedule("*/2 * * * *", async () => {
       }, {})
     );
 
-    // console.log(result);
-
     for (const item of result) {
       // update product
       await Product.findOneAndUpdate(
@@ -157,7 +168,6 @@ cron.schedule("*/2 * * * *", async () => {
         { new: true } // Return the updated document
       );
 
-      // update orders products
       for (let i = 0; i < orders.length; i++) {
         const order = orders[i]; // Current order
         const products = order.products;
@@ -165,7 +175,11 @@ cron.schedule("*/2 * * * *", async () => {
         for (let j = 0; j < products.length; j++) {
           const product = products[j];
 
+          console.log("wc code", product?.wcCode);
+          console.log("partNumber", product?.partNumber);
+
           if (product?.wcCode === item?.partNumber) {
+            console.log("working");
             product.uom = item?.uom;
             product.availableInventory = formatInventoryNumber(item?.qty);
           }

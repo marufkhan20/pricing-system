@@ -391,19 +391,9 @@ export const deleteOrderController = async (req, res) => {
   try {
     const { id } = req.params || {};
 
-    const deletedOrder = await Order.findByIdAndDelete(id);
+    await Order.findByIdAndDelete(id);
 
-    if (deletedOrder) {
-      // delete order file
-      fs.unlink(`public${deletedOrder?.path}`, (err) => {
-        if (err) {
-          console.error("Error deleting file:", err);
-          return;
-        }
-
-        res.status(200).json({ success: true });
-      });
-    }
+    res.status(200).json({ success: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({
