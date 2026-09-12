@@ -6,10 +6,6 @@ import {
 } from "../controllers/authController.js";
 import privateRoute from "../middlewares/privateRoute.js";
 import publicRoute from "../middlewares/publicRoute.js";
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
-
 const router = Router();
 
 // sign up routes
